@@ -593,3 +593,95 @@ function AnswerCard({
     </article>
   );
 }
+
+function HistorySection({
+  items,
+  loading,
+  onOpen,
+  onDelete,
+  deletingId,
+}: {
+  items: SavedDoubt[];
+  loading: boolean;
+  onOpen: (item: SavedDoubt) => void;
+  onDelete: (id: string) => void;
+  deletingId: string | null;
+}) {
+  return (
+    <section id="history" className="mt-20 scroll-mt-16 border-t border-border pt-12">
+      <div className="mb-6 flex items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <div className="grid h-10 w-10 place-items-center rounded-2xl bg-accent text-accent-foreground">
+            <History className="h-5 w-5" aria-hidden="true" />
+          </div>
+          <div>
+            <h2 className="font-display text-2xl font-semibold tracking-tight">
+              Your personal space
+            </h2>
+            <p className="text-sm text-muted-foreground">
+              Every question you've asked, saved just for you.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {loading ? (
+        <div className="flex items-center gap-3 rounded-2xl border border-border bg-card p-5 text-muted-foreground">
+          <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+          Loading your history…
+        </div>
+      ) : items.length === 0 ? (
+        <div className="rounded-3xl border border-dashed border-border bg-card p-10 text-center">
+          <p className="font-display text-lg font-semibold text-foreground">
+            No questions yet
+          </p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Ask something above and it will show up here.
+          </p>
+        </div>
+      ) : (
+        <ul className="grid gap-3 sm:grid-cols-2">
+          {items.map((item) => (
+            <li key={item.id} className="group relative">
+              <button
+                type="button"
+                onClick={() => onOpen(item)}
+                className="block w-full rounded-2xl border border-border bg-card p-5 text-left transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-[var(--shadow-soft)]"
+              >
+                <div className="mb-2 flex items-center gap-2 text-xs text-muted-foreground">
+                  <Clock className="h-3.5 w-3.5" aria-hidden="true" />
+                  {new Date(item.created_at).toLocaleDateString(undefined, {
+                    month: "short",
+                    day: "numeric",
+                    hour: "numeric",
+                    minute: "2-digit",
+                  })}
+                </div>
+                <p className="line-clamp-2 font-medium text-foreground">{item.question}</p>
+                <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">
+                  {item.answer.summary}
+                </p>
+              </button>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (window.confirm("Delete this saved question?")) onDelete(item.id);
+                }}
+                disabled={deletingId === item.id}
+                aria-label="Delete question"
+                className="absolute right-3 top-3 grid h-8 w-8 place-items-center rounded-full text-muted-foreground opacity-0 transition-all hover:bg-destructive/10 hover:text-destructive focus:opacity-100 group-hover:opacity-100 disabled:opacity-50"
+              >
+                {deletingId === item.id ? (
+                  <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+                ) : (
+                  <Trash2 className="h-4 w-4" aria-hidden="true" />
+                )}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
+  );
+}
