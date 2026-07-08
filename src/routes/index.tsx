@@ -3,6 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import {
   Sparkles,
   Send,
@@ -12,9 +13,14 @@ import {
   Heart,
   ArrowRight,
   Loader2,
+  Plus,
+  BookOpen,
+  Lightbulb,
+  MessageCircleQuestion,
 } from "lucide-react";
-import { askDoubt } from "@/lib/ask.functions";
+import { askDoubt, type DoubtAnswer } from "@/lib/ask.functions";
 import { Button } from "@/components/ui/button";
+import { MermaidDiagram } from "@/components/mermaid-diagram";
 import heroImg from "@/assets/hero.jpg";
 
 export const Route = createFileRoute("/")({
@@ -30,13 +36,15 @@ const EXAMPLES = [
 
 function Home() {
   const [question, setQuestion] = useState("");
-  const [answer, setAnswer] = useState<string | null>(null);
+  const [answer, setAnswer] = useState<DoubtAnswer | null>(null);
+  const [askedQuestion, setAskedQuestion] = useState<string | null>(null);
   const askFn = useServerFn(askDoubt);
   const answerRef = useRef<HTMLDivElement | null>(null);
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   const mutation = useMutation({
     mutationFn: (q: string) => askFn({ data: { question: q } }),
-    onSuccess: (res) => setAnswer(res.answer),
+    onSuccess: (res) => setAnswer(res),
   });
 
   useEffect(() => {
@@ -49,8 +57,21 @@ function Home() {
     const trimmed = q.trim();
     if (!trimmed || mutation.isPending) return;
     setAnswer(null);
+    setAskedQuestion(trimmed);
     setQuestion(trimmed);
     mutation.mutate(trimmed);
+  };
+
+  const startNewQuestion = () => {
+    mutation.reset();
+    setAnswer(null);
+    setAskedQuestion(null);
+    setQuestion("");
+    // Give React a tick to re-render, then focus and scroll.
+    requestAnimationFrame(() => {
+      textareaRef.current?.focus();
+      document.getElementById("ask")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
   };
 
   return (
