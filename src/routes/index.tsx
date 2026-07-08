@@ -392,13 +392,43 @@ function Home() {
             </div>
           )}
           {answer && !mutation.isPending && (
-            <AnswerCard
-              answer={answer}
-              question={askedQuestion ?? ""}
-              onAskNew={startNewQuestion}
-            />
+            <>
+              <AnswerCard
+                answer={answer}
+                question={askedQuestion ?? ""}
+                onAskNew={startNewQuestion}
+              />
+              {!isAuthenticated && !authLoading && (
+                <div className="mt-6 flex flex-col items-center gap-3 rounded-3xl border border-dashed border-primary/30 bg-secondary/40 p-6 text-center sm:flex-row sm:justify-between sm:text-left">
+                  <div>
+                    <p className="font-display text-base font-semibold text-foreground">
+                      Save this to your personal space
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      Sign in to keep every doubt and answer in your own history.
+                    </p>
+                  </div>
+                  <Button asChild className="rounded-full">
+                    <Link to="/auth">
+                      <LogIn className="h-4 w-4" aria-hidden="true" />
+                      Sign in to save
+                    </Link>
+                  </Button>
+                </div>
+              )}
+            </>
           )}
         </div>
+
+        {isAuthenticated && (
+          <HistorySection
+            items={history.data ?? []}
+            loading={history.isLoading}
+            onOpen={openHistoryItem}
+            onDelete={(id) => removeMutation.mutate(id)}
+            deletingId={removeMutation.isPending ? removeMutation.variables : null}
+          />
+        )}
       </section>
 
       <footer className="border-t border-border">
