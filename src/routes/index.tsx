@@ -22,9 +22,12 @@ import {
   LogOut,
   User as UserIcon,
   LogIn,
+  Volume2,
+  Pause,
 } from "lucide-react";
 import { askDoubt, type DoubtAnswer } from "@/lib/ask.functions";
 import { listDoubts, saveDoubt, deleteDoubt, type SavedDoubt } from "@/lib/doubts.functions";
+import { speakSummary } from "@/lib/tts.functions";
 import { Button } from "@/components/ui/button";
 import { MermaidDiagram } from "@/components/mermaid-diagram";
 import { useAuth } from "@/hooks/use-auth";
@@ -491,6 +494,51 @@ function AnswerCard({
   question: string;
   onAskNew: () => void;
 }) {
+  const speakFn = useServerFn(speakSummary);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  const [loadingAudio, setLoadingAudio] = useState(false);
+  const [playing, setPlaying] = useState(false);
+
+  useEffect(() => {
+    setAudioUrl(null);
+    setPlaying(false);
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
+    }
+  }, [answer]);
+
+  const handleListen = async () => {
+    if (playing && audioRef.current) {
+      audioRef.current.pause();
+      setPlaying(false);
+      return;
+    }
+    if (audioUrl && audioRef.current) {
+      await audioRef.current.play();
+      setPlaying(true);
+      return;
+    }
+    try {
+      setLoadingAudio(true);
+      const text = `${answer.summary} Here are the key things to remember. ${answer.keyTakeaways.join(". ")}.`;
+      const { audio, mime } = await speakFn({ data: { text } });
+      const url = `data:${mime};base64,${audio}`;
+      setAudioUrl(url);
+      const el = new Audio(url);
+      audioRef.current = el;
+      el.onended = () => setPlaying(false);
+      el.onpause = () => setPlaying(false);
+      await el.play();
+      setPlaying(true);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Couldn't play the summary.");
+    } finally {
+      setLoadingAudio(false);
+    }
+  };
+
   return (
     <article className="animate-in fade-in slide-in-from-bottom-2 space-y-6 duration-500">
       {question && (
@@ -515,6 +563,33 @@ function AnswerCard({
             <p className="mt-1 font-display text-lg font-semibold leading-snug text-foreground sm:text-xl">
               {answer.summary}
             </p>
+            <div className="mt-4">
+              <Button
+                type="button"
+                size="sm"
+                variant="secondary"
+                onClick={handleListen}
+                disabled={loadingAudio}
+                className="rounded-full"
+              >
+                {loadingAudio ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+                    Preparing voice…
+                  </>
+                ) : playing ? (
+                  <>
+                    <Pause className="h-4 w-4" aria-hidden="true" />
+                    Pause summary
+                  </>
+                ) : (
+                  <>
+                    <Volume2 className="h-4 w-4" aria-hidden="true" />
+                    Listen to summary
+                  </>
+                )}
+              </Button>
+            </div>
           </div>
         </div>
       </div>
