@@ -425,7 +425,7 @@ function Home() {
             items={history.data ?? []}
             loading={history.isLoading}
             onOpen={openHistoryItem}
-            onDelete={(id) => removeMutation.mutate(id)}
+            onDelete={(id: string) => removeMutation.mutate(id)}
             deletingId={removeMutation.isPending ? removeMutation.variables : null}
           />
         )}
