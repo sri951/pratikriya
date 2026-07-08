@@ -1,5 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
-import { generateObject } from "ai";
+import { generateObject, NoObjectGeneratedError } from "ai";
 import { z } from "zod";
 import { createLovableAiGatewayProvider } from "./ai-gateway.server";
 
@@ -22,8 +22,6 @@ const ResponseSchema = z.object({
     .describe("Include a diagram ONLY when it genuinely aids understanding. Otherwise return null."),
   keyTakeaways: z
     .array(z.string())
-    .min(2)
-    .max(5)
     .describe("Bullet-point takeaways the student should remember."),
   reflection: z
     .string()
@@ -58,12 +56,67 @@ Structure rules (strict):
       ? `Subject: ${data.subject}\n\nStudent's question:\n${data.question}`
       : `Student's question:\n${data.question}`;
 
-    const { object } = await generateObject({
-      model: gateway("google/gemini-3-flash-preview"),
-      system,
-      prompt,
-      schema: ResponseSchema,
-    });
-
-    return object;
+    try {
+      const { object } = await generateObject({
+        model: gateway("google/gemini-3-flash-preview"),
+        system,
+        prompt,
+        schema: ResponseSchema,
+      });
+      return normalizeAnswer(object);
+    } catch (error) {
+      if (NoObjectGeneratedError.isInstance(error)) {
+        const fallback = tryParseFallback(error.text);
+        if (fallback) return normalizeAnswer(fallback);
+        return {
+          summary: "Here's what I could put together for your question.",
+          explanation: error.text?.trim() || "I couldn't generate a structured answer this time. Please try rephrasing your question.",
+          diagram: null,
+          keyTakeaways: ["Try rephrasing the question for a clearer answer."],
+          reflection: "Would you like to ask this in a different way?",
+        } satisfies DoubtAnswer;
+      }
+      throw error;
+    }
   });
+
+function tryParseFallback(text: string | undefined): unknown {
+  if (!text) return null;
+  const trimmed = text.trim().replace(/^```json\s*/i, "").replace(/^```\s*/i, "").replace(/```$/, "");
+  try {
+    return JSON.parse(trimmed);
+  } catch {
+    const match = trimmed.match(/\{[\s\S]*\}/);
+    if (!match) return null;
+    try {
+      return JSON.parse(match[0]);
+    } catch {
+      return null;
+    }
+  }
+}
+
+function normalizeAnswer(raw: unknown): DoubtAnswer {
+  const obj = (raw ?? {}) as Partial<DoubtAnswer> & Record<string, unknown>;
+  const takeaways = Array.isArray(obj.keyTakeaways)
+    ? obj.keyTakeaways.filter((t): t is string => typeof t === "string" && t.trim().length > 0).slice(0, 5)
+    : [];
+  return {
+    summary: typeof obj.summary === "string" ? obj.summary : "",
+    explanation: typeof obj.explanation === "string" ? obj.explanation : "",
+    diagram:
+      obj.diagram &&
+      typeof obj.diagram === "object" &&
+      typeof (obj.diagram as { mermaid?: unknown }).mermaid === "string"
+        ? {
+            mermaid: (obj.diagram as { mermaid: string }).mermaid,
+            caption:
+              typeof (obj.diagram as { caption?: unknown }).caption === "string"
+                ? (obj.diagram as { caption: string }).caption
+                : "",
+          }
+        : null,
+    keyTakeaways: takeaways.length > 0 ? takeaways : ["Key idea captured above."],
+    reflection: typeof obj.reflection === "string" ? obj.reflection : "Does this make sense so far?",
+  };
+}
