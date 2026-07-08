@@ -90,10 +90,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         property: "og:description",
         content:
-          "Ask any academic question and get calm, personalized AI feedback in seconds.",
+          "Ask any academic question and get calm, personalized AI feedback in seconds. Built for students who can't wait days for answers.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Clarity — Instant AI feedback for students" },
+      { name: "twitter:description", content: "Ask any academic question and get calm, personalized AI feedback in seconds. Built for students who can't wait days for answers." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/a2ca6467-60e6-4834-a32d-1b61e150be82/id-preview-b696db7d--097b9ff9-6fcd-4d04-a83c-e4a1dd8c07a6.lovable.app-1783515922157.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/a2ca6467-60e6-4834-a32d-1b61e150be82/id-preview-b696db7d--097b9ff9-6fcd-4d04-a83c-e4a1dd8c07a6.lovable.app-1783515922157.png" },
     ],
     links: [
       {
