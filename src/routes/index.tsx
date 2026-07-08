@@ -223,6 +223,7 @@ function Home() {
           </label>
           <textarea
             id="question"
+            ref={textareaRef}
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
             onKeyDown={(e) => {
@@ -288,15 +289,11 @@ function Home() {
             </div>
           )}
           {answer && !mutation.isPending && (
-            <article className="animate-in fade-in slide-in-from-bottom-2 rounded-3xl border border-border bg-card p-6 shadow-[var(--shadow-soft)] duration-500 sm:p-8">
-              <div className="mb-4 flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-primary">
-                <Sparkles className="h-4 w-4" aria-hidden="true" />
-                Clarity's feedback
-              </div>
-              <div className="prose prose-sm max-w-none text-foreground prose-headings:font-display prose-headings:font-semibold prose-p:leading-relaxed prose-strong:text-foreground prose-code:rounded prose-code:bg-muted prose-code:px-1 prose-code:py-0.5 prose-code:text-foreground sm:prose-base">
-                <ReactMarkdown>{answer}</ReactMarkdown>
-              </div>
-            </article>
+            <AnswerCard
+              answer={answer}
+              question={askedQuestion ?? ""}
+              onAskNew={startNewQuestion}
+            />
           )}
         </div>
       </section>
