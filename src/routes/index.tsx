@@ -162,10 +162,47 @@ function Home() {
           <a href="#problem" className="transition-colors hover:text-foreground">The problem</a>
           <a href="#how" className="transition-colors hover:text-foreground">How it works</a>
           <a href="#ask" className="transition-colors hover:text-foreground">Try it</a>
+          {isAuthenticated && (
+            <a href="#history" className="transition-colors hover:text-foreground">History</a>
+          )}
         </nav>
-        <Button asChild size="sm" className="rounded-full">
-          <a href="#ask">Ask a question</a>
-        </Button>
+        <div className="flex items-center gap-2">
+          {!authLoading && !isAuthenticated && (
+            <Button
+              size="sm"
+              variant="ghost"
+              className="rounded-full"
+              onClick={() => navigate({ to: "/auth" })}
+            >
+              <LogIn className="h-4 w-4" aria-hidden="true" />
+              Sign in
+            </Button>
+          )}
+          {isAuthenticated && user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button size="sm" variant="outline" className="rounded-full">
+                  <UserIcon className="h-4 w-4" aria-hidden="true" />
+                  <span className="hidden max-w-[140px] truncate sm:inline">
+                    {user.email ?? "Account"}
+                  </span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                <DropdownMenuLabel className="truncate">{user.email}</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={signOut}>
+                  <LogOut className="h-4 w-4" aria-hidden="true" />
+                  Sign out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Button asChild size="sm" className="rounded-full">
+              <a href="#ask">Ask a question</a>
+            </Button>
+          )}
+        </div>
       </header>
 
       {/* Hero */}
