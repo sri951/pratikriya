@@ -1,5 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useMutation } from "@tanstack/react-query";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
@@ -17,10 +17,27 @@ import {
   BookOpen,
   Lightbulb,
   MessageCircleQuestion,
+  History,
+  Trash2,
+  LogOut,
+  User as UserIcon,
+  LogIn,
 } from "lucide-react";
 import { askDoubt, type DoubtAnswer } from "@/lib/ask.functions";
+import { listDoubts, saveDoubt, deleteDoubt, type SavedDoubt } from "@/lib/doubts.functions";
 import { Button } from "@/components/ui/button";
 import { MermaidDiagram } from "@/components/mermaid-diagram";
+import { useAuth } from "@/hooks/use-auth";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import heroImg from "@/assets/hero.jpg";
 
 export const Route = createFileRoute("/")({
@@ -39,13 +56,62 @@ function Home() {
   const [answer, setAnswer] = useState<DoubtAnswer | null>(null);
   const [askedQuestion, setAskedQuestion] = useState<string | null>(null);
   const askFn = useServerFn(askDoubt);
+  const saveFn = useServerFn(saveDoubt);
+  const listFn = useServerFn(listDoubts);
+  const deleteFn = useServerFn(deleteDoubt);
+  const { isAuthenticated, user, loading: authLoading } = useAuth();
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const answerRef = useRef<HTMLDivElement | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   const mutation = useMutation({
     mutationFn: (q: string) => askFn({ data: { question: q } }),
-    onSuccess: (res) => setAnswer(res),
+    onSuccess: async (res, q) => {
+      setAnswer(res);
+      if (isAuthenticated) {
+        try {
+          await saveFn({ data: { question: q, answer: res } });
+          queryClient.invalidateQueries({ queryKey: ["doubts"] });
+        } catch (err) {
+          console.error("save doubt failed", err);
+        }
+      }
+    },
+    onError: (err) => {
+      toast.error(err instanceof Error ? err.message : "Clarity couldn't answer that one.");
+    },
   });
+
+  const history = useQuery({
+    queryKey: ["doubts", user?.id],
+    queryFn: () => listFn(),
+    enabled: isAuthenticated,
+    staleTime: 30_000,
+  });
+
+  const removeMutation = useMutation({
+    mutationFn: (id: string) => deleteFn({ data: { id } }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["doubts"] }),
+  });
+
+  const signOut = async () => {
+    await queryClient.cancelQueries();
+    queryClient.clear();
+    await supabase.auth.signOut();
+    setAnswer(null);
+    setAskedQuestion(null);
+    toast.success("Signed out");
+  };
+
+  const openHistoryItem = (item: SavedDoubt) => {
+    setAnswer(item.answer);
+    setAskedQuestion(item.question);
+    setQuestion(item.question);
+    requestAnimationFrame(() => {
+      answerRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  };
 
   useEffect(() => {
     if (answer && answerRef.current) {
