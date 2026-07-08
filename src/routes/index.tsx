@@ -3,6 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import {
   Sparkles,
   Send,
@@ -12,9 +13,14 @@ import {
   Heart,
   ArrowRight,
   Loader2,
+  Plus,
+  BookOpen,
+  Lightbulb,
+  MessageCircleQuestion,
 } from "lucide-react";
-import { askDoubt } from "@/lib/ask.functions";
+import { askDoubt, type DoubtAnswer } from "@/lib/ask.functions";
 import { Button } from "@/components/ui/button";
+import { MermaidDiagram } from "@/components/mermaid-diagram";
 import heroImg from "@/assets/hero.jpg";
 
 export const Route = createFileRoute("/")({
@@ -30,13 +36,15 @@ const EXAMPLES = [
 
 function Home() {
   const [question, setQuestion] = useState("");
-  const [answer, setAnswer] = useState<string | null>(null);
+  const [answer, setAnswer] = useState<DoubtAnswer | null>(null);
+  const [askedQuestion, setAskedQuestion] = useState<string | null>(null);
   const askFn = useServerFn(askDoubt);
   const answerRef = useRef<HTMLDivElement | null>(null);
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   const mutation = useMutation({
     mutationFn: (q: string) => askFn({ data: { question: q } }),
-    onSuccess: (res) => setAnswer(res.answer),
+    onSuccess: (res) => setAnswer(res),
   });
 
   useEffect(() => {
@@ -49,8 +57,21 @@ function Home() {
     const trimmed = q.trim();
     if (!trimmed || mutation.isPending) return;
     setAnswer(null);
+    setAskedQuestion(trimmed);
     setQuestion(trimmed);
     mutation.mutate(trimmed);
+  };
+
+  const startNewQuestion = () => {
+    mutation.reset();
+    setAnswer(null);
+    setAskedQuestion(null);
+    setQuestion("");
+    // Give React a tick to re-render, then focus and scroll.
+    requestAnimationFrame(() => {
+      textareaRef.current?.focus();
+      document.getElementById("ask")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
   };
 
   return (
@@ -202,6 +223,7 @@ function Home() {
           </label>
           <textarea
             id="question"
+            ref={textareaRef}
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
             onKeyDown={(e) => {
@@ -267,15 +289,11 @@ function Home() {
             </div>
           )}
           {answer && !mutation.isPending && (
-            <article className="animate-in fade-in slide-in-from-bottom-2 rounded-3xl border border-border bg-card p-6 shadow-[var(--shadow-soft)] duration-500 sm:p-8">
-              <div className="mb-4 flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-primary">
-                <Sparkles className="h-4 w-4" aria-hidden="true" />
-                Clarity's feedback
-              </div>
-              <div className="prose prose-sm max-w-none text-foreground prose-headings:font-display prose-headings:font-semibold prose-p:leading-relaxed prose-strong:text-foreground prose-code:rounded prose-code:bg-muted prose-code:px-1 prose-code:py-0.5 prose-code:text-foreground sm:prose-base">
-                <ReactMarkdown>{answer}</ReactMarkdown>
-              </div>
-            </article>
+            <AnswerCard
+              answer={answer}
+              question={askedQuestion ?? ""}
+              onAskNew={startNewQuestion}
+            />
           )}
         </div>
       </section>
@@ -328,5 +346,117 @@ function ProblemStat({
       <div className="mt-2 font-display text-3xl font-semibold text-foreground">{value}</div>
       <div className="mt-1 text-sm text-muted-foreground">{label}</div>
     </div>
+  );
+}
+
+function AnswerCard({
+  answer,
+  question,
+  onAskNew,
+}: {
+  answer: DoubtAnswer;
+  question: string;
+  onAskNew: () => void;
+}) {
+  return (
+    <article className="animate-in fade-in slide-in-from-bottom-2 space-y-6 duration-500">
+      {question && (
+        <div className="rounded-2xl border border-border bg-secondary/40 px-5 py-4">
+          <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground">
+            You asked
+          </p>
+          <p className="mt-1 text-sm text-foreground">{question}</p>
+        </div>
+      )}
+
+      {/* AI assistant summary */}
+      <div className="rounded-3xl border border-primary/20 bg-[image:var(--gradient-hero)] p-6 shadow-[var(--shadow-soft)] sm:p-7">
+        <div className="flex items-start gap-4">
+          <div className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-[image:var(--gradient-primary)] text-primary-foreground shadow-[var(--shadow-glow)]">
+            <Sparkles className="h-5 w-5" aria-hidden="true" />
+          </div>
+          <div className="min-w-0">
+            <p className="text-xs font-medium uppercase tracking-widest text-primary">
+              Clarity · your AI tutor
+            </p>
+            <p className="mt-1 font-display text-lg font-semibold leading-snug text-foreground sm:text-xl">
+              {answer.summary}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Full explanation */}
+      <div className="rounded-3xl border border-border bg-card p-6 shadow-[var(--shadow-soft)] sm:p-8">
+        <div className="mb-4 flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-primary">
+          <BookOpen className="h-4 w-4" aria-hidden="true" />
+          Step-by-step
+        </div>
+        <div className="prose prose-sm max-w-none text-foreground prose-headings:font-display prose-headings:font-semibold prose-p:leading-relaxed prose-strong:text-foreground prose-code:rounded prose-code:bg-muted prose-code:px-1 prose-code:py-0.5 prose-code:text-foreground sm:prose-base">
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>{answer.explanation}</ReactMarkdown>
+        </div>
+      </div>
+
+      {/* Diagram */}
+      {answer.diagram && (
+        <div className="rounded-3xl border border-border bg-card p-6 shadow-[var(--shadow-soft)] sm:p-8">
+          <div className="mb-4 flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-primary">
+            <Sparkles className="h-4 w-4" aria-hidden="true" />
+            Visual explainer
+          </div>
+          <MermaidDiagram code={answer.diagram.mermaid} />
+          {answer.diagram.caption && (
+            <p className="mt-3 text-center text-sm text-muted-foreground">
+              {answer.diagram.caption}
+            </p>
+          )}
+        </div>
+      )}
+
+      {/* Key takeaways */}
+      <div className="rounded-3xl border border-border bg-card p-6 shadow-[var(--shadow-soft)] sm:p-8">
+        <div className="mb-4 flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-primary">
+          <Lightbulb className="h-4 w-4" aria-hidden="true" />
+          Remember this
+        </div>
+        <ul className="space-y-3">
+          {answer.keyTakeaways.map((t, i) => (
+            <li key={i} className="flex items-start gap-3 text-sm leading-relaxed text-foreground sm:text-base">
+              <span
+                aria-hidden="true"
+                className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary"
+              />
+              <span>{t}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Reflection */}
+      <div className="rounded-3xl border border-accent/60 bg-accent/40 p-6">
+        <div className="flex items-start gap-3">
+          <MessageCircleQuestion className="mt-0.5 h-5 w-5 shrink-0 text-accent-foreground" aria-hidden="true" />
+          <p className="text-sm leading-relaxed text-accent-foreground sm:text-base">
+            <span className="font-semibold">Check yourself: </span>
+            {answer.reflection}
+          </p>
+        </div>
+      </div>
+
+      {/* CTA: new question */}
+      <div className="flex flex-col items-center gap-3 pt-2 sm:flex-row sm:justify-between">
+        <p className="text-sm text-muted-foreground">
+          Got another doubt? Start a fresh session — your last question won't get in the way.
+        </p>
+        <Button
+          onClick={onAskNew}
+          size="lg"
+          className="w-full rounded-full shadow-[var(--shadow-glow)] sm:w-auto"
+        >
+          <Plus className="h-4 w-4" aria-hidden="true" />
+          Ask a new question
+        </Button>
+      </div>
+    </article>
   );
 }
