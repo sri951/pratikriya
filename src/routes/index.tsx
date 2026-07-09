@@ -844,13 +844,23 @@ function HistorySection({
   onOpen,
   onDelete,
   deletingId,
+  activeTag,
+  onFilterChange,
 }: {
   items: SavedDoubt[];
   loading: boolean;
   onOpen: (item: SavedDoubt) => void;
   onDelete: (id: string) => void;
   deletingId: string | null;
+  activeTag: string | null;
+  onFilterChange: (tag: string | null) => void;
 }) {
+  const allTags = Array.from(
+    new Set(items.flatMap((i) => i.tags ?? [])),
+  ).sort();
+  const visible = activeTag
+    ? items.filter((i) => (i.tags ?? []).includes(activeTag))
+    : items;
   return (
     <section id="history" className="mt-20 scroll-mt-16 border-t border-border pt-12">
       <div className="mb-6 flex items-center justify-between gap-4">
@@ -869,23 +879,59 @@ function HistorySection({
         </div>
       </div>
 
+      {allTags.length > 0 && (
+        <div className="mb-5 flex flex-wrap items-center gap-2">
+          <span className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-widest text-muted-foreground">
+            <Filter className="h-3.5 w-3.5" aria-hidden="true" />
+            Filter
+          </span>
+          <button
+            type="button"
+            onClick={() => onFilterChange(null)}
+            className={`rounded-full border px-3 py-1 text-xs transition-colors ${
+              activeTag === null
+                ? "border-primary bg-primary text-primary-foreground"
+                : "border-border bg-card text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            All
+          </button>
+          {allTags.map((t) => (
+            <button
+              key={t}
+              type="button"
+              onClick={() => onFilterChange(activeTag === t ? null : t)}
+              className={`rounded-full border px-3 py-1 text-xs transition-colors ${
+                activeTag === t
+                  ? "border-primary bg-primary text-primary-foreground"
+                  : "border-border bg-card text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              #{t}
+            </button>
+          ))}
+        </div>
+      )}
+
       {loading ? (
         <div className="flex items-center gap-3 rounded-2xl border border-border bg-card p-5 text-muted-foreground">
           <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
           Loading your history…
         </div>
-      ) : items.length === 0 ? (
+      ) : visible.length === 0 ? (
         <div className="rounded-3xl border border-dashed border-border bg-card p-10 text-center">
           <p className="font-display text-lg font-semibold text-foreground">
-            No questions yet
+            {activeTag ? `No questions tagged #${activeTag}` : "No questions yet"}
           </p>
           <p className="mt-1 text-sm text-muted-foreground">
-            Ask something above and it will show up here.
+            {activeTag
+              ? "Try a different tag or clear the filter."
+              : "Ask something above and it will show up here."}
           </p>
         </div>
       ) : (
         <ul className="grid gap-3 sm:grid-cols-2">
-          {items.map((item) => (
+          {visible.map((item) => (
             <li key={item.id} className="group relative">
               <button
                 type="button"
@@ -905,6 +951,18 @@ function HistorySection({
                 <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">
                   {item.answer.summary}
                 </p>
+                {item.tags && item.tags.length > 0 && (
+                  <div className="mt-3 flex flex-wrap gap-1.5">
+                    {item.tags.map((t) => (
+                      <span
+                        key={t}
+                        className="rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-medium text-primary"
+                      >
+                        #{t}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </button>
               <button
                 type="button"
