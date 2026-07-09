@@ -24,6 +24,8 @@ import {
   LogIn,
   Volume2,
   Pause,
+  ImagePlus,
+  X,
 } from "lucide-react";
 import { askDoubt, type DoubtAnswer } from "@/lib/ask.functions";
 import { listDoubts, saveDoubt, deleteDoubt, type SavedDoubt } from "@/lib/doubts.functions";
@@ -56,6 +58,8 @@ const EXAMPLES = [
 
 function Home() {
   const [question, setQuestion] = useState("");
+  const [imageDataUrl, setImageDataUrl] = useState<string | null>(null);
+  const [imageName, setImageName] = useState<string | null>(null);
   const [answer, setAnswer] = useState<DoubtAnswer | null>(null);
   const [askedQuestion, setAskedQuestion] = useState<string | null>(null);
   const askFn = useServerFn(askDoubt);
@@ -69,12 +73,18 @@ function Home() {
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   const mutation = useMutation({
-    mutationFn: (q: string) => askFn({ data: { question: q } }),
-    onSuccess: async (res, q) => {
+    mutationFn: (vars: { question: string; imageDataUrl?: string | null }) =>
+      askFn({
+        data: {
+          question: vars.question,
+          ...(vars.imageDataUrl ? { imageDataUrl: vars.imageDataUrl } : {}),
+        },
+      }),
+    onSuccess: async (res, vars) => {
       setAnswer(res);
       if (isAuthenticated) {
         try {
-          await saveFn({ data: { question: q, answer: res } });
+          await saveFn({ data: { question: vars.question, answer: res } });
           queryClient.invalidateQueries({ queryKey: ["doubts"] });
         } catch (err) {
           console.error("save doubt failed", err);
@@ -123,12 +133,12 @@ function Home() {
   }, [answer]);
 
   const submit = (q: string) => {
-    const trimmed = q.trim();
+    const trimmed = q.trim() || (imageDataUrl ? "Please read and solve the problem in the attached image." : "");
     if (!trimmed || mutation.isPending) return;
     setAnswer(null);
     setAskedQuestion(trimmed);
     setQuestion(trimmed);
-    mutation.mutate(trimmed);
+    mutation.mutate({ question: trimmed, imageDataUrl });
   };
 
   const startNewQuestion = () => {
@@ -136,11 +146,33 @@ function Home() {
     setAnswer(null);
     setAskedQuestion(null);
     setQuestion("");
+    setImageDataUrl(null);
+    setImageName(null);
     // Give React a tick to re-render, then focus and scroll.
     requestAnimationFrame(() => {
       textareaRef.current?.focus();
       document.getElementById("ask")?.scrollIntoView({ behavior: "smooth", block: "start" });
     });
+  };
+
+  const handleImageFile = async (file: File | null | undefined) => {
+    if (!file) return;
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please choose an image file.");
+      return;
+    }
+    if (file.size > 6 * 1024 * 1024) {
+      toast.error("Image too large. Please use one under 6 MB.");
+      return;
+    }
+    const dataUrl: string = await new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = () => reject(reader.error);
+      reader.readAsDataURL(file);
+    });
+    setImageDataUrl(dataUrl);
+    setImageName(file.name);
   };
 
   return (
@@ -342,15 +374,62 @@ function Home() {
             rows={4}
             className="w-full resize-none rounded-2xl bg-transparent px-4 py-3 text-base leading-relaxed text-foreground placeholder:text-muted-foreground focus:outline-none"
           />
+          {imageDataUrl && (
+            <div className="mx-2 mb-2 flex items-start gap-3 rounded-2xl border border-border bg-secondary/40 p-2">
+              <img
+                src={imageDataUrl}
+                alt={imageName ?? "Attached problem"}
+                className="h-20 w-20 rounded-xl object-cover"
+              />
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-medium text-foreground">
+                  {imageName ?? "Attached image"}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Clarity will read the text, equations, or diagram in this image.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setImageDataUrl(null);
+                  setImageName(null);
+                }}
+                className="rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-background hover:text-foreground"
+                aria-label="Remove image"
+              >
+                <X className="h-4 w-4" aria-hidden="true" />
+              </button>
+            </div>
+          )}
           <div className="flex items-center justify-between gap-3 border-t border-border/60 px-2 pt-3">
-            <span className="text-xs text-muted-foreground">
-              Press <kbd className="rounded border border-border bg-muted px-1.5 py-0.5 font-sans text-[10px]">⌘</kbd>
-              <span className="mx-1">+</span>
-              <kbd className="rounded border border-border bg-muted px-1.5 py-0.5 font-sans text-[10px]">Enter</kbd> to send
-            </span>
+            <div className="flex items-center gap-2">
+              <label
+                htmlFor="image-upload"
+                className="inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
+              >
+                <ImagePlus className="h-3.5 w-3.5" aria-hidden="true" />
+                {imageDataUrl ? "Change image" : "Attach image"}
+              </label>
+              <input
+                id="image-upload"
+                type="file"
+                accept="image/*"
+                className="sr-only"
+                onChange={(e) => {
+                  handleImageFile(e.target.files?.[0]);
+                  e.currentTarget.value = "";
+                }}
+              />
+              <span className="hidden text-xs text-muted-foreground sm:inline">
+                <kbd className="rounded border border-border bg-muted px-1.5 py-0.5 font-sans text-[10px]">⌘</kbd>
+                <span className="mx-1">+</span>
+                <kbd className="rounded border border-border bg-muted px-1.5 py-0.5 font-sans text-[10px]">Enter</kbd> to send
+              </span>
+            </div>
             <Button
               type="submit"
-              disabled={!question.trim() || mutation.isPending}
+              disabled={(!question.trim() && !imageDataUrl) || mutation.isPending}
               className="rounded-full"
             >
               {mutation.isPending ? (
