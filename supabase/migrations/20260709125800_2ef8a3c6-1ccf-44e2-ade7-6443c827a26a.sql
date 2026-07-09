@@ -1,0 +1,1 @@
+ALTER TABLE public.doubts ADD COLUMN IF NOT EXISTS tags text[] NOT NULL DEFAULT '{}'; CREATE INDEX IF NOT EXISTS doubts_tags_idx ON public.doubts USING GIN (tags);

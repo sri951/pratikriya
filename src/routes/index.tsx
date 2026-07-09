@@ -26,6 +26,8 @@ import {
   Pause,
   ImagePlus,
   X,
+  Tag,
+  Filter,
 } from "lucide-react";
 import { askDoubt, type DoubtAnswer } from "@/lib/ask.functions";
 import { listDoubts, saveDoubt, deleteDoubt, type SavedDoubt } from "@/lib/doubts.functions";
@@ -56,10 +58,24 @@ const EXAMPLES = [
   "What caused World War I in simple terms?",
 ];
 
+const SUGGESTED_TAGS = [
+  "algebra",
+  "calculus",
+  "geometry",
+  "physics",
+  "chemistry",
+  "biology",
+  "history",
+  "english",
+];
+
 function Home() {
   const [question, setQuestion] = useState("");
   const [imageDataUrl, setImageDataUrl] = useState<string | null>(null);
   const [imageName, setImageName] = useState<string | null>(null);
+  const [tags, setTags] = useState<string[]>([]);
+  const [tagDraft, setTagDraft] = useState("");
+  const [historyFilter, setHistoryFilter] = useState<string | null>(null);
   const [answer, setAnswer] = useState<DoubtAnswer | null>(null);
   const [askedQuestion, setAskedQuestion] = useState<string | null>(null);
   const askFn = useServerFn(askDoubt);
@@ -73,7 +89,7 @@ function Home() {
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   const mutation = useMutation({
-    mutationFn: (vars: { question: string; imageDataUrl?: string | null }) =>
+    mutationFn: (vars: { question: string; imageDataUrl?: string | null; tags: string[] }) =>
       askFn({
         data: {
           question: vars.question,
@@ -84,7 +100,7 @@ function Home() {
       setAnswer(res);
       if (isAuthenticated) {
         try {
-          await saveFn({ data: { question: vars.question, answer: res } });
+          await saveFn({ data: { question: vars.question, answer: res, tags: vars.tags } });
           queryClient.invalidateQueries({ queryKey: ["doubts"] });
         } catch (err) {
           console.error("save doubt failed", err);
@@ -121,6 +137,7 @@ function Home() {
     setAnswer(item.answer);
     setAskedQuestion(item.question);
     setQuestion(item.question);
+    setTags(item.tags ?? []);
     requestAnimationFrame(() => {
       answerRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     });
@@ -138,7 +155,14 @@ function Home() {
     setAnswer(null);
     setAskedQuestion(trimmed);
     setQuestion(trimmed);
-    mutation.mutate({ question: trimmed, imageDataUrl });
+    // Fold any un-committed draft into the saved tags.
+    const draftTag = tagDraft.trim().toLowerCase();
+    const finalTags = Array.from(
+      new Set([...tags, ...(draftTag ? [draftTag] : [])]),
+    ).slice(0, 10);
+    setTags(finalTags);
+    setTagDraft("");
+    mutation.mutate({ question: trimmed, imageDataUrl, tags: finalTags });
   };
 
   const startNewQuestion = () => {
@@ -148,12 +172,23 @@ function Home() {
     setQuestion("");
     setImageDataUrl(null);
     setImageName(null);
+    setTags([]);
+    setTagDraft("");
     // Give React a tick to re-render, then focus and scroll.
     requestAnimationFrame(() => {
       textareaRef.current?.focus();
       document.getElementById("ask")?.scrollIntoView({ behavior: "smooth", block: "start" });
     });
   };
+
+  const addTag = (raw: string) => {
+    const t = raw.trim().toLowerCase();
+    if (!t) return;
+    setTags((prev) => (prev.includes(t) || prev.length >= 10 ? prev : [...prev, t]));
+    setTagDraft("");
+  };
+
+  const removeTag = (t: string) => setTags((prev) => prev.filter((x) => x !== t));
 
   const handleImageFile = async (file: File | null | undefined) => {
     if (!file) return;
@@ -402,6 +437,59 @@ function Home() {
               </button>
             </div>
           )}
+          <div className="mx-2 mb-2 rounded-2xl border border-dashed border-border/70 bg-secondary/30 p-3">
+            <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-muted-foreground">
+              <Tag className="h-3.5 w-3.5" aria-hidden="true" />
+              Tag this question
+            </div>
+            <div className="mt-2 flex flex-wrap items-center gap-2">
+              {tags.map((t) => (
+                <span
+                  key={t}
+                  className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary"
+                >
+                  #{t}
+                  <button
+                    type="button"
+                    onClick={() => removeTag(t)}
+                    className="rounded-full p-0.5 hover:bg-primary/20"
+                    aria-label={`Remove tag ${t}`}
+                  >
+                    <X className="h-3 w-3" aria-hidden="true" />
+                  </button>
+                </span>
+              ))}
+              <input
+                type="text"
+                value={tagDraft}
+                onChange={(e) => setTagDraft(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === ",") {
+                    e.preventDefault();
+                    addTag(tagDraft);
+                  } else if (e.key === "Backspace" && !tagDraft && tags.length) {
+                    removeTag(tags[tags.length - 1]);
+                  }
+                }}
+                placeholder={tags.length >= 10 ? "Tag limit reached" : "Add a tag…"}
+                disabled={tags.length >= 10}
+                className="min-w-[8ch] flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none"
+                aria-label="Add tag"
+              />
+            </div>
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {SUGGESTED_TAGS.filter((t) => !tags.includes(t)).map((t) => (
+                <button
+                  key={t}
+                  type="button"
+                  onClick={() => addTag(t)}
+                  className="rounded-full border border-border bg-card px-2 py-0.5 text-[11px] text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
+                >
+                  + {t}
+                </button>
+              ))}
+            </div>
+          </div>
           <div className="flex items-center justify-between gap-3 border-t border-border/60 px-2 pt-3">
             <div className="flex items-center gap-2">
               <label
@@ -509,6 +597,8 @@ function Home() {
             onOpen={openHistoryItem}
             onDelete={(id: string) => removeMutation.mutate(id)}
             deletingId={removeMutation.isPending ? (removeMutation.variables ?? null) : null}
+            activeTag={historyFilter}
+            onFilterChange={setHistoryFilter}
           />
         )}
       </section>
@@ -754,13 +844,23 @@ function HistorySection({
   onOpen,
   onDelete,
   deletingId,
+  activeTag,
+  onFilterChange,
 }: {
   items: SavedDoubt[];
   loading: boolean;
   onOpen: (item: SavedDoubt) => void;
   onDelete: (id: string) => void;
   deletingId: string | null;
+  activeTag: string | null;
+  onFilterChange: (tag: string | null) => void;
 }) {
+  const allTags = Array.from(
+    new Set(items.flatMap((i) => i.tags ?? [])),
+  ).sort();
+  const visible = activeTag
+    ? items.filter((i) => (i.tags ?? []).includes(activeTag))
+    : items;
   return (
     <section id="history" className="mt-20 scroll-mt-16 border-t border-border pt-12">
       <div className="mb-6 flex items-center justify-between gap-4">
@@ -779,23 +879,59 @@ function HistorySection({
         </div>
       </div>
 
+      {allTags.length > 0 && (
+        <div className="mb-5 flex flex-wrap items-center gap-2">
+          <span className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-widest text-muted-foreground">
+            <Filter className="h-3.5 w-3.5" aria-hidden="true" />
+            Filter
+          </span>
+          <button
+            type="button"
+            onClick={() => onFilterChange(null)}
+            className={`rounded-full border px-3 py-1 text-xs transition-colors ${
+              activeTag === null
+                ? "border-primary bg-primary text-primary-foreground"
+                : "border-border bg-card text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            All
+          </button>
+          {allTags.map((t) => (
+            <button
+              key={t}
+              type="button"
+              onClick={() => onFilterChange(activeTag === t ? null : t)}
+              className={`rounded-full border px-3 py-1 text-xs transition-colors ${
+                activeTag === t
+                  ? "border-primary bg-primary text-primary-foreground"
+                  : "border-border bg-card text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              #{t}
+            </button>
+          ))}
+        </div>
+      )}
+
       {loading ? (
         <div className="flex items-center gap-3 rounded-2xl border border-border bg-card p-5 text-muted-foreground">
           <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
           Loading your history…
         </div>
-      ) : items.length === 0 ? (
+      ) : visible.length === 0 ? (
         <div className="rounded-3xl border border-dashed border-border bg-card p-10 text-center">
           <p className="font-display text-lg font-semibold text-foreground">
-            No questions yet
+            {activeTag ? `No questions tagged #${activeTag}` : "No questions yet"}
           </p>
           <p className="mt-1 text-sm text-muted-foreground">
-            Ask something above and it will show up here.
+            {activeTag
+              ? "Try a different tag or clear the filter."
+              : "Ask something above and it will show up here."}
           </p>
         </div>
       ) : (
         <ul className="grid gap-3 sm:grid-cols-2">
-          {items.map((item) => (
+          {visible.map((item) => (
             <li key={item.id} className="group relative">
               <button
                 type="button"
@@ -815,6 +951,18 @@ function HistorySection({
                 <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">
                   {item.answer.summary}
                 </p>
+                {item.tags && item.tags.length > 0 && (
+                  <div className="mt-3 flex flex-wrap gap-1.5">
+                    {item.tags.map((t) => (
+                      <span
+                        key={t}
+                        className="rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-medium text-primary"
+                      >
+                        #{t}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </button>
               <button
                 type="button"
