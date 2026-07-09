@@ -374,15 +374,62 @@ function Home() {
             rows={4}
             className="w-full resize-none rounded-2xl bg-transparent px-4 py-3 text-base leading-relaxed text-foreground placeholder:text-muted-foreground focus:outline-none"
           />
+          {imageDataUrl && (
+            <div className="mx-2 mb-2 flex items-start gap-3 rounded-2xl border border-border bg-secondary/40 p-2">
+              <img
+                src={imageDataUrl}
+                alt={imageName ?? "Attached problem"}
+                className="h-20 w-20 rounded-xl object-cover"
+              />
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-medium text-foreground">
+                  {imageName ?? "Attached image"}
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Clarity will read the text, equations, or diagram in this image.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setImageDataUrl(null);
+                  setImageName(null);
+                }}
+                className="rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-background hover:text-foreground"
+                aria-label="Remove image"
+              >
+                <X className="h-4 w-4" aria-hidden="true" />
+              </button>
+            </div>
+          )}
           <div className="flex items-center justify-between gap-3 border-t border-border/60 px-2 pt-3">
-            <span className="text-xs text-muted-foreground">
-              Press <kbd className="rounded border border-border bg-muted px-1.5 py-0.5 font-sans text-[10px]">⌘</kbd>
-              <span className="mx-1">+</span>
-              <kbd className="rounded border border-border bg-muted px-1.5 py-0.5 font-sans text-[10px]">Enter</kbd> to send
-            </span>
+            <div className="flex items-center gap-2">
+              <label
+                htmlFor="image-upload"
+                className="inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
+              >
+                <ImagePlus className="h-3.5 w-3.5" aria-hidden="true" />
+                {imageDataUrl ? "Change image" : "Attach image"}
+              </label>
+              <input
+                id="image-upload"
+                type="file"
+                accept="image/*"
+                className="sr-only"
+                onChange={(e) => {
+                  handleImageFile(e.target.files?.[0]);
+                  e.currentTarget.value = "";
+                }}
+              />
+              <span className="hidden text-xs text-muted-foreground sm:inline">
+                <kbd className="rounded border border-border bg-muted px-1.5 py-0.5 font-sans text-[10px]">⌘</kbd>
+                <span className="mx-1">+</span>
+                <kbd className="rounded border border-border bg-muted px-1.5 py-0.5 font-sans text-[10px]">Enter</kbd> to send
+              </span>
+            </div>
             <Button
               type="submit"
-              disabled={!question.trim() || mutation.isPending}
+              disabled={(!question.trim() && !imageDataUrl) || mutation.isPending}
               className="rounded-full"
             >
               {mutation.isPending ? (
