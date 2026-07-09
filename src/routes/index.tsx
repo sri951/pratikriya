@@ -597,6 +597,8 @@ function Home() {
             onOpen={openHistoryItem}
             onDelete={(id: string) => removeMutation.mutate(id)}
             deletingId={removeMutation.isPending ? (removeMutation.variables ?? null) : null}
+            activeTag={historyFilter}
+            onFilterChange={setHistoryFilter}
           />
         )}
       </section>
