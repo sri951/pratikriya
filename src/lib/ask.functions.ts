@@ -6,6 +6,11 @@ import { createLovableAiGatewayProvider } from "./ai-gateway.server";
 const Input = z.object({
   question: z.string().min(1).max(4000),
   subject: z.string().max(80).optional(),
+  imageDataUrl: z
+    .string()
+    .max(8_000_000)
+    .regex(/^data:image\/(png|jpe?g|webp|gif|heic|heif);base64,/i)
+    .optional(),
 });
 
 const ResponseSchema = z.object({
@@ -52,15 +57,30 @@ Structure rules (strict):
 - keyTakeaways: 2–5 concise bullet points the student should remember.
 - reflection: one short, warm question to check understanding.`;
 
-    const prompt = data.subject
-      ? `Subject: ${data.subject}\n\nStudent's question:\n${data.question}`
-      : `Student's question:\n${data.question}`;
+    const questionText = data.imageDataUrl
+      ? `${data.question}\n\nAn image has been attached. Read any handwriting, printed text, equations, or diagrams in it carefully and use them as part of the question.`
+      : data.question;
+    const promptText = data.subject
+      ? `Subject: ${data.subject}\n\nStudent's question:\n${questionText}`
+      : `Student's question:\n${questionText}`;
+
+    const messages = data.imageDataUrl
+      ? [
+          {
+            role: "user" as const,
+            content: [
+              { type: "text" as const, text: promptText },
+              { type: "image" as const, image: data.imageDataUrl },
+            ],
+          },
+        ]
+      : undefined;
 
     try {
       const { object } = await generateObject({
         model: gateway("google/gemini-3-flash-preview"),
         system,
-        prompt,
+        ...(messages ? { messages } : { prompt: promptText }),
         schema: ResponseSchema,
       });
       return normalizeAnswer(object);
