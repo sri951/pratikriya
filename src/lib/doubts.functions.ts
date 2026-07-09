@@ -15,12 +15,18 @@ const AnswerShape = z.object({
 const SaveInput = z.object({
   question: z.string().min(1).max(4000),
   answer: AnswerShape,
+  tags: z
+    .array(z.string().trim().min(1).max(40))
+    .max(10)
+    .optional()
+    .default([]),
 });
 
 export type SavedDoubt = {
   id: string;
   question: string;
   answer: z.infer<typeof AnswerShape>;
+  tags: string[];
   created_at: string;
 };
 
@@ -28,14 +34,22 @@ export const saveDoubt = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((data: unknown) => SaveInput.parse(data))
   .handler(async ({ data, context }): Promise<SavedDoubt> => {
+    const cleanTags = Array.from(
+      new Set(
+        (data.tags ?? [])
+          .map((t) => t.trim().toLowerCase())
+          .filter((t) => t.length > 0),
+      ),
+    ).slice(0, 10);
     const { data: row, error } = await context.supabase
       .from("doubts")
       .insert({
         user_id: context.userId,
         question: data.question,
         answer: data.answer,
+        tags: cleanTags,
       })
-      .select("id, question, answer, created_at")
+      .select("id, question, answer, tags, created_at")
       .single();
     if (error) throw new Error(error.message);
     return row as SavedDoubt;
@@ -46,7 +60,7 @@ export const listDoubts = createServerFn({ method: "GET" })
   .handler(async ({ context }): Promise<SavedDoubt[]> => {
     const { data, error } = await context.supabase
       .from("doubts")
-      .select("id, question, answer, created_at")
+      .select("id, question, answer, tags, created_at")
       .order("created_at", { ascending: false })
       .limit(50);
     if (error) throw new Error(error.message);
