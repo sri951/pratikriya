@@ -437,6 +437,59 @@ function Home() {
               </button>
             </div>
           )}
+          <div className="mx-2 mb-2 rounded-2xl border border-dashed border-border/70 bg-secondary/30 p-3">
+            <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-muted-foreground">
+              <Tag className="h-3.5 w-3.5" aria-hidden="true" />
+              Tag this question
+            </div>
+            <div className="mt-2 flex flex-wrap items-center gap-2">
+              {tags.map((t) => (
+                <span
+                  key={t}
+                  className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary"
+                >
+                  #{t}
+                  <button
+                    type="button"
+                    onClick={() => removeTag(t)}
+                    className="rounded-full p-0.5 hover:bg-primary/20"
+                    aria-label={`Remove tag ${t}`}
+                  >
+                    <X className="h-3 w-3" aria-hidden="true" />
+                  </button>
+                </span>
+              ))}
+              <input
+                type="text"
+                value={tagDraft}
+                onChange={(e) => setTagDraft(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === ",") {
+                    e.preventDefault();
+                    addTag(tagDraft);
+                  } else if (e.key === "Backspace" && !tagDraft && tags.length) {
+                    removeTag(tags[tags.length - 1]);
+                  }
+                }}
+                placeholder={tags.length >= 10 ? "Tag limit reached" : "Add a tag…"}
+                disabled={tags.length >= 10}
+                className="min-w-[8ch] flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none"
+                aria-label="Add tag"
+              />
+            </div>
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {SUGGESTED_TAGS.filter((t) => !tags.includes(t)).map((t) => (
+                <button
+                  key={t}
+                  type="button"
+                  onClick={() => addTag(t)}
+                  className="rounded-full border border-border bg-card px-2 py-0.5 text-[11px] text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
+                >
+                  + {t}
+                </button>
+              ))}
+            </div>
+          </div>
           <div className="flex items-center justify-between gap-3 border-t border-border/60 px-2 pt-3">
             <div className="flex items-center gap-2">
               <label
