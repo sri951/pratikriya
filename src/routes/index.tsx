@@ -26,6 +26,8 @@ import {
   Pause,
   ImagePlus,
   X,
+  Tag,
+  Filter,
 } from "lucide-react";
 import { askDoubt, type DoubtAnswer } from "@/lib/ask.functions";
 import { listDoubts, saveDoubt, deleteDoubt, type SavedDoubt } from "@/lib/doubts.functions";
@@ -56,10 +58,24 @@ const EXAMPLES = [
   "What caused World War I in simple terms?",
 ];
 
+const SUGGESTED_TAGS = [
+  "algebra",
+  "calculus",
+  "geometry",
+  "physics",
+  "chemistry",
+  "biology",
+  "history",
+  "english",
+];
+
 function Home() {
   const [question, setQuestion] = useState("");
   const [imageDataUrl, setImageDataUrl] = useState<string | null>(null);
   const [imageName, setImageName] = useState<string | null>(null);
+  const [tags, setTags] = useState<string[]>([]);
+  const [tagDraft, setTagDraft] = useState("");
+  const [historyFilter, setHistoryFilter] = useState<string | null>(null);
   const [answer, setAnswer] = useState<DoubtAnswer | null>(null);
   const [askedQuestion, setAskedQuestion] = useState<string | null>(null);
   const askFn = useServerFn(askDoubt);
@@ -73,7 +89,7 @@ function Home() {
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   const mutation = useMutation({
-    mutationFn: (vars: { question: string; imageDataUrl?: string | null }) =>
+    mutationFn: (vars: { question: string; imageDataUrl?: string | null; tags: string[] }) =>
       askFn({
         data: {
           question: vars.question,
@@ -84,7 +100,7 @@ function Home() {
       setAnswer(res);
       if (isAuthenticated) {
         try {
-          await saveFn({ data: { question: vars.question, answer: res } });
+          await saveFn({ data: { question: vars.question, answer: res, tags: vars.tags } });
           queryClient.invalidateQueries({ queryKey: ["doubts"] });
         } catch (err) {
           console.error("save doubt failed", err);
@@ -121,6 +137,7 @@ function Home() {
     setAnswer(item.answer);
     setAskedQuestion(item.question);
     setQuestion(item.question);
+    setTags(item.tags ?? []);
     requestAnimationFrame(() => {
       answerRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     });
@@ -138,7 +155,14 @@ function Home() {
     setAnswer(null);
     setAskedQuestion(trimmed);
     setQuestion(trimmed);
-    mutation.mutate({ question: trimmed, imageDataUrl });
+    // Fold any un-committed draft into the saved tags.
+    const draftTag = tagDraft.trim().toLowerCase();
+    const finalTags = Array.from(
+      new Set([...tags, ...(draftTag ? [draftTag] : [])]),
+    ).slice(0, 10);
+    setTags(finalTags);
+    setTagDraft("");
+    mutation.mutate({ question: trimmed, imageDataUrl, tags: finalTags });
   };
 
   const startNewQuestion = () => {
@@ -148,12 +172,23 @@ function Home() {
     setQuestion("");
     setImageDataUrl(null);
     setImageName(null);
+    setTags([]);
+    setTagDraft("");
     // Give React a tick to re-render, then focus and scroll.
     requestAnimationFrame(() => {
       textareaRef.current?.focus();
       document.getElementById("ask")?.scrollIntoView({ behavior: "smooth", block: "start" });
     });
   };
+
+  const addTag = (raw: string) => {
+    const t = raw.trim().toLowerCase();
+    if (!t) return;
+    setTags((prev) => (prev.includes(t) || prev.length >= 10 ? prev : [...prev, t]));
+    setTagDraft("");
+  };
+
+  const removeTag = (t: string) => setTags((prev) => prev.filter((x) => x !== t));
 
   const handleImageFile = async (file: File | null | undefined) => {
     if (!file) return;
