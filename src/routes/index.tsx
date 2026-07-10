@@ -868,6 +868,107 @@ function AnswerCard({
         </div>
       </div>
 
+      {/* Feedback + deeper explanation */}
+      <div className="rounded-3xl border border-border bg-card p-6 shadow-[var(--shadow-soft)] sm:p-7">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="font-display text-base font-semibold text-foreground">
+              Was this answer helpful?
+            </p>
+            <p className="text-sm text-muted-foreground">
+              Your feedback helps Clarity improve for you.
+            </p>
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            <Button
+              type="button"
+              size="sm"
+              variant={feedback === "up" ? "default" : "secondary"}
+              onClick={() => handleFeedback("up")}
+              className="rounded-full"
+              aria-pressed={feedback === "up"}
+            >
+              <ThumbsUp className="h-4 w-4" aria-hidden="true" />
+              Helpful
+            </Button>
+            <Button
+              type="button"
+              size="sm"
+              variant={feedback === "down" ? "default" : "secondary"}
+              onClick={() => handleFeedback("down")}
+              className="rounded-full"
+              aria-pressed={feedback === "down"}
+            >
+              <ThumbsDown className="h-4 w-4" aria-hidden="true" />
+              Not quite
+            </Button>
+            <Button
+              type="button"
+              size="sm"
+              variant="outline"
+              onClick={() => setShowDeepen((v) => !v)}
+              className="rounded-full"
+              aria-expanded={showDeepen}
+            >
+              <HelpCircle className="h-4 w-4" aria-hidden="true" />
+              Request deeper explanation
+            </Button>
+          </div>
+        </div>
+
+        {showDeepen && (
+          <div className="mt-5 space-y-3 border-t border-border pt-5">
+            <label
+              htmlFor="clarify"
+              className="block text-xs font-medium uppercase tracking-widest text-muted-foreground"
+            >
+              What would you like clarified?
+            </label>
+            <textarea
+              id="clarify"
+              value={clarification}
+              onChange={(e) => setClarification(e.target.value)}
+              rows={3}
+              placeholder="e.g. Walk me through step 2 more slowly, or explain why we divide by 2 here."
+              className="w-full rounded-2xl border border-border bg-background p-3 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+            />
+            <div className="flex justify-end">
+              <Button
+                type="button"
+                size="sm"
+                onClick={handleDeepen}
+                disabled={deepenLoading || !clarification.trim()}
+                className="rounded-full"
+              >
+                {deepenLoading ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+                    Going deeper…
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="h-4 w-4" aria-hidden="true" />
+                    Get a deeper explanation
+                  </>
+                )}
+              </Button>
+            </div>
+
+            {deeperMd && (
+              <div className="mt-4 rounded-2xl border border-primary/20 bg-secondary/40 p-5">
+                <div className="mb-3 flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-primary">
+                  <Sparkles className="h-4 w-4" aria-hidden="true" />
+                  Deeper explanation
+                </div>
+                <div className="prose prose-sm max-w-none text-foreground prose-headings:font-display prose-headings:font-semibold prose-p:leading-relaxed prose-strong:text-foreground prose-code:rounded prose-code:bg-muted prose-code:px-1 prose-code:py-0.5 prose-code:text-foreground">
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>{deeperMd}</ReactMarkdown>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
       {/* CTA: new question */}
       <div className="flex flex-col items-center gap-3 pt-2 sm:flex-row sm:justify-between">
         <p className="text-sm text-muted-foreground">
