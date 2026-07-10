@@ -31,6 +31,17 @@ const ResponseSchema = z.object({
   reflection: z
     .string()
     .describe("A short, warm follow-up question to check understanding."),
+  relatedResources: z
+    .array(
+      z.object({
+        title: z.string().describe("Short, descriptive title for the resource."),
+        description: z.string().describe("One sentence on what the student will learn there."),
+        url: z.string().describe("A working URL. Prefer search URLs so links always resolve."),
+        type: z.enum(["article", "video", "lesson", "reference"]).describe("Kind of resource."),
+      }),
+    )
+    .describe("3-5 related learning resources the student can explore next.")
+    .nullable(),
 });
 
 export type DoubtAnswer = z.infer<typeof ResponseSchema>;
@@ -55,7 +66,13 @@ Structure rules (strict):
 - explanation: full markdown answer with short paragraphs, bullet lists, and worked examples where helpful.
 - diagram: when a visual would truly help (a process, a comparison, a hierarchy, a cycle, a proportion, a timeline, a flow), include a VALID mermaid.js diagram. Prefer flowchart TD, graph LR, sequenceDiagram, or pie. Keep node labels under 4 words. If a diagram would not add value (e.g. a simple arithmetic answer), return diagram as null.
 - keyTakeaways: 2–5 concise bullet points the student should remember.
-- reflection: one short, warm question to check understanding.`;
+- reflection: one short, warm question to check understanding.
+- relatedResources: 3–5 links the student can explore next. To guarantee the URLs work, prefer these patterns:
+  - Wikipedia: https://en.wikipedia.org/wiki/<Topic_With_Underscores>
+  - Khan Academy search: https://www.khanacademy.org/search?page_search_query=<query+with+plus>
+  - YouTube search: https://www.youtube.com/results?search_query=<query+with+plus>
+  - Google Scholar (for academic): https://scholar.google.com/scholar?q=<query+with+plus>
+  Pick the right \`type\` for each (video for YouTube, lesson for Khan Academy, reference for Wikipedia, article otherwise). Give each a clear title and a one-line description.`;
 
     const questionText = data.imageDataUrl
       ? `${data.question}\n\nAn image has been attached. Read any handwriting, printed text, equations, or diagrams in it carefully and use them as part of the question.`
@@ -94,6 +111,7 @@ Structure rules (strict):
           diagram: null,
           keyTakeaways: ["Try rephrasing the question for a clearer answer."],
           reflection: "Would you like to ask this in a different way?",
+          relatedResources: null,
         } satisfies DoubtAnswer;
       }
       throw error;
@@ -121,6 +139,23 @@ function normalizeAnswer(raw: unknown): DoubtAnswer {
   const takeaways = Array.isArray(obj.keyTakeaways)
     ? obj.keyTakeaways.filter((t): t is string => typeof t === "string" && t.trim().length > 0).slice(0, 5)
     : [];
+  const rawResources = Array.isArray((obj as { relatedResources?: unknown }).relatedResources)
+    ? ((obj as { relatedResources: unknown[] }).relatedResources)
+    : [];
+  const allowedTypes = new Set(["article", "video", "lesson", "reference"]);
+  const resources = rawResources
+    .map((r) => {
+      if (!r || typeof r !== "object") return null;
+      const rec = r as Record<string, unknown>;
+      const title = typeof rec.title === "string" ? rec.title.trim() : "";
+      const url = typeof rec.url === "string" ? rec.url.trim() : "";
+      if (!title || !url) return null;
+      const type = allowedTypes.has(rec.type as string) ? (rec.type as "article" | "video" | "lesson" | "reference") : "article";
+      const description = typeof rec.description === "string" ? rec.description : "";
+      return { title, description, url, type };
+    })
+    .filter((r): r is { title: string; description: string; url: string; type: "article" | "video" | "lesson" | "reference" } => r !== null)
+    .slice(0, 6);
   return {
     summary: typeof obj.summary === "string" ? obj.summary : "",
     explanation: typeof obj.explanation === "string" ? obj.explanation : "",
@@ -138,6 +173,7 @@ function normalizeAnswer(raw: unknown): DoubtAnswer {
         : null,
     keyTakeaways: takeaways.length > 0 ? takeaways : ["Key idea captured above."],
     reflection: typeof obj.reflection === "string" ? obj.reflection : "Does this make sense so far?",
+    relatedResources: resources.length > 0 ? resources : null,
   };
 }
 
