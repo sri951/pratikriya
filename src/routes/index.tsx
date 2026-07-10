@@ -1039,6 +1039,7 @@ function AnswerCard({
 }
 
 function HistorySection({
+  // placeholder anchor
   items,
   loading,
   onOpen,
