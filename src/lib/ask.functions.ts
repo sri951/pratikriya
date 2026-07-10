@@ -31,6 +31,17 @@ const ResponseSchema = z.object({
   reflection: z
     .string()
     .describe("A short, warm follow-up question to check understanding."),
+  relatedResources: z
+    .array(
+      z.object({
+        title: z.string().describe("Short, descriptive title for the resource."),
+        description: z.string().describe("One sentence on what the student will learn there."),
+        url: z.string().describe("A working URL. Prefer search URLs so links always resolve."),
+        type: z.enum(["article", "video", "lesson", "reference"]).describe("Kind of resource."),
+      }),
+    )
+    .describe("3-5 related learning resources the student can explore next.")
+    .nullable(),
 });
 
 export type DoubtAnswer = z.infer<typeof ResponseSchema>;
