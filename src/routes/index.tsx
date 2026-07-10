@@ -28,8 +28,11 @@ import {
   X,
   Tag,
   Filter,
+  ThumbsUp,
+  ThumbsDown,
+  HelpCircle,
 } from "lucide-react";
-import { askDoubt, type DoubtAnswer } from "@/lib/ask.functions";
+import { askDoubt, deepenAnswer, type DoubtAnswer } from "@/lib/ask.functions";
 import { listDoubts, saveDoubt, deleteDoubt, type SavedDoubt } from "@/lib/doubts.functions";
 import { speakSummary } from "@/lib/tts.functions";
 import { Button } from "@/components/ui/button";
