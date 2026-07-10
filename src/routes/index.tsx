@@ -667,10 +667,16 @@ function AnswerCard({
   onAskNew: () => void;
 }) {
   const speakFn = useServerFn(speakSummary);
+  const deepenFn = useServerFn(deepenAnswer);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const [loadingAudio, setLoadingAudio] = useState(false);
   const [playing, setPlaying] = useState(false);
+  const [feedback, setFeedback] = useState<"up" | "down" | null>(null);
+  const [showDeepen, setShowDeepen] = useState(false);
+  const [clarification, setClarification] = useState("");
+  const [deeperMd, setDeeperMd] = useState<string | null>(null);
+  const [deepenLoading, setDeepenLoading] = useState(false);
 
   useEffect(() => {
     setAudioUrl(null);
@@ -679,7 +685,46 @@ function AnswerCard({
       audioRef.current.pause();
       audioRef.current = null;
     }
+    setFeedback(null);
+    setShowDeepen(false);
+    setClarification("");
+    setDeeperMd(null);
+    setDeepenLoading(false);
   }, [answer]);
+
+  const handleFeedback = (value: "up" | "down") => {
+    setFeedback(value);
+    if (value === "up") {
+      toast.success("Glad it helped!");
+    } else {
+      toast("Thanks — try asking for a deeper explanation below.");
+      setShowDeepen(true);
+    }
+  };
+
+  const handleDeepen = async () => {
+    const c = clarification.trim();
+    if (!c) {
+      toast.error("Tell Clarity what to clarify.");
+      return;
+    }
+    try {
+      setDeepenLoading(true);
+      const { markdown } = await deepenFn({
+        data: {
+          question: question || "(no original question)",
+          previousSummary: answer.summary,
+          previousExplanation: answer.explanation,
+          clarification: c,
+        },
+      });
+      setDeeperMd(markdown);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Couldn't fetch a deeper explanation.");
+    } finally {
+      setDeepenLoading(false);
+    }
+  };
 
   const handleListen = async () => {
     if (playing && audioRef.current) {
