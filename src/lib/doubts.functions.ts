@@ -10,6 +10,18 @@ const AnswerShape = z.object({
     .nullable(),
   keyTakeaways: z.array(z.string()),
   reflection: z.string(),
+  relatedResources: z
+    .array(
+      z.object({
+        title: z.string(),
+        description: z.string(),
+        url: z.string(),
+        type: z.enum(["article", "video", "lesson", "reference"]),
+      }),
+    )
+    .nullable()
+    .optional()
+    .transform((v) => v ?? null),
 });
 
 const SaveInput = z.object({
