@@ -662,6 +662,22 @@ function ProblemStat({
   );
 }
 
+function safeHostname(url: string): string {
+  try {
+    return new URL(url).hostname.replace(/^www\./, "");
+  } catch {
+    return "link";
+  }
+}
+
+function ResourceIcon({ type }: { type: "article" | "video" | "lesson" | "reference" }) {
+  const cls = "h-4 w-4";
+  if (type === "video") return <Video className={cls} aria-hidden="true" />;
+  if (type === "lesson") return <GraduationCap className={cls} aria-hidden="true" />;
+  if (type === "reference") return <BookOpen className={cls} aria-hidden="true" />;
+  return <FileText className={cls} aria-hidden="true" />;
+}
+
 function AnswerCard({
   answer,
   question,
