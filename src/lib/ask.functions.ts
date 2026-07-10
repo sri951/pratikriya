@@ -105,6 +105,7 @@ Structure rules (strict):
           diagram: null,
           keyTakeaways: ["Try rephrasing the question for a clearer answer."],
           reflection: "Would you like to ask this in a different way?",
+          relatedResources: null,
         } satisfies DoubtAnswer;
       }
       throw error;
@@ -132,6 +133,23 @@ function normalizeAnswer(raw: unknown): DoubtAnswer {
   const takeaways = Array.isArray(obj.keyTakeaways)
     ? obj.keyTakeaways.filter((t): t is string => typeof t === "string" && t.trim().length > 0).slice(0, 5)
     : [];
+  const rawResources = Array.isArray((obj as { relatedResources?: unknown }).relatedResources)
+    ? ((obj as { relatedResources: unknown[] }).relatedResources)
+    : [];
+  const allowedTypes = new Set(["article", "video", "lesson", "reference"]);
+  const resources = rawResources
+    .map((r) => {
+      if (!r || typeof r !== "object") return null;
+      const rec = r as Record<string, unknown>;
+      const title = typeof rec.title === "string" ? rec.title.trim() : "";
+      const url = typeof rec.url === "string" ? rec.url.trim() : "";
+      if (!title || !url) return null;
+      const type = allowedTypes.has(rec.type as string) ? (rec.type as "article" | "video" | "lesson" | "reference") : "article";
+      const description = typeof rec.description === "string" ? rec.description : "";
+      return { title, description, url, type };
+    })
+    .filter((r): r is { title: string; description: string; url: string; type: "article" | "video" | "lesson" | "reference" } => r !== null)
+    .slice(0, 6);
   return {
     summary: typeof obj.summary === "string" ? obj.summary : "",
     explanation: typeof obj.explanation === "string" ? obj.explanation : "",
@@ -149,6 +167,7 @@ function normalizeAnswer(raw: unknown): DoubtAnswer {
         : null,
     keyTakeaways: takeaways.length > 0 ? takeaways : ["Key idea captured above."],
     reflection: typeof obj.reflection === "string" ? obj.reflection : "Does this make sense so far?",
+    relatedResources: resources.length > 0 ? resources : null,
   };
 }
 
