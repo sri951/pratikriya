@@ -66,7 +66,13 @@ Structure rules (strict):
 - explanation: full markdown answer with short paragraphs, bullet lists, and worked examples where helpful.
 - diagram: when a visual would truly help (a process, a comparison, a hierarchy, a cycle, a proportion, a timeline, a flow), include a VALID mermaid.js diagram. Prefer flowchart TD, graph LR, sequenceDiagram, or pie. Keep node labels under 4 words. If a diagram would not add value (e.g. a simple arithmetic answer), return diagram as null.
 - keyTakeaways: 2–5 concise bullet points the student should remember.
-- reflection: one short, warm question to check understanding.`;
+- reflection: one short, warm question to check understanding.
+- relatedResources: 3–5 links the student can explore next. To guarantee the URLs work, prefer these patterns:
+  - Wikipedia: https://en.wikipedia.org/wiki/<Topic_With_Underscores>
+  - Khan Academy search: https://www.khanacademy.org/search?page_search_query=<query+with+plus>
+  - YouTube search: https://www.youtube.com/results?search_query=<query+with+plus>
+  - Google Scholar (for academic): https://scholar.google.com/scholar?q=<query+with+plus>
+  Pick the right \`type\` for each (video for YouTube, lesson for Khan Academy, reference for Wikipedia, article otherwise). Give each a clear title and a one-line description.`;
 
     const questionText = data.imageDataUrl
       ? `${data.question}\n\nAn image has been attached. Read any handwriting, printed text, equations, or diagrams in it carefully and use them as part of the question.`
