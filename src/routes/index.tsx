@@ -671,7 +671,6 @@ function AnswerCard({
   question: string;
   onAskNew: () => void;
 }) {
-  // helpers declared below
   const speakFn = useServerFn(speakSummary);
   const deepenFn = useServerFn(deepenAnswer);
   const audioRef = useRef<HTMLAudioElement | null>(null);
