@@ -31,6 +31,11 @@ import {
   ThumbsUp,
   ThumbsDown,
   HelpCircle,
+  Link2,
+  Video,
+  FileText,
+  GraduationCap,
+  BookMarked,
 } from "lucide-react";
 import { askDoubt, deepenAnswer, type DoubtAnswer } from "@/lib/ask.functions";
 import { listDoubts, saveDoubt, deleteDoubt, type SavedDoubt } from "@/lib/doubts.functions";
