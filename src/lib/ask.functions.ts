@@ -1,5 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
-import { generateObject, NoObjectGeneratedError } from "ai";
+import { generateObject, generateText, NoObjectGeneratedError } from "ai";
 import { z } from "zod";
 import { createLovableAiGatewayProvider } from "./ai-gateway.server";
 
@@ -140,3 +140,44 @@ function normalizeAnswer(raw: unknown): DoubtAnswer {
     reflection: typeof obj.reflection === "string" ? obj.reflection : "Does this make sense so far?",
   };
 }
+
+const DeepenInput = z.object({
+  question: z.string().min(1).max(4000),
+  previousSummary: z.string().max(4000),
+  previousExplanation: z.string().max(20000),
+  clarification: z.string().min(1).max(2000),
+});
+
+export const deepenAnswer = createServerFn({ method: "POST" })
+  .inputValidator((data: unknown) => DeepenInput.parse(data))
+  .handler(async ({ data }) => {
+    const key = process.env.LOVABLE_API_KEY;
+    if (!key) throw new Error("Missing LOVABLE_API_KEY");
+    const gateway = createLovableAiGatewayProvider(key);
+    const system = `You are Clarity, a warm AI tutor. The student already received an answer but wants a deeper, more detailed follow-up on a specific part.
+
+Rules:
+- Focus tightly on what the student is asking to clarify — do not repeat the whole original answer.
+- Go deeper: unpack the reasoning, work through a fuller example, define terms, or show more intermediate steps.
+- Use clear markdown: short paragraphs, numbered steps, bullet lists, plain-text formulas (no LaTeX).
+- Stay kind and encouraging; never condescending.`;
+    const prompt = `Original question:
+${data.question}
+
+Original TL;DR:
+${data.previousSummary}
+
+Original explanation:
+${data.previousExplanation}
+
+What the student wants clarified now:
+${data.clarification}
+
+Write the deeper follow-up in markdown.`;
+    const { text } = await generateText({
+      model: gateway("google/gemini-3-flash-preview"),
+      system,
+      prompt,
+    });
+    return { markdown: text.trim() };
+  });
