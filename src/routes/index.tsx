@@ -873,6 +873,51 @@ function AnswerCard({
         </div>
       </div>
 
+      {/* Related resources */}
+      {answer.relatedResources && answer.relatedResources.length > 0 && (
+        <div className="rounded-3xl border border-border bg-card p-6 shadow-[var(--shadow-soft)] sm:p-8">
+          <div className="mb-4 flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-primary">
+            <BookMarked className="h-4 w-4" aria-hidden="true" />
+            Related resources
+          </div>
+          <ul className="grid gap-3 sm:grid-cols-2">
+            {answer.relatedResources.map((r, i) => (
+              <li key={`${r.url}-${i}`}>
+                <a
+                  href={r.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex h-full items-start gap-3 rounded-2xl border border-border bg-background p-4 transition-all hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-[var(--shadow-soft)]"
+                >
+                  <span className="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-accent text-accent-foreground">
+                    <ResourceIcon type={r.type} />
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="flex items-center gap-2">
+                      <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-primary">
+                        {r.type}
+                      </span>
+                      <span className="truncate text-xs text-muted-foreground">
+                        {safeHostname(r.url)}
+                      </span>
+                    </span>
+                    <span className="mt-1.5 block font-medium text-foreground group-hover:text-primary">
+                      {r.title}
+                    </span>
+                    {r.description && (
+                      <span className="mt-1 block text-sm text-muted-foreground">
+                        {r.description}
+                      </span>
+                    )}
+                  </span>
+                  <Link2 className="mt-1 h-4 w-4 shrink-0 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" aria-hidden="true" />
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
       {/* Feedback + deeper explanation */}
       <div className="rounded-3xl border border-border bg-card p-6 shadow-[var(--shadow-soft)] sm:p-7">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
