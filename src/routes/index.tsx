@@ -45,6 +45,8 @@ import { MermaidDiagram } from "@/components/mermaid-diagram";
 import { useAuth } from "@/hooks/use-auth";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { cacheDoubts, readCachedDoubts, removeCachedDoubt } from "@/lib/offline-cache";
+import { OfflineBadge, InstallButton } from "@/components/offline-badge";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -122,13 +124,46 @@ function Home() {
 
   const history = useQuery({
     queryKey: ["doubts", user?.id],
-    queryFn: () => listFn(),
+    queryFn: async () => {
+      if (!user) return [] as SavedDoubt[];
+      try {
+        const rows = await listFn();
+        // Mirror to IndexedDB for offline reads.
+        cacheDoubts(user.id, rows).catch(() => {});
+        return rows;
+      } catch (err) {
+        const cached = await readCachedDoubts(user.id);
+        if (cached.length > 0) return cached;
+        throw err;
+      }
+    },
     enabled: isAuthenticated,
     staleTime: 30_000,
+    retry: false,
   });
 
+  // On mount / user change, seed the query with any cached doubts so history
+  // shows immediately even when offline before the network request resolves.
+  useEffect(() => {
+    if (!user) return;
+    let cancelled = false;
+    readCachedDoubts(user.id).then((rows) => {
+      if (cancelled || rows.length === 0) return;
+      const current = queryClient.getQueryData<SavedDoubt[]>(["doubts", user.id]);
+      if (!current || current.length === 0) {
+        queryClient.setQueryData(["doubts", user.id], rows);
+      }
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [user, queryClient]);
+
   const removeMutation = useMutation({
-    mutationFn: (id: string) => deleteFn({ data: { id } }),
+    mutationFn: async (id: string) => {
+      if (user) await removeCachedDoubt(user.id, id).catch(() => {});
+      return deleteFn({ data: { id } });
+    },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["doubts"] }),
   });
 
@@ -245,6 +280,8 @@ function Home() {
           )}
         </nav>
         <div className="flex items-center gap-2">
+          <OfflineBadge />
+          <InstallButton />
           {!authLoading && !isAuthenticated && (
             <Button
               size="sm"
