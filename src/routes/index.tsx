@@ -46,7 +46,6 @@ import { useAuth } from "@/hooks/use-auth";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { cacheDoubts, readCachedDoubts, removeCachedDoubt } from "@/lib/offline-cache";
-import { useOnline } from "@/hooks/use-online";
 import { OfflineBadge, InstallButton } from "@/components/offline-badge";
 import {
   DropdownMenu,
@@ -96,7 +95,6 @@ function Home() {
   const { isAuthenticated, user, loading: authLoading } = useAuth();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const online = useOnline();
   const answerRef = useRef<HTMLDivElement | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
