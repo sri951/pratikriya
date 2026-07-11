@@ -282,6 +282,8 @@ function Home() {
           )}
         </nav>
         <div className="flex items-center gap-2">
+          <OfflineBadge />
+          <InstallButton />
           {!authLoading && !isAuthenticated && (
             <Button
               size="sm"
