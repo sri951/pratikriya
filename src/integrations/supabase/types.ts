@@ -41,6 +41,98 @@ export type Database = {
         }
         Relationships: []
       }
+      exam_attempts: {
+        Row: {
+          accuracy: number
+          created_at: string
+          exam_id: string
+          feedback: string
+          id: string
+          missing_concepts: string[]
+          mistakes: string[]
+          per_question: Json
+          revise_topics: string[]
+          score: number
+          strengths: string[]
+          user_id: string
+        }
+        Insert: {
+          accuracy: number
+          created_at?: string
+          exam_id: string
+          feedback?: string
+          id?: string
+          missing_concepts?: string[]
+          mistakes?: string[]
+          per_question: Json
+          revise_topics?: string[]
+          score: number
+          strengths?: string[]
+          user_id: string
+        }
+        Update: {
+          accuracy?: number
+          created_at?: string
+          exam_id?: string
+          feedback?: string
+          id?: string
+          missing_concepts?: string[]
+          mistakes?: string[]
+          per_question?: Json
+          revise_topics?: string[]
+          score?: number
+          strengths?: string[]
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "exam_attempts_exam_id_fkey"
+            columns: ["exam_id"]
+            isOneToOne: false
+            referencedRelation: "exams"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      exams: {
+        Row: {
+          answer_key: Json
+          created_at: string
+          difficulty: string
+          id: string
+          question_count: number
+          questions: Json
+          source_name: string | null
+          title: string
+          topics: string[]
+          user_id: string
+        }
+        Insert: {
+          answer_key: Json
+          created_at?: string
+          difficulty: string
+          id?: string
+          question_count: number
+          questions: Json
+          source_name?: string | null
+          title: string
+          topics?: string[]
+          user_id: string
+        }
+        Update: {
+          answer_key?: Json
+          created_at?: string
+          difficulty?: string
+          id?: string
+          question_count?: number
+          questions?: Json
+          source_name?: string | null
+          title?: string
+          topics?: string[]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
