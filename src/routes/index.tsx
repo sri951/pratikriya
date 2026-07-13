@@ -323,6 +323,7 @@ function Home() {
         </div>
       </header>
 
+      <main>
       {/* Hero */}
       <section
         className="relative overflow-hidden"
