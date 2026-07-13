@@ -1,0 +1,8 @@
+# Clarity
+
+> Clarity is an AI tutor that gives students instant, personalized feedback on academic questions, plus an exam mode that turns their own notes into graded quizzes.
+
+## Pages
+
+- [Home](/): Ask any academic question and get calm, step-by-step AI feedback with diagrams, summaries, and related resources.
+- [AI Exam Mode](/exam): Upload a PDF or notes, generate a quiz, submit answers, and get graded analytics with topics to revise.

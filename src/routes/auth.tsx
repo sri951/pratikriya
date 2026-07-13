@@ -13,7 +13,13 @@ export const Route = createFileRoute("/auth")({
     meta: [
       { title: "Sign in — Clarity" },
       { name: "description", content: "Sign in to Clarity to save your questions and get personalized AI tutoring." },
+      { property: "og:title", content: "Sign in — Clarity" },
+      { property: "og:description", content: "Sign in to Clarity to save your questions, track history, and get personalized AI tutoring." },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://clarityaii.lovable.app/auth" },
+      { name: "robots", content: "noindex" },
     ],
+    links: [{ rel: "canonical", href: "https://clarityaii.lovable.app/auth" }],
   }),
   component: AuthPage,
 });
