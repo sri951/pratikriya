@@ -46,7 +46,7 @@ export const Route = createFileRoute("/exam")({
       {
         name: "description",
         content:
-          "Turn any document into a personalized quiz. Clarity AI Exam Mode generates questions from your source, grades your answers, and shows analytics on what to revise.",
+          "Upload notes or a PDF, get an AI-generated quiz, and receive graded feedback with analytics on what to revise.",
       },
       { property: "og:title", content: "AI Exam Mode — Clarity" },
       {
@@ -54,7 +54,10 @@ export const Route = createFileRoute("/exam")({
         content:
           "Generate quizzes from your own PDFs and notes. Get scored, analyzed, and coached on weak topics.",
       },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://clarityaii.lovable.app/exam" },
     ],
+    links: [{ rel: "canonical", href: "https://clarityaii.lovable.app/exam" }],
   }),
 });
 
@@ -485,6 +488,7 @@ function SetupCard({
           <input
             ref={inputRef}
             type="file"
+            aria-label="Upload source document (PDF, image, or text file)"
             accept=".pdf,image/*,text/plain,text/markdown"
             className="hidden"
             onChange={(e) => handleFile(e.target.files?.[0])}
@@ -508,6 +512,7 @@ function SetupCard({
           value={text}
           onChange={(e) => setText(e.target.value)}
           rows={6}
+          aria-label="Paste source text"
           placeholder="Paste chapter notes, a passage, or definitions…"
           className="mt-2 w-full resize-y rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
         />
@@ -542,6 +547,7 @@ function SetupCard({
           </label>
           <input
             type="range"
+            aria-label="Number of questions"
             min={3}
             max={20}
             value={count}
@@ -626,7 +632,7 @@ function QuizCard({
       </div>
 
       <div className="mt-4">
-        <h1 className="font-display text-2xl font-semibold">{exam.title}</h1>
+        <h2 className="font-display text-2xl font-semibold">{exam.title}</h2>
         <p className="text-sm text-muted-foreground">
           {exam.question_count} questions · {exam.difficulty} · {totalMarks} marks total
         </p>
@@ -731,6 +737,7 @@ function SubmitCard({
           value={text}
           onChange={(e) => setText(e.target.value)}
           rows={8}
+          aria-label="Typed answers"
           placeholder={"Q1) ...\nQ2) ...\n"}
           className="mt-2 w-full resize-y rounded-xl border border-border bg-background px-3 py-2 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
         />
@@ -749,6 +756,7 @@ function SubmitCard({
           <span>{file ? file.name : "Upload answer sheet (image or PDF)"}</span>
           <input
             type="file"
+            aria-label="Upload answer sheet (image or PDF)"
             accept=".pdf,image/*,text/plain"
             className="hidden"
             onChange={(e) => handleFile(e.target.files?.[0])}

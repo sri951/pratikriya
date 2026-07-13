@@ -122,6 +122,33 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         href: "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap",
       },
     ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              name: "Clarity",
+              url: "https://clarityaii.lovable.app",
+              description:
+                "Clarity is an AI tutor that gives students instant, personalized feedback on academic questions.",
+            },
+            {
+              "@type": "WebSite",
+              name: "Clarity",
+              url: "https://clarityaii.lovable.app",
+              potentialAction: {
+                "@type": "SearchAction",
+                target: "https://clarityaii.lovable.app/?q={search_term_string}",
+                "query-input": "required name=search_term_string",
+              },
+            },
+          ],
+        }),
+      },
+    ],
   }),
   shellComponent: RootShell,
   component: RootComponent,
