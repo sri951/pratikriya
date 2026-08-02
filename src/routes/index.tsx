@@ -56,6 +56,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import heroImg from "@/assets/hero.jpg";
+import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
+import { IntroSequence } from "@/components/IntroSequence/IntroSequence";
+import { BrandMark } from "@/components/IntroSequence/LogoReveal";
+import { useIntroPreferences } from "@/components/IntroSequence/useIntroPreferences";
+import { BRAND_LAYOUT_ID } from "@/components/IntroSequence/intro.constants";
 
 export const Route = createFileRoute("/")({
   component: Home,
@@ -253,7 +258,26 @@ function Home() {
     setImageName(file.name);
   };
 
+  // Cinematic intro gate — HomeScreen stays mounted underneath the whole time.
+  const { hydrated, hasSeenIntro } = useIntroPreferences();
+  const [introDone, setIntroDone] = useState(false);
+  const [brandHandoff, setBrandHandoff] = useState(false);
+  const showIntro = hydrated && !hasSeenIntro && !introDone;
+  // The header only claims the shared layoutId once the intro releases it,
+  // otherwise two elements would fight over the same layout animation.
+  const headerOwnsBrand = !showIntro || brandHandoff;
+
   return (
+    <LayoutGroup>
+    <AnimatePresence>
+      {showIntro && (
+        <IntroSequence
+          key="intro"
+          onHandoff={() => setBrandHandoff(true)}
+          onComplete={() => setIntroDone(true)}
+        />
+      )}
+    </AnimatePresence>
     <div className="min-h-dvh bg-background font-sans text-foreground">
       <a
         href="#ask"
@@ -264,9 +288,12 @@ function Home() {
 
       <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
         <div className="flex items-center gap-2">
-          <div className="grid h-9 w-9 place-items-center rounded-xl bg-[image:var(--gradient-primary)] text-primary-foreground shadow-[var(--shadow-soft)]">
-            <Sparkles className="h-5 w-5" aria-hidden="true" />
-          </div>
+          <motion.div
+            {...(headerOwnsBrand ? { layoutId: BRAND_LAYOUT_ID } : {})}
+            className="grid h-9 w-9 place-items-center rounded-xl bg-[image:var(--gradient-primary)] shadow-[var(--shadow-soft)]"
+          >
+            <BrandMark size={22} />
+          </motion.div>
           <span className="font-display text-xl font-semibold tracking-tight">
             Pratikriya
           </span>
@@ -663,6 +690,7 @@ function Home() {
         </div>
       </footer>
     </div>
+    </LayoutGroup>
   );
 }
 
