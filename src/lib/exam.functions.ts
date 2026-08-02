@@ -121,7 +121,7 @@ export const generateExam = createServerFn({ method: "POST" })
       ? `\nFocus especially on these topics if present: ${data.focusTopics.join(", ")}.`
       : "";
 
-    const system = `You are Clarity Exam, an examiner that writes fair, source-grounded quizzes.
+    const system = `You are Pratikriya Exam, an examiner that writes fair, source-grounded quizzes.
 
 Strict rules:
 - Use ONLY the provided source material. Never invent facts outside it.
@@ -261,7 +261,7 @@ export const evaluateExam = createServerFn({ method: "POST" })
     const answerKey = examRow.answer_key as z.infer<typeof AnswerKeyItemSchema>[];
     const totalMarks = questions.reduce((s, q) => s + (q.marks || 0), 0) || questions.length;
 
-    const system = `You are Clarity Exam Grader. You grade student answers fairly and constructively.
+    const system = `You are Pratikriya Exam Grader. You grade student answers fairly and constructively.
 
 Rules:
 - Use the provided answer key + rubric as ground truth.
