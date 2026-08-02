@@ -261,12 +261,22 @@ function Home() {
   // Cinematic intro gate — HomeScreen stays mounted underneath the whole time.
   const { hydrated, hasSeenIntro } = useIntroPreferences();
   const [introDone, setIntroDone] = useState(false);
+  const [brandHandoff, setBrandHandoff] = useState(false);
   const showIntro = hydrated && !hasSeenIntro && !introDone;
+  // The header only claims the shared layoutId once the intro releases it,
+  // otherwise two elements would fight over the same layout animation.
+  const headerOwnsBrand = !showIntro || brandHandoff;
 
   return (
     <LayoutGroup>
     <AnimatePresence>
-      {showIntro && <IntroSequence key="intro" onComplete={() => setIntroDone(true)} />}
+      {showIntro && (
+        <IntroSequence
+          key="intro"
+          onHandoff={() => setBrandHandoff(true)}
+          onComplete={() => setIntroDone(true)}
+        />
+      )}
     </AnimatePresence>
     <div className="min-h-dvh bg-background font-sans text-foreground">
       <a
@@ -279,7 +289,7 @@ function Home() {
       <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
         <div className="flex items-center gap-2">
           <motion.div
-            layoutId={BRAND_LAYOUT_ID}
+            {...(headerOwnsBrand ? { layoutId: BRAND_LAYOUT_ID } : {})}
             className="grid h-9 w-9 place-items-center rounded-xl bg-[image:var(--gradient-primary)] shadow-[var(--shadow-soft)]"
           >
             <BrandMark size={22} />
