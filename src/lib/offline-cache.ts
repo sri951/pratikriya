@@ -1,7 +1,7 @@
 import { openDB, type IDBPDatabase } from "idb";
 import type { SavedDoubt } from "./doubts.functions";
 
-const DB_NAME = "clarity-offline";
+const DB_NAME = "pratikriya-offline";
 const DB_VERSION = 1;
 const STORE = "doubts";
 

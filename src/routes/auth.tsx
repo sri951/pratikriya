@@ -11,10 +11,10 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "Sign in — Clarity" },
-      { name: "description", content: "Sign in to Clarity to save your questions and get personalized AI tutoring." },
-      { property: "og:title", content: "Sign in — Clarity" },
-      { property: "og:description", content: "Sign in to Clarity to save your questions, track history, and get personalized AI tutoring." },
+      { title: "Sign in — Pratikriya" },
+      { name: "description", content: "Sign in to Pratikriya to save your questions and get personalized AI tutoring." },
+      { property: "og:title", content: "Sign in — Pratikriya" },
+      { property: "og:description", content: "Sign in to Pratikriya to save your questions, track history, and get personalized AI tutoring." },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://clarityaii.lovable.app/auth" },
       { name: "robots", content: "noindex" },
@@ -96,7 +96,7 @@ function AuthPage() {
           className="mb-6 inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
         >
           <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-          Back to Clarity
+          Back to Pratikriya
         </Link>
 
         <div className="rounded-3xl border border-border bg-card p-8 shadow-[var(--shadow-soft)]">
@@ -168,7 +168,7 @@ function AuthPage() {
           </form>
 
           <p className="mt-6 text-center text-sm text-muted-foreground">
-            {mode === "signin" ? "New to Clarity?" : "Already have an account?"}{" "}
+            {mode === "signin" ? "New to Pratikriya?" : "Already have an account?"}{" "}
             <button
               type="button"
               className="font-medium text-primary underline-offset-4 hover:underline"

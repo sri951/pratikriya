@@ -107,7 +107,7 @@ export function MermaidDiagram({ code }: { code: string }) {
     if (!pngUrl) return;
     const a = document.createElement("a");
     a.href = pngUrl;
-    a.download = `clarity-diagram-${Date.now()}.png`;
+    a.download = `pratikriya-diagram-${Date.now()}.png`;
     a.click();
   };
 
@@ -116,13 +116,13 @@ export function MermaidDiagram({ code }: { code: string }) {
     try {
       const res = await fetch(pngUrl);
       const blob = await res.blob();
-      const file = new File([blob], "clarity-diagram.png", { type: "image/png" });
+      const file = new File([blob], "pratikriya-diagram.png", { type: "image/png" });
       const nav = navigator as Navigator & {
         canShare?: (data: { files?: File[] }) => boolean;
         share?: (data: { files?: File[]; title?: string; text?: string }) => Promise<void>;
       };
       if (nav.canShare?.({ files: [file] }) && nav.share) {
-        await nav.share({ files: [file], title: "Clarity diagram" });
+        await nav.share({ files: [file], title: "Pratikriya diagram" });
         return;
       }
       if (navigator.clipboard && "write" in navigator.clipboard && typeof ClipboardItem !== "undefined") {
@@ -141,7 +141,7 @@ export function MermaidDiagram({ code }: { code: string }) {
     const w = window.open("");
     if (!w) return;
     w.document.write(
-      `<title>Clarity diagram</title><body style="margin:0;background:#0f172a;display:grid;place-items:center;min-height:100vh"><img src="${pngUrl}" style="max-width:100%;max-height:100vh"/></body>`,
+      `<title>Pratikriya diagram</title><body style="margin:0;background:#0f172a;display:grid;place-items:center;min-height:100vh"><img src="${pngUrl}" style="max-width:100%;max-height:100vh"/></body>`,
     );
   };
 
