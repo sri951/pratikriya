@@ -22,8 +22,8 @@ export default defineConfig({
         devOptions: { enabled: false },
         includeAssets: ["favicon.ico", "apple-touch-icon.png"],
         manifest: {
-          name: "Clarity — Instant AI feedback",
-          short_name: "Clarity",
+          name: "Pratikriya — Instant AI feedback",
+          short_name: "Pratikriya",
           description:
             "Ask any academic question and get calm, personalized AI feedback in seconds.",
           theme_color: "#8FB89C",
@@ -46,7 +46,7 @@ export default defineConfig({
               urlPattern: ({ request }) => request.mode === "navigate",
               handler: "NetworkFirst",
               options: {
-                cacheName: "clarity-pages",
+                cacheName: "pratikriya-pages",
                 networkTimeoutSeconds: 4,
                 expiration: { maxEntries: 50, maxAgeSeconds: 60 * 60 * 24 * 7 },
               },
@@ -56,7 +56,7 @@ export default defineConfig({
                 sameOrigin && /\.(?:js|css|woff2?|png|jpg|jpeg|svg|webp|ico)$/.test(url.pathname),
               handler: "CacheFirst",
               options: {
-                cacheName: "clarity-assets",
+                cacheName: "pratikriya-assets",
                 expiration: { maxEntries: 200, maxAgeSeconds: 60 * 60 * 24 * 30 },
               },
             },

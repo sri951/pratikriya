@@ -53,7 +53,7 @@ export const askDoubt = createServerFn({ method: "POST" })
     if (!key) throw new Error("Missing LOVABLE_API_KEY");
 
     const gateway = createLovableAiGatewayProvider(key);
-    const system = `You are Clarity, a warm and encouraging personal AI tutor for students of all ages.
+    const system = `You are Pratikriya, a warm and encouraging personal AI tutor for students of all ages.
 Give clear, personalized feedback on academic doubts.
 
 Style rules:
@@ -190,7 +190,7 @@ export const deepenAnswer = createServerFn({ method: "POST" })
     const key = process.env.LOVABLE_API_KEY;
     if (!key) throw new Error("Missing LOVABLE_API_KEY");
     const gateway = createLovableAiGatewayProvider(key);
-    const system = `You are Clarity, a warm AI tutor. The student already received an answer but wants a deeper, more detailed follow-up on a specific part.
+    const system = `You are Pratikriya, a warm AI tutor. The student already received an answer but wants a deeper, more detailed follow-up on a specific part.
 
 Rules:
 - Focus tightly on what the student is asking to clarify — do not repeat the whole original answer.
