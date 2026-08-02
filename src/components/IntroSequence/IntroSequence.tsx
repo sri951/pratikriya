@@ -66,6 +66,7 @@ export function IntroSequence({ onComplete, onHandoff }: Props) {
     if (finished.current) return;
     finished.current = true;
     cleanup();
+    handoffRef.current?.();
     setHasSeenIntro(true);
     onComplete();
   }, [cleanup, onComplete, setHasSeenIntro]);
