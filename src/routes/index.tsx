@@ -118,7 +118,7 @@ function Home() {
       }
     },
     onError: (err) => {
-      toast.error(err instanceof Error ? err.message : "Clarity couldn't answer that one.");
+      toast.error(err instanceof Error ? err.message : "Pratikriya couldn't answer that one.");
     },
   });
 
@@ -268,7 +268,7 @@ function Home() {
             <Sparkles className="h-5 w-5" aria-hidden="true" />
           </div>
           <span className="font-display text-xl font-semibold tracking-tight">
-            Clarity
+            Pratikriya
           </span>
         </div>
         <nav aria-label="Primary" className="hidden items-center gap-8 text-sm text-muted-foreground sm:flex">
@@ -340,7 +340,7 @@ function Home() {
               <span className="italic text-primary">Get clarity in seconds.</span>
             </h1>
             <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-              Clarity is a gentle AI tutor that answers your doubts the moment
+              Pratikriya is a gentle AI tutor that answers your doubts the moment
               they appear — with explanations tailored to how you learn, not
               days later when the moment has passed.
             </p>
@@ -396,7 +396,7 @@ function Home() {
       <section id="how" className="border-y border-border bg-secondary/40">
         <div className="mx-auto max-w-6xl px-6 py-20">
           <div className="max-w-2xl">
-            <p className="text-sm font-medium uppercase tracking-widest text-primary">How Clarity helps</p>
+            <p className="text-sm font-medium uppercase tracking-widest text-primary">How Pratikriya helps</p>
             <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight sm:text-4xl">
               A patient tutor, always one tab away.
             </h2>
@@ -410,7 +410,7 @@ function Home() {
             <Feature
               icon={<Brain className="h-5 w-5" />}
               title="Personalized to you"
-              body="Clarity meets you where you are, adjusting depth and examples until the idea clicks."
+              body="Pratikriya meets you where you are, adjusting depth and examples until the idea clicks."
             />
             <Feature
               icon={<Heart className="h-5 w-5" />}
@@ -470,7 +470,7 @@ function Home() {
                   {imageName ?? "Attached image"}
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  Clarity will read the text, equations, or diagram in this image.
+                  Pratikriya will read the text, equations, or diagram in this image.
                 </p>
               </div>
               <button
@@ -601,13 +601,13 @@ function Home() {
         <div ref={answerRef} aria-live="polite" className="mt-10 scroll-mt-24">
           {mutation.isError && (
             <div className="rounded-2xl border border-destructive/30 bg-destructive/5 p-5 text-sm text-destructive">
-              Something went wrong reaching Clarity. Please try again in a moment.
+              Something went wrong reaching Pratikriya. Please try again in a moment.
             </div>
           )}
           {mutation.isPending && (
             <div className="flex items-center gap-3 rounded-3xl border border-border bg-card p-6 text-muted-foreground">
               <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
-              <span className="animate-pulse">Clarity is thinking through your question…</span>
+              <span className="animate-pulse">Pratikriya is thinking through your question…</span>
             </div>
           )}
           {answer && !mutation.isPending && (
@@ -657,9 +657,9 @@ function Home() {
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 py-8 text-sm text-muted-foreground sm:flex-row">
           <div className="flex items-center gap-2">
             <Sparkles className="h-4 w-4 text-primary" aria-hidden="true" />
-            <span>Clarity — learning shouldn't wait.</span>
+            <span>Pratikriya — learning shouldn't wait.</span>
           </div>
-          <span>© {new Date().getFullYear()} Clarity Learning</span>
+          <span>© {new Date().getFullYear()} Pratikriya Learning</span>
         </div>
       </footer>
     </div>
@@ -768,7 +768,7 @@ function AnswerCard({
   const handleDeepen = async () => {
     const c = clarification.trim();
     if (!c) {
-      toast.error("Tell Clarity what to clarify.");
+      toast.error("Tell Pratikriya what to clarify.");
       return;
     }
     try {
@@ -838,7 +838,7 @@ function AnswerCard({
           </div>
           <div className="min-w-0">
             <p className="text-xs font-medium uppercase tracking-widest text-primary">
-              Clarity · your AI tutor
+              Pratikriya · your AI tutor
             </p>
             <p className="mt-1 font-display text-lg font-semibold leading-snug text-foreground sm:text-xl">
               {answer.summary}
@@ -984,7 +984,7 @@ function AnswerCard({
               Was this answer helpful?
             </p>
             <p className="text-sm text-muted-foreground">
-              Your feedback helps Clarity improve for you.
+              Your feedback helps Pratikriya improve for you.
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-2">

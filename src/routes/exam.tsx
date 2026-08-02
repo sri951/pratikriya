@@ -42,13 +42,13 @@ export const Route = createFileRoute("/exam")({
   component: ExamPage,
   head: () => ({
     meta: [
-      { title: "AI Exam Mode — Clarity" },
+      { title: "AI Exam Mode — Pratikriya" },
       {
         name: "description",
         content:
           "Upload notes or a PDF, get an AI-generated quiz, and receive graded feedback with analytics on what to revise.",
       },
-      { property: "og:title", content: "AI Exam Mode — Clarity" },
+      { property: "og:title", content: "AI Exam Mode — Pratikriya" },
       {
         property: "og:description",
         content:
@@ -143,7 +143,7 @@ function ExamPage() {
                 Turn any document into a personalized exam.
               </h1>
               <p className="mt-2 max-w-2xl text-muted-foreground">
-                Upload a PDF or notes, pick difficulty and question count, and Clarity writes
+                Upload a PDF or notes, pick difficulty and question count, and Pratikriya writes
                 questions grounded in your source. Answer offline, upload your work, and get scored
                 with strengths, mistakes, and topics to revise.
               </p>
@@ -287,7 +287,7 @@ function Header() {
         <div className="grid h-9 w-9 place-items-center rounded-xl bg-primary text-primary-foreground">
           <Sparkles className="h-5 w-5" aria-hidden />
         </div>
-        <span className="font-display text-xl font-semibold tracking-tight">Clarity</span>
+        <span className="font-display text-xl font-semibold tracking-tight">Pratikriya</span>
       </Link>
       <Link
         to="/"
@@ -726,7 +726,7 @@ function SubmitCard({
       <h2 className="mt-2 font-display text-xl font-semibold">Submit your answers</h2>
       <p className="text-sm text-muted-foreground">
         Grading “{exam.title}”. Type your answers below, or upload a photo/PDF of your handwritten
-        work — Clarity will OCR it before grading.
+        work — Pratikriya will OCR it before grading.
       </p>
 
       <div className="mt-4">

@@ -1,6 +1,6 @@
-# Clarity
+# Pratikriya
 
-> Clarity is an AI tutor that gives students instant, personalized feedback on academic questions, plus an exam mode that turns their own notes into graded quizzes.
+> Pratikriya is an AI tutor that gives students instant, personalized feedback on academic questions, plus an exam mode that turns their own notes into graded quizzes.
 
 ## Pages
 
