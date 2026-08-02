@@ -15,9 +15,20 @@ import {
   type SceneId,
 } from "./intro.constants";
 
-type Props = { onComplete: () => void };
+type Props = {
+  onComplete: () => void;
+  /** Fired at Scene 5 start so the app header can claim the shared brand logo. */
+  onHandoff?: () => void;
+};
 
-export function IntroSequence({ onComplete }: Props) {
+export function IntroSequence({ onComplete, onHandoff }: Props) {
+  const handoffRef = useRef(onHandoff);
+  handoffRef.current = onHandoff;
+
+  const beginHandoff = useCallback(() => {
+    setHandoff(true);
+    handoffRef.current?.();
+  }, []);
   const { hasSeenIntro, setHasSeenIntro, muted, setMuted, reducedMotion } = useIntroPreferences();
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -64,7 +75,7 @@ export function IntroSequence({ onComplete }: Props) {
     if (reducedMotion) {
       setShowLogo(true);
       setShowTagline(true);
-      schedule(() => setHandoff(true), TIMINGS.reducedMotionCrossfade);
+      schedule(beginHandoff, TIMINGS.reducedMotionCrossfade);
       schedule(complete, TIMINGS.reducedMotionCompleteAt);
       return cleanup;
     }
@@ -76,7 +87,7 @@ export function IntroSequence({ onComplete }: Props) {
     schedule(() => setShowSkip(true), TIMINGS.skipVisibleAt);
     schedule(() => setShowLogo(true), TIMINGS.logoRevealAt);
     schedule(() => setShowTagline(true), TIMINGS.taglineAt);
-    schedule(() => setHandoff(true), TIMINGS.handoffAt);
+    schedule(beginHandoff, TIMINGS.handoffAt);
     schedule(complete, TIMINGS.completeAt);
 
     return cleanup;
