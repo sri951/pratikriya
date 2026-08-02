@@ -56,6 +56,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import heroImg from "@/assets/hero.jpg";
+import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
+import { IntroSequence } from "@/components/IntroSequence/IntroSequence";
+import { BrandMark } from "@/components/IntroSequence/LogoReveal";
+import { useIntroPreferences } from "@/components/IntroSequence/useIntroPreferences";
+import { BRAND_LAYOUT_ID } from "@/components/IntroSequence/intro.constants";
 
 export const Route = createFileRoute("/")({
   component: Home,
