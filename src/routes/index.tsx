@@ -258,6 +258,11 @@ function Home() {
     setImageName(file.name);
   };
 
+  // Cinematic intro gate — HomeScreen stays mounted underneath the whole time.
+  const { hydrated, hasSeenIntro } = useIntroPreferences();
+  const [introDone, setIntroDone] = useState(false);
+  const showIntro = hydrated && !hasSeenIntro && !introDone;
+
   return (
     <LayoutGroup>
     <AnimatePresence>
