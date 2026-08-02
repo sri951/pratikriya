@@ -259,6 +259,10 @@ function Home() {
   };
 
   return (
+    <LayoutGroup>
+    <AnimatePresence>
+      {showIntro && <IntroSequence key="intro" onComplete={() => setIntroDone(true)} />}
+    </AnimatePresence>
     <div className="min-h-dvh bg-background font-sans text-foreground">
       <a
         href="#ask"
@@ -269,9 +273,12 @@ function Home() {
 
       <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
         <div className="flex items-center gap-2">
-          <div className="grid h-9 w-9 place-items-center rounded-xl bg-[image:var(--gradient-primary)] text-primary-foreground shadow-[var(--shadow-soft)]">
-            <Sparkles className="h-5 w-5" aria-hidden="true" />
-          </div>
+          <motion.div
+            layoutId={BRAND_LAYOUT_ID}
+            className="grid h-9 w-9 place-items-center rounded-xl bg-[image:var(--gradient-primary)] shadow-[var(--shadow-soft)]"
+          >
+            <BrandMark size={22} />
+          </motion.div>
           <span className="font-display text-xl font-semibold tracking-tight">
             Pratikriya
           </span>
