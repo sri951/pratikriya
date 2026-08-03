@@ -36,6 +36,8 @@ import {
   FileText,
   GraduationCap,
   BookMarked,
+  Settings as SettingsIcon,
+  Play,
 } from "lucide-react";
 import { askDoubt, deepenAnswer, type DoubtAnswer } from "@/lib/ask.functions";
 import { listDoubts, saveDoubt, deleteDoubt, type SavedDoubt } from "@/lib/doubts.functions";
@@ -259,10 +261,19 @@ function Home() {
   };
 
   // Cinematic intro gate — HomeScreen stays mounted underneath the whole time.
-  const { hydrated, hasSeenIntro } = useIntroPreferences();
+  const { hydrated, hasSeenIntro, setHasSeenIntro } = useIntroPreferences();
   const [introDone, setIntroDone] = useState(false);
   const [brandHandoff, setBrandHandoff] = useState(false);
+  const [replayKey, setReplayKey] = useState(0);
   const showIntro = hydrated && !hasSeenIntro && !introDone;
+
+  const replayIntro = () => {
+    setBrandHandoff(false);
+    setIntroDone(false);
+    setHasSeenIntro(false);
+    setReplayKey((k) => k + 1);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
   // The header only claims the shared layoutId once the intro releases it,
   // otherwise two elements would fight over the same layout animation.
   const headerOwnsBrand = !showIntro || brandHandoff;
@@ -272,7 +283,7 @@ function Home() {
     <AnimatePresence>
       {showIntro && (
         <IntroSequence
-          key="intro"
+          key={`intro-${replayKey}`}
           onHandoff={() => setBrandHandoff(true)}
           onComplete={() => setIntroDone(true)}
         />
@@ -312,6 +323,27 @@ function Home() {
         <div className="flex items-center gap-2">
           <OfflineBadge />
           <InstallButton />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                size="sm"
+                variant="ghost"
+                className="rounded-full"
+                aria-label="Settings"
+              >
+                <SettingsIcon className="h-4 w-4" aria-hidden="true" />
+                <span className="sr-only">Settings</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuLabel>Settings</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={replayIntro}>
+                <Play className="h-4 w-4" aria-hidden="true" />
+                Replay intro
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
           {!authLoading && !isAuthenticated && (
             <Button
               size="sm"
