@@ -279,15 +279,30 @@ function Home() {
   // Global keyboard shortcut to replay the intro: Shift + R (outside inputs).
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key.toLowerCase() !== "r" || !e.shiftKey) return;
-      const target = e.target as HTMLElement;
-      const tag = target.tagName.toLowerCase();
-      if (tag === "input" || tag === "textarea" || tag === "select" || target.isContentEditable) return;
+      if (!e.shiftKey || e.metaKey || e.ctrlKey || e.altKey) return;
+      const key = (e.key || "").toLowerCase();
+      if (key !== "r") return;
+      const target = e.target as HTMLElement | null;
+      const tag = target?.tagName?.toLowerCase?.() ?? "";
+      if (tag === "input" || tag === "textarea" || tag === "select" || target?.isContentEditable) return;
       e.preventDefault();
       replayIntro();
     };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    // Capture phase on the document so overlays/menus can't swallow the key,
+    // and make sure the frame is focused so key events actually arrive.
+    const focusFrame = () => {
+      try {
+        if (!document.hasFocus()) window.focus();
+      } catch {
+        /* cross-origin frame — non fatal */
+      }
+    };
+    document.addEventListener("keydown", onKey, true);
+    window.addEventListener("pointerdown", focusFrame, true);
+    return () => {
+      document.removeEventListener("keydown", onKey, true);
+      window.removeEventListener("pointerdown", focusFrame, true);
+    };
   }, []);
   // The header only claims the shared layoutId once the intro releases it,
   // otherwise two elements would fight over the same layout animation.
