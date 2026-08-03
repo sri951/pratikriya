@@ -273,7 +273,22 @@ function Home() {
     setHasSeenIntro(false);
     setReplayKey((k) => k + 1);
     window.scrollTo({ top: 0, behavior: "smooth" });
+    toast.info("Replaying Pratikriya intro...", { duration: 2000 });
   };
+
+  // Global keyboard shortcut to replay the intro: Shift + R (outside inputs).
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key.toLowerCase() !== "r" || !e.shiftKey) return;
+      const target = e.target as HTMLElement;
+      const tag = target.tagName.toLowerCase();
+      if (tag === "input" || tag === "textarea" || tag === "select" || target.isContentEditable) return;
+      e.preventDefault();
+      replayIntro();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
   // The header only claims the shared layoutId once the intro releases it,
   // otherwise two elements would fight over the same layout animation.
   const headerOwnsBrand = !showIntro || brandHandoff;
