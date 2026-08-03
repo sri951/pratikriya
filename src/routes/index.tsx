@@ -261,10 +261,19 @@ function Home() {
   };
 
   // Cinematic intro gate — HomeScreen stays mounted underneath the whole time.
-  const { hydrated, hasSeenIntro } = useIntroPreferences();
+  const { hydrated, hasSeenIntro, setHasSeenIntro } = useIntroPreferences();
   const [introDone, setIntroDone] = useState(false);
   const [brandHandoff, setBrandHandoff] = useState(false);
+  const [replayKey, setReplayKey] = useState(0);
   const showIntro = hydrated && !hasSeenIntro && !introDone;
+
+  const replayIntro = () => {
+    setBrandHandoff(false);
+    setIntroDone(false);
+    setHasSeenIntro(false);
+    setReplayKey((k) => k + 1);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
   // The header only claims the shared layoutId once the intro releases it,
   // otherwise two elements would fight over the same layout animation.
   const headerOwnsBrand = !showIntro || brandHandoff;
@@ -274,7 +283,7 @@ function Home() {
     <AnimatePresence>
       {showIntro && (
         <IntroSequence
-          key="intro"
+          key={`intro-${replayKey}`}
           onHandoff={() => setBrandHandoff(true)}
           onComplete={() => setIntroDone(true)}
         />
