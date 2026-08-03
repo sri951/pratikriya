@@ -36,6 +36,8 @@ import {
   FileText,
   GraduationCap,
   BookMarked,
+  Settings as SettingsIcon,
+  Play,
 } from "lucide-react";
 import { askDoubt, deepenAnswer, type DoubtAnswer } from "@/lib/ask.functions";
 import { listDoubts, saveDoubt, deleteDoubt, type SavedDoubt } from "@/lib/doubts.functions";
