@@ -323,6 +323,27 @@ function Home() {
         <div className="flex items-center gap-2">
           <OfflineBadge />
           <InstallButton />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                size="sm"
+                variant="ghost"
+                className="rounded-full"
+                aria-label="Settings"
+              >
+                <SettingsIcon className="h-4 w-4" aria-hidden="true" />
+                <span className="sr-only">Settings</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuLabel>Settings</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={replayIntro}>
+                <Play className="h-4 w-4" aria-hidden="true" />
+                Replay intro
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
           {!authLoading && !isAuthenticated && (
             <Button
               size="sm"
