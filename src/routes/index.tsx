@@ -356,6 +356,7 @@ function Home() {
               <DropdownMenuItem onClick={replayIntro}>
                 <Play className="h-4 w-4" aria-hidden="true" />
                 Replay intro
+                <span className="ml-auto text-xs tracking-wider text-muted-foreground">⇧R</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
