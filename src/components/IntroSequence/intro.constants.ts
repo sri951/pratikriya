@@ -43,8 +43,8 @@ export const TIMINGS = {
 } as const;
 
 export const BRAND_LAYOUT_ID = "pratikriya-brand-logo";
-export const TAGLINE_WORDS = ["Learn.", "Think.", "Evolve."] as const;
-export const INTRO_ANNOUNCEMENT = "Pratikriya AI — Learn. Think. Evolve.";
+export const TAGLINE_WORDS = ["Think.", "Evolve."] as const;
+export const INTRO_ANNOUNCEMENT = "Pratikriya AI — Think. Evolve.";
 
 export const STORAGE_KEYS = {
   hasSeenIntro: "pratikriya:intro:seen",
