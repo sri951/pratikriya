@@ -349,6 +349,9 @@ function Home() {
           <Link to="/exam" className="inline-flex items-center gap-1.5 transition-colors hover:text-foreground">
             <GraduationCap className="h-4 w-4" aria-hidden="true" /> Exam mode
           </Link>
+          <Link to="/notes" className="inline-flex items-center gap-1.5 transition-colors hover:text-foreground">
+            <BookOpen className="h-4 w-4" aria-hidden="true" /> Notes AI
+          </Link>
         </nav>
         <div className="flex items-center gap-2">
           <OfflineBadge />
