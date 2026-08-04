@@ -133,6 +133,104 @@ export type Database = {
         }
         Relationships: []
       }
+      note_cards: {
+        Row: {
+          back: string
+          category: string
+          created_at: string
+          difficulty: string
+          due_at: string
+          front: string
+          id: string
+          learned: boolean
+          note_id: string
+          stage: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          back: string
+          category?: string
+          created_at?: string
+          difficulty?: string
+          due_at?: string
+          front: string
+          id?: string
+          learned?: boolean
+          note_id: string
+          stage?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          back?: string
+          category?: string
+          created_at?: string
+          difficulty?: string
+          due_at?: string
+          front?: string
+          id?: string
+          learned?: boolean
+          note_id?: string
+          stage?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "note_cards_note_id_fkey"
+            columns: ["note_id"]
+            isOneToOne: false
+            referencedRelation: "study_notes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      study_notes: {
+        Row: {
+          chapter: string
+          created_at: string
+          extracted_text: string
+          id: string
+          pack: Json
+          source_name: string | null
+          source_type: string
+          subject: string
+          title: string
+          topics: string[]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          chapter?: string
+          created_at?: string
+          extracted_text?: string
+          id?: string
+          pack?: Json
+          source_name?: string | null
+          source_type?: string
+          subject?: string
+          title: string
+          topics?: string[]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          chapter?: string
+          created_at?: string
+          extracted_text?: string
+          id?: string
+          pack?: Json
+          source_name?: string | null
+          source_type?: string
+          subject?: string
+          title?: string
+          topics?: string[]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
