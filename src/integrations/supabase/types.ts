@@ -231,6 +231,107 @@ export type Database = {
         }
         Relationships: []
       }
+      teach_messages: {
+        Row: {
+          attachment_type: string | null
+          content: string
+          created_at: string
+          emotion: string
+          id: string
+          kind: string
+          knowledge: number
+          role: string
+          session_id: string
+          user_id: string
+        }
+        Insert: {
+          attachment_type?: string | null
+          content?: string
+          created_at?: string
+          emotion?: string
+          id?: string
+          kind?: string
+          knowledge?: number
+          role: string
+          session_id: string
+          user_id: string
+        }
+        Update: {
+          attachment_type?: string | null
+          content?: string
+          created_at?: string
+          emotion?: string
+          id?: string
+          kind?: string
+          knowledge?: number
+          role?: string
+          session_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "teach_messages_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "teach_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      teach_sessions: {
+        Row: {
+          chapter: string
+          corrections: number
+          created_at: string
+          emotion: string
+          id: string
+          knowledge: number
+          notebook: Json
+          personality: string
+          report: Json | null
+          status: string
+          subject: string
+          topics: string[]
+          updated_at: string
+          user_id: string
+          xp: number
+        }
+        Insert: {
+          chapter?: string
+          corrections?: number
+          created_at?: string
+          emotion?: string
+          id?: string
+          knowledge?: number
+          notebook?: Json
+          personality?: string
+          report?: Json | null
+          status?: string
+          subject?: string
+          topics?: string[]
+          updated_at?: string
+          user_id: string
+          xp?: number
+        }
+        Update: {
+          chapter?: string
+          corrections?: number
+          created_at?: string
+          emotion?: string
+          id?: string
+          knowledge?: number
+          notebook?: Json
+          personality?: string
+          report?: Json | null
+          status?: string
+          subject?: string
+          topics?: string[]
+          updated_at?: string
+          user_id?: string
+          xp?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
