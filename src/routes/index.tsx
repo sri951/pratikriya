@@ -15,6 +15,7 @@ import {
   Loader2,
   Plus,
   BookOpen,
+  Users,
   Lightbulb,
   MessageCircleQuestion,
   History,
