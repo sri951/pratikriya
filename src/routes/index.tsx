@@ -352,6 +352,9 @@ function Home() {
           <Link to="/notes" className="inline-flex items-center gap-1.5 transition-colors hover:text-foreground">
             <BookOpen className="h-4 w-4" aria-hidden="true" /> Notes AI
           </Link>
+          <Link to="/teach" className="inline-flex items-center gap-1.5 transition-colors hover:text-foreground">
+            <Users className="h-4 w-4" aria-hidden="true" /> Reverse Teacher
+          </Link>
         </nav>
         <div className="flex items-center gap-2">
           <OfflineBadge />

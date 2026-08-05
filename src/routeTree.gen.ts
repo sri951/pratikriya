@@ -9,12 +9,18 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TeachRouteImport } from './routes/teach'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as NotesRouteImport } from './routes/notes'
 import { Route as ExamRouteImport } from './routes/exam'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
 
+const TeachRoute = TeachRouteImport.update({
+  id: '/teach',
+  path: '/teach',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
@@ -47,6 +53,7 @@ export interface FileRoutesByFullPath {
   '/exam': typeof ExamRoute
   '/notes': typeof NotesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/teach': typeof TeachRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -54,6 +61,7 @@ export interface FileRoutesByTo {
   '/exam': typeof ExamRoute
   '/notes': typeof NotesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/teach': typeof TeachRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -62,13 +70,21 @@ export interface FileRoutesById {
   '/exam': typeof ExamRoute
   '/notes': typeof NotesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/teach': typeof TeachRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/exam' | '/notes' | '/sitemap.xml'
+  fullPaths: '/' | '/auth' | '/exam' | '/notes' | '/sitemap.xml' | '/teach'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/exam' | '/notes' | '/sitemap.xml'
-  id: '__root__' | '/' | '/auth' | '/exam' | '/notes' | '/sitemap.xml'
+  to: '/' | '/auth' | '/exam' | '/notes' | '/sitemap.xml' | '/teach'
+  id:
+    | '__root__'
+    | '/'
+    | '/auth'
+    | '/exam'
+    | '/notes'
+    | '/sitemap.xml'
+    | '/teach'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -77,10 +93,18 @@ export interface RootRouteChildren {
   ExamRoute: typeof ExamRoute
   NotesRoute: typeof NotesRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  TeachRoute: typeof TeachRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/teach': {
+      id: '/teach'
+      path: '/teach'
+      fullPath: '/teach'
+      preLoaderRoute: typeof TeachRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sitemap.xml': {
       id: '/sitemap.xml'
       path: '/sitemap.xml'
@@ -125,6 +149,7 @@ const rootRouteChildren: RootRouteChildren = {
   ExamRoute: ExamRoute,
   NotesRoute: NotesRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  TeachRoute: TeachRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
