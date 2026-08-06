@@ -39,6 +39,7 @@ import {
   BookMarked,
   Settings as SettingsIcon,
   Play,
+  ChevronDown,
 } from "lucide-react";
 import { askDoubt, deepenAnswer, type DoubtAnswer } from "@/lib/ask.functions";
 import { listDoubts, saveDoubt, deleteDoubt, type SavedDoubt } from "@/lib/doubts.functions";
@@ -328,36 +329,46 @@ function Home() {
         Skip to ask box
       </a>
 
-      <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
-        <div className="-ml-2 flex items-center gap-2">
+      <header className="grid w-full grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 px-4 py-5 sm:px-6 lg:gap-6 lg:px-8">
+        <div className="flex min-w-0 items-center gap-2">
           <motion.div
             {...(headerOwnsBrand ? { layoutId: BRAND_LAYOUT_ID } : {})}
-            className="grid h-9 w-9 place-items-center rounded-xl bg-[image:var(--gradient-primary)] shadow-[var(--shadow-soft)]"
+            className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-[image:var(--gradient-primary)] shadow-[var(--shadow-soft)]"
           >
             <BrandMark size={22} />
           </motion.div>
-          <span className="font-display text-xl font-semibold tracking-tight">
+          <span className="truncate font-display text-xl font-semibold tracking-tight">
             Pratikriya
           </span>
         </div>
-        <nav aria-label="Primary" className="hidden items-center gap-8 text-sm text-muted-foreground sm:flex">
+        <nav aria-label="Primary" className="hidden min-w-0 items-center justify-center gap-5 text-sm text-muted-foreground md:flex lg:gap-7">
           <a href="#problem" className="transition-colors hover:text-foreground">The problem</a>
           <a href="#how" className="transition-colors hover:text-foreground">How it works</a>
           <a href="#ask" className="transition-colors hover:text-foreground">Try it</a>
           {isAuthenticated && (
             <a href="#history" className="transition-colors hover:text-foreground">History</a>
           )}
-          <Link to="/exam" className="inline-flex items-center gap-1.5 transition-colors hover:text-foreground">
-            <GraduationCap className="h-4 w-4" aria-hidden="true" /> Exam mode
-          </Link>
-          <Link to="/notes" className="inline-flex items-center gap-1.5 transition-colors hover:text-foreground">
-            <BookOpen className="h-4 w-4" aria-hidden="true" /> Notes AI
-          </Link>
-          <Link to="/teach" className="inline-flex items-center gap-1.5 transition-colors hover:text-foreground">
-            <Users className="h-4 w-4" aria-hidden="true" /> Reverse Teacher
-          </Link>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="sm" className="h-8 gap-1 px-2 font-normal text-muted-foreground hover:text-foreground">
+                Learning tools
+                <ChevronDown className="h-3.5 w-3.5" aria-hidden="true" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="center" className="w-52">
+              <DropdownMenuItem asChild>
+                <Link to="/exam"><GraduationCap className="h-4 w-4" aria-hidden="true" /> Exam mode</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/notes"><BookOpen className="h-4 w-4" aria-hidden="true" /> Notes AI</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/teach"><Users className="h-4 w-4" aria-hidden="true" /> Reverse Teacher</Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </nav>
-        <div className="flex items-center gap-2">
+        <div className="flex shrink-0 items-center justify-end gap-1 sm:gap-2">
           <OfflineBadge />
           <InstallButton />
           <DropdownMenu>
