@@ -90,7 +90,7 @@ function TeachPage() {
   const [activeId, setActiveId] = useState<string | null>(null);
 
   return (
-    <div className="min-h-screen bg-[#070b16] text-slate-100">
+    <div className="min-h-screen bg-background text-foreground">
       <div
         aria-hidden="true"
         className="pointer-events-none fixed inset-0 opacity-70"
@@ -103,18 +103,18 @@ function TeachPage() {
         <header className="mb-8 flex items-center justify-between gap-3">
           <Link
             to="/"
-            className="inline-flex items-center gap-2 text-sm text-slate-400 transition-colors hover:text-slate-100"
+            className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
             <ArrowLeft className="h-4 w-4" aria-hidden="true" /> Back to Pratikriya
           </Link>
-          <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-300 backdrop-blur">
+          <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs text-muted-foreground backdrop-blur">
             <GraduationCap className="h-3.5 w-3.5" aria-hidden="true" /> Reverse Teacher Mode
           </span>
         </header>
 
         <main>
           {loading ? (
-            <div className="grid place-items-center py-24 text-slate-400">
+            <div className="grid place-items-center py-24 text-muted-foreground">
               <Loader2 className="h-6 w-6 animate-spin" />
             </div>
           ) : !isAuthenticated ? (
@@ -139,7 +139,7 @@ function GlassCard({
 }) {
   return (
     <div
-      className={`rounded-3xl border border-white/10 bg-white/[0.04] p-5 shadow-[0_20px_60px_-30px_rgba(0,0,0,.9)] backdrop-blur-xl ${className}`}
+      className={`rounded-3xl border border-border bg-card p-5 shadow-[var(--shadow-soft)] backdrop-blur-xl ${className}`}
     >
       {children}
     </div>
@@ -150,7 +150,7 @@ function SignedOut() {
   return (
     <GlassCard className="mx-auto max-w-lg text-center">
       <h1 className="font-display text-2xl font-semibold">Sign in to start teaching</h1>
-      <p className="mt-2 text-sm text-slate-400">
+      <p className="mt-2 text-sm text-muted-foreground">
         Your AI student remembers every lesson, so Reverse Teacher Mode needs your account.
       </p>
       <Link to="/auth" className="mt-5 inline-block">
@@ -203,7 +203,7 @@ function Welcome({ onStarted }: { onStarted: (id: string) => void }) {
           <h1 className="mt-3 font-display text-3xl font-semibold tracking-tight sm:text-4xl">
             Reverse Teacher Mode
           </h1>
-          <p className="mt-3 text-balance text-slate-400">
+          <p className="mt-3 text-balance text-muted-foreground">
             The best way to master a concept is to teach it. Today you become the teacher — your AI
             student will ask questions, make mistakes, and learn from you.
           </p>
@@ -211,12 +211,12 @@ function Welcome({ onStarted }: { onStarted: (id: string) => void }) {
       </section>
 
       <GlassCard>
-        <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-400">
+        <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
           1 · What are you teaching?
         </h2>
         <div className="mt-3 grid gap-3 sm:grid-cols-2">
           <div>
-            <label className="text-xs text-slate-400" htmlFor="subject">
+            <label className="text-xs text-muted-foreground" htmlFor="subject">
               Subject
             </label>
             <Input
@@ -224,11 +224,11 @@ function Welcome({ onStarted }: { onStarted: (id: string) => void }) {
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
               placeholder="e.g. Electronic Devices"
-              className="mt-1 border-white/10 bg-white/5 text-slate-100 placeholder:text-slate-500"
+              className="mt-1 border-border bg-card text-foreground placeholder:text-muted-foreground"
             />
           </div>
           <div>
-            <label className="text-xs text-slate-400" htmlFor="chapter">
+            <label className="text-xs text-muted-foreground" htmlFor="chapter">
               Chapter / topic
             </label>
             <Input
@@ -236,7 +236,7 @@ function Welcome({ onStarted }: { onStarted: (id: string) => void }) {
               value={chapter}
               onChange={(e) => setChapter(e.target.value)}
               placeholder="e.g. PN Junction Diode"
-              className="mt-1 border-white/10 bg-white/5 text-slate-100 placeholder:text-slate-500"
+              className="mt-1 border-border bg-card text-foreground placeholder:text-muted-foreground"
             />
           </div>
         </div>
@@ -246,14 +246,14 @@ function Welcome({ onStarted }: { onStarted: (id: string) => void }) {
               key={s}
               type="button"
               onClick={() => setSubject(s)}
-              className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-300 transition hover:border-sky-400/50 hover:text-white"
+              className="rounded-full border border-border bg-card px-3 py-1 text-xs text-muted-foreground transition hover:border-primary/50 hover:text-foreground"
             >
               {s}
             </button>
           ))}
         </div>
 
-        <h2 className="mt-7 text-sm font-semibold uppercase tracking-wide text-slate-400">
+        <h2 className="mt-7 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
           2 · Choose your student
         </h2>
         <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -268,12 +268,12 @@ function Welcome({ onStarted }: { onStarted: (id: string) => void }) {
                 onClick={() => setPersonality(k)}
                 className={`rounded-2xl border p-4 text-left transition ${
                   active
-                    ? "border-sky-400/60 bg-sky-400/10 shadow-[0_0_0_1px_rgba(56,189,248,.25)]"
-                    : "border-white/10 bg-white/[0.03] hover:border-white/25"
+                    ? "border-primary/60 bg-primary/10 shadow-[0_0_0_1px_var(--ring)]"
+                    : "border-border bg-muted/40 hover:border-primary/40"
                 }`}
               >
-                <p className="text-sm font-semibold text-slate-100">{p.label}</p>
-                <p className="mt-1 text-xs leading-relaxed text-slate-400">{p.blurb}</p>
+                <p className="text-sm font-semibold text-foreground">{p.label}</p>
+                <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{p.blurb}</p>
               </button>
             );
           })}
@@ -298,7 +298,7 @@ function Welcome({ onStarted }: { onStarted: (id: string) => void }) {
 
       {!!sessions.data?.length && (
         <section>
-          <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-slate-400">
+          <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
             Your teaching history
           </h2>
           <div className="grid gap-3 sm:grid-cols-2">
@@ -311,7 +311,7 @@ function Welcome({ onStarted }: { onStarted: (id: string) => void }) {
                     onClick={() => onStarted(s.id)}
                   >
                     <p className="text-sm font-semibold">{s.chapter || s.subject}</p>
-                    <p className="text-xs text-slate-400">
+                    <p className="text-xs text-muted-foreground">
                       {s.subject} · {PERSONALITIES[s.personality]?.label ?? s.personality} ·{" "}
                       {new Date(s.created_at).toLocaleDateString()}
                     </p>
@@ -319,17 +319,17 @@ function Welcome({ onStarted }: { onStarted: (id: string) => void }) {
                   <button
                     type="button"
                     aria-label="Delete session"
-                    className="text-slate-500 transition hover:text-red-400"
+                    className="text-muted-foreground transition hover:text-red-400"
                     onClick={() => removeMut.mutate(s.id)}
                   >
                     <Trash2 className="h-4 w-4" />
                   </button>
                 </div>
                 <div className="mt-3 flex items-center gap-3">
-                  <Progress value={s.knowledge} className="h-1.5 bg-white/10" />
-                  <span className="shrink-0 text-xs text-slate-400">{s.knowledge}%</span>
+                  <Progress value={s.knowledge} className="h-1.5 bg-muted" />
+                  <span className="shrink-0 text-xs text-muted-foreground">{s.knowledge}%</span>
                 </div>
-                <p className="mt-2 text-xs text-slate-500">
+                <p className="mt-2 text-xs text-muted-foreground">
                   {s.xp} XP · {s.corrections} corrections
                 </p>
               </GlassCard>
@@ -480,7 +480,7 @@ function SessionView({ sessionId, onExit }: { sessionId: string; onExit: () => v
 
   if (q.isLoading || !session) {
     return (
-      <div className="grid place-items-center py-24 text-slate-400">
+      <div className="grid place-items-center py-24 text-muted-foreground">
         <Loader2 className="h-6 w-6 animate-spin" />
       </div>
     );
@@ -494,16 +494,16 @@ function SessionView({ sessionId, onExit }: { sessionId: string; onExit: () => v
       <GlassCard className="flex flex-wrap items-center justify-between gap-3 py-3">
         <div>
           <p className="text-sm font-semibold">{session.chapter || session.subject}</p>
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-muted-foreground">
             {session.subject} · {PERSONALITIES[session.personality]?.label}
           </p>
         </div>
-        <div className="flex flex-wrap items-center gap-3 text-xs text-slate-300">
+        <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
           <span className="inline-flex items-center gap-1">
             <Timer className="h-3.5 w-3.5" aria-hidden="true" /> {mmss}
           </span>
           <span className="inline-flex items-center gap-1">
-            <Trophy className="h-3.5 w-3.5 text-amber-300" aria-hidden="true" /> {session.xp} XP
+            <Trophy className="h-3.5 w-3.5 text-primary" aria-hidden="true" /> {session.xp} XP
           </span>
           <Button size="sm" variant="ghost" className="rounded-full" onClick={onExit}>
             <X className="h-4 w-4" /> Exit
@@ -528,8 +528,8 @@ function SessionView({ sessionId, onExit }: { sessionId: string; onExit: () => v
                 onClick={() => setTab(k)}
                 className={`rounded-full px-3 py-1.5 text-xs transition ${
                   tab === k
-                    ? "bg-sky-400/15 text-sky-200 ring-1 ring-sky-400/40"
-                    : "text-slate-400 hover:text-slate-200"
+                    ? "bg-primary/10 text-primary ring-1 ring-primary/30"
+                    : "text-muted-foreground hover:text-foreground"
                 }`}
               >
                 {label}
@@ -559,13 +559,13 @@ function SessionView({ sessionId, onExit }: { sessionId: string; onExit: () => v
                   <img
                     src={image}
                     alt="Attached teaching material"
-                    className="max-h-40 rounded-xl border border-white/10"
+                    className="max-h-40 rounded-xl border border-border"
                   />
                   <button
                     type="button"
                     aria-label="Remove image"
                     onClick={() => setImage(null)}
-                    className="absolute -right-2 -top-2 rounded-full bg-slate-800 p-1 text-slate-300"
+                    className="absolute -right-2 -top-2 rounded-full bg-muted p-1 text-muted-foreground"
                   >
                     <X className="h-3 w-3" />
                   </button>
@@ -576,7 +576,7 @@ function SessionView({ sessionId, onExit }: { sessionId: string; onExit: () => v
                 onChange={(e) => setText(e.target.value)}
                 rows={6}
                 placeholder="Explain the concept to your student, in your own words…"
-                className="resize-none border-white/10 bg-white/5 text-slate-100 placeholder:text-slate-500"
+                className="resize-none border-border bg-card text-foreground placeholder:text-muted-foreground"
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && (e.metaKey || e.ctrlKey) && !busy) {
                     turnMut.mutate({ text, imageDataUrl: image ?? undefined, attachmentType: image ? "photo" : undefined });
@@ -633,12 +633,12 @@ function SessionView({ sessionId, onExit }: { sessionId: string; onExit: () => v
                     e.target.value = "";
                   }}
                 />
-                <label className="ml-auto inline-flex cursor-pointer items-center gap-2 text-xs text-slate-400">
+                <label className="ml-auto inline-flex cursor-pointer items-center gap-2 text-xs text-muted-foreground">
                   <input
                     type="checkbox"
                     checked={voiceReplies}
                     onChange={(e) => setVoiceReplies(e.target.checked)}
-                    className="accent-sky-400"
+                    className="accent-primary"
                   />
                   <Volume2 className="h-3.5 w-3.5" aria-hidden="true" /> Speak replies
                 </label>
@@ -690,7 +690,7 @@ function SessionView({ sessionId, onExit }: { sessionId: string; onExit: () => v
                 key={session.emotion}
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                className="grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-sky-500/30 to-violet-500/30 text-2xl"
+                className="grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-primary/25 to-accent/60 text-2xl"
                 aria-hidden="true"
               >
                 {EMOTION_FACE[session.emotion] ?? "🤔"}
@@ -699,17 +699,17 @@ function SessionView({ sessionId, onExit }: { sessionId: string; onExit: () => v
                 <p className="text-sm font-semibold">
                   {PERSONALITIES[session.personality]?.label ?? "AI Student"}
                 </p>
-                <p className="text-xs capitalize text-slate-400">Feeling {session.emotion}</p>
+                <p className="text-xs capitalize text-muted-foreground">Feeling {session.emotion}</p>
               </div>
             </div>
             <div className="mt-4">
-              <div className="mb-1 flex items-center justify-between text-xs text-slate-400">
+              <div className="mb-1 flex items-center justify-between text-xs text-muted-foreground">
                 <span className="inline-flex items-center gap-1">
                   <Brain className="h-3.5 w-3.5" aria-hidden="true" /> AI understanding
                 </span>
-                <span className="font-semibold text-sky-300">{session.knowledge}%</span>
+                <span className="font-semibold text-primary">{session.knowledge}%</span>
               </div>
-              <Progress value={session.knowledge} className="h-2 bg-white/10" />
+              <Progress value={session.knowledge} className="h-2 bg-muted" />
             </div>
           </GlassCard>
 
@@ -725,7 +725,7 @@ function SessionView({ sessionId, onExit }: { sessionId: string; onExit: () => v
                 ))}
               </AnimatePresence>
               {busy && (
-                <p className="text-xs italic text-slate-400">Your student is thinking…</p>
+                <p className="text-xs italic text-muted-foreground">Your student is thinking…</p>
               )}
             </div>
           </GlassCard>
@@ -746,7 +746,7 @@ function MessageBubble({ m, onSpeak }: { m: TeachMessage; onSpeak: () => void })
       className={isTeacher ? "flex justify-end" : "flex justify-start"}
     >
       <div className={`max-w-[85%] ${isTeacher ? "text-right" : ""}`}>
-        <p className="mb-1 text-[10px] uppercase tracking-wide text-slate-500">
+        <p className="mb-1 text-[10px] uppercase tracking-wide text-muted-foreground">
           {isTeacher ? "You (teacher)" : "AI student"}
           {!isTeacher && m.kind === "explain_back" ? " · explaining back" : ""}
           {!isTeacher && m.kind === "practice" ? " · practice attempt" : ""}
@@ -754,8 +754,8 @@ function MessageBubble({ m, onSpeak }: { m: TeachMessage; onSpeak: () => void })
         <div
           className={
             isTeacher
-              ? "rounded-2xl rounded-br-sm bg-sky-500 px-4 py-2.5 text-sm text-white"
-              : "rounded-2xl rounded-bl-sm border border-white/10 bg-white/[0.05] px-4 py-2.5 text-sm text-slate-200"
+              ? "rounded-2xl rounded-br-sm bg-primary px-4 py-2.5 text-sm text-primary-foreground"
+              : "rounded-2xl rounded-bl-sm border border-border bg-muted/50 px-4 py-2.5 text-sm text-foreground"
           }
         >
           <p className="whitespace-pre-wrap leading-relaxed">{m.content}</p>
@@ -764,7 +764,7 @@ function MessageBubble({ m, onSpeak }: { m: TeachMessage; onSpeak: () => void })
           <button
             type="button"
             onClick={onSpeak}
-            className="mt-1 inline-flex items-center gap-1 text-[11px] text-slate-500 transition hover:text-sky-300"
+            className="mt-1 inline-flex items-center gap-1 text-[11px] text-muted-foreground transition hover:text-primary"
           >
             <Volume2 className="h-3 w-3" /> Hear it
           </button>
@@ -787,24 +787,24 @@ function NotebookPanel({ session }: { session: TeachSession }) {
   const empty = groups.every(([, items]) => items.length === 0);
   return (
     <div className="space-y-4">
-      <p className="inline-flex items-center gap-2 text-xs text-slate-400">
+      <p className="inline-flex items-center gap-2 text-xs text-muted-foreground">
         <NotebookPen className="h-3.5 w-3.5" aria-hidden="true" /> Your student writes this
         automatically while you teach.
       </p>
       {empty ? (
-        <p className="text-sm text-slate-500">The notebook is still blank. Start teaching!</p>
+        <p className="text-sm text-muted-foreground">The notebook is still blank. Start teaching!</p>
       ) : (
         groups
           .filter(([, items]) => items.length > 0)
           .map(([title, items]) => (
             <div key={title}>
-              <h3 className="text-xs font-semibold uppercase tracking-wide text-sky-300">
+              <h3 className="text-xs font-semibold uppercase tracking-wide text-primary">
                 {title}
               </h3>
-              <ul className="mt-1.5 space-y-1 text-sm text-slate-300">
+              <ul className="mt-1.5 space-y-1 text-sm text-muted-foreground">
                 {items.map((i, idx) => (
                   <li key={`${title}-${idx}`} className="flex gap-2">
-                    <span className="text-slate-600">•</span>
+                    <span className="text-muted-foreground">•</span>
                     <span>{i}</span>
                   </li>
                 ))}
@@ -831,9 +831,9 @@ function ReportCard({ session }: { session: TeachSession }) {
       <h2 className="font-display text-lg font-semibold">Session report</h2>
       <div className="mt-3 grid grid-cols-2 gap-3">
         {stats.map(([k, v]) => (
-          <div key={k} className="rounded-2xl border border-white/10 bg-white/[0.03] p-3">
-            <p className="text-[11px] uppercase tracking-wide text-slate-500">{k}</p>
-            <p className="mt-1 text-lg font-semibold text-sky-200">{v}</p>
+          <div key={k} className="rounded-2xl border border-border bg-muted/40 p-3">
+            <p className="text-[11px] uppercase tracking-wide text-muted-foreground">{k}</p>
+            <p className="mt-1 text-lg font-semibold text-primary">{v}</p>
           </div>
         ))}
       </div>
@@ -843,7 +843,7 @@ function ReportCard({ session }: { session: TeachSession }) {
           {r.badges.map((b) => (
             <span
               key={b}
-              className="rounded-full border border-amber-300/30 bg-amber-300/10 px-3 py-1 text-xs text-amber-200"
+              className="rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs text-primary"
             >
               🏅 {b}
             </span>
@@ -859,9 +859,9 @@ function ReportCard({ session }: { session: TeachSession }) {
       </div>
 
       {r.letter && (
-        <blockquote className="mt-5 rounded-2xl border border-white/10 bg-white/[0.03] p-4 text-sm italic leading-relaxed text-slate-300">
+        <blockquote className="mt-5 rounded-2xl border border-border bg-muted/40 p-4 text-sm italic leading-relaxed text-muted-foreground">
           “{r.letter}”
-          <footer className="mt-2 not-italic text-xs text-slate-500">
+          <footer className="mt-2 not-italic text-xs text-muted-foreground">
             — What I learned from my teacher today
           </footer>
         </blockquote>
@@ -884,15 +884,15 @@ function ReportList({
     <div>
       <h3
         className={`text-xs font-semibold uppercase tracking-wide ${
-          tone === "good" ? "text-emerald-300" : "text-amber-300"
+          tone === "good" ? "text-primary" : "text-primary"
         }`}
       >
         {title}
       </h3>
-      <ul className="mt-1.5 space-y-1 text-sm text-slate-300">
+      <ul className="mt-1.5 space-y-1 text-sm text-muted-foreground">
         {items.map((i, idx) => (
           <li key={idx} className="flex gap-2">
-            <span className="text-slate-600">•</span>
+            <span className="text-muted-foreground">•</span>
             <span>{i}</span>
           </li>
         ))}
