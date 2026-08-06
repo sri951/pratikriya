@@ -329,7 +329,7 @@ function Home() {
       </a>
 
       <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
-        <div className="flex items-center gap-2">
+        <div className="-ml-2 flex items-center gap-2">
           <motion.div
             {...(headerOwnsBrand ? { layoutId: BRAND_LAYOUT_ID } : {})}
             className="grid h-9 w-9 place-items-center rounded-xl bg-[image:var(--gradient-primary)] shadow-[var(--shadow-soft)]"
