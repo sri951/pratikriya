@@ -843,7 +843,7 @@ function ReportCard({ session }: { session: TeachSession }) {
           {r.badges.map((b) => (
             <span
               key={b}
-              className="rounded-full border border-amber-300/30 bg-amber-300/10 px-3 py-1 text-xs text-amber-200"
+              className="rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs text-primary"
             >
               🏅 {b}
             </span>
