@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { Eraser, Pencil, Send, Trash2, Undo2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const COLORS = ["#e2e8f0", "#7dd3fc", "#fca5a5", "#fcd34d", "#86efac"];
+const COLORS = ["#1f2d33", "#0e7490", "#be123c", "#b45309", "#15803d"];
+const BOARD_BG = "#ffffff";
 
 export function Whiteboard({
   onSend,
@@ -28,7 +29,7 @@ export function Whiteboard({
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
     ctx.scale(dpr, dpr);
-    ctx.fillStyle = "#0b1220";
+    ctx.fillStyle = BOARD_BG;
     ctx.fillRect(0, 0, rect.width, rect.height);
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
@@ -58,7 +59,7 @@ export function Whiteboard({
     const ctx = canvasRef.current?.getContext("2d");
     if (!ctx) return;
     const { x, y } = pos(e);
-    ctx.strokeStyle = erasing ? "#0b1220" : color;
+    ctx.strokeStyle = erasing ? BOARD_BG : color;
     ctx.lineWidth = erasing ? 24 : width;
     ctx.lineTo(x, y);
     ctx.stroke();
@@ -79,7 +80,7 @@ export function Whiteboard({
     const ctx = canvas?.getContext("2d");
     if (!canvas || !ctx) return;
     const rect = canvas.getBoundingClientRect();
-    ctx.fillStyle = "#0b1220";
+    ctx.fillStyle = BOARD_BG;
     ctx.fillRect(0, 0, rect.width, rect.height);
     snapshots.current = [];
   }
@@ -97,7 +98,7 @@ export function Whiteboard({
               setErasing(false);
             }}
             className={`h-6 w-6 rounded-full border transition ${
-              color === c && !erasing ? "scale-110 border-white/80" : "border-white/20"
+              color === c && !erasing ? "scale-110 border-foreground" : "border-border"
             }`}
             style={{ background: c }}
           />
@@ -109,7 +110,7 @@ export function Whiteboard({
           value={width}
           aria-label="Pen thickness"
           onChange={(e) => setWidth(Number(e.target.value))}
-          className="ml-1 w-20 accent-sky-400"
+          className="ml-1 w-20 accent-primary"
         />
         <Button
           type="button"
@@ -135,7 +136,7 @@ export function Whiteboard({
         onPointerMove={move}
         onPointerUp={end}
         onPointerLeave={end}
-        className="h-64 w-full touch-none rounded-2xl border border-white/10 bg-[#0b1220] md:h-[22rem]"
+        className="h-64 w-full touch-none rounded-2xl border border-border bg-white md:h-[22rem]"
       />
 
       <Button
