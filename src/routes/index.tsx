@@ -366,6 +366,9 @@ function Home() {
               <DropdownMenuItem asChild>
                 <Link to="/teach"><Users className="h-4 w-4" aria-hidden="true" /> Reverse Teacher</Link>
               </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/detective"><Fingerprint className="h-4 w-4" aria-hidden="true" /> AI Detective</Link>
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </nav>
