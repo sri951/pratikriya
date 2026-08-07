@@ -13,6 +13,7 @@ import { Route as TeachRouteImport } from './routes/teach'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as NotesRouteImport } from './routes/notes'
 import { Route as ExamRouteImport } from './routes/exam'
+import { Route as DetectiveRouteImport } from './routes/detective'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
 
@@ -36,6 +37,11 @@ const ExamRoute = ExamRouteImport.update({
   path: '/exam',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DetectiveRoute = DetectiveRouteImport.update({
+  id: '/detective',
+  path: '/detective',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
@@ -50,6 +56,7 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/detective': typeof DetectiveRoute
   '/exam': typeof ExamRoute
   '/notes': typeof NotesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -58,6 +65,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/detective': typeof DetectiveRoute
   '/exam': typeof ExamRoute
   '/notes': typeof NotesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -67,6 +75,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/detective': typeof DetectiveRoute
   '/exam': typeof ExamRoute
   '/notes': typeof NotesRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -74,13 +83,28 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/exam' | '/notes' | '/sitemap.xml' | '/teach'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/detective'
+    | '/exam'
+    | '/notes'
+    | '/sitemap.xml'
+    | '/teach'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/exam' | '/notes' | '/sitemap.xml' | '/teach'
+  to:
+    | '/'
+    | '/auth'
+    | '/detective'
+    | '/exam'
+    | '/notes'
+    | '/sitemap.xml'
+    | '/teach'
   id:
     | '__root__'
     | '/'
     | '/auth'
+    | '/detective'
     | '/exam'
     | '/notes'
     | '/sitemap.xml'
@@ -90,6 +114,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRoute
+  DetectiveRoute: typeof DetectiveRoute
   ExamRoute: typeof ExamRoute
   NotesRoute: typeof NotesRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
@@ -126,6 +151,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ExamRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/detective': {
+      id: '/detective'
+      path: '/detective'
+      fullPath: '/detective'
+      preLoaderRoute: typeof DetectiveRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth': {
       id: '/auth'
       path: '/auth'
@@ -146,6 +178,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRoute,
+  DetectiveRoute: DetectiveRoute,
   ExamRoute: ExamRoute,
   NotesRoute: NotesRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
