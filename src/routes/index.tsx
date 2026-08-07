@@ -16,6 +16,7 @@ import {
   Plus,
   BookOpen,
   Users,
+  Fingerprint,
   Lightbulb,
   MessageCircleQuestion,
   History,
