@@ -14,6 +14,78 @@ export type Database = {
   }
   public: {
     Tables: {
+      detective_cases: {
+        Row: {
+          case_number: string
+          completed_steps: number
+          confidence: number
+          correct_answer: string
+          created_at: string
+          id: string
+          misconception: string
+          probes: Json
+          question: string
+          repair_path: Json
+          report: Json
+          root_cause: string
+          root_cause_confidence: number
+          status: string
+          student_answer: string
+          subject: string
+          tags: string[]
+          time_taken_seconds: number
+          topic: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          case_number: string
+          completed_steps?: number
+          confidence?: number
+          correct_answer?: string
+          created_at?: string
+          id?: string
+          misconception?: string
+          probes?: Json
+          question: string
+          repair_path?: Json
+          report?: Json
+          root_cause?: string
+          root_cause_confidence?: number
+          status?: string
+          student_answer?: string
+          subject?: string
+          tags?: string[]
+          time_taken_seconds?: number
+          topic?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          case_number?: string
+          completed_steps?: number
+          confidence?: number
+          correct_answer?: string
+          created_at?: string
+          id?: string
+          misconception?: string
+          probes?: Json
+          question?: string
+          repair_path?: Json
+          report?: Json
+          root_cause?: string
+          root_cause_confidence?: number
+          status?: string
+          student_answer?: string
+          subject?: string
+          tags?: string[]
+          time_taken_seconds?: number
+          topic?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       doubts: {
         Row: {
           answer: Json
