@@ -1,26 +1,52 @@
-# Clarity
+# Pratikriya AI
 
-Design a sleek, modern web page that instantly helps students clear academic doubts using AI feedback. The layout should be clean, with a calming color scheme, clear typography, and intuitive navigation. Create a simple, inviting homepage that explains the problem of delayed feedback and how the AI offers immediate, personalized responses. Include a friendly input box for questions and a smooth, instant feedback display. Make it responsive, accessible, and engaging for all learners.
+> AI-powered academic feedback and doubt-resolution platform.
 
-This project was built with [Lovable](https://lovable.dev).
+**Pratikriya AI** helps students get fast, personalized feedback on academic questions. Ask a doubt, receive AI-powered explanations, and learn more effectively.
 
-**Live app**: https://clarityaii.lovable.app
+## Features
 
-## Build with Lovable
+* 🤖 AI-powered academic feedback
+* 💬 Instant doubt resolution
+* 🎯 Personalized explanations
+* 📱 Responsive modern interface
+* 🔐 Supabase integration
+* ⚡ Fast React + Vite experience
 
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/097b9ff9-6fcd-4d04-a83c-e4a1dd8c07a6).
+## Tech Stack
 
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
+* React + TypeScript
+* Vite
+* Tailwind CSS
+* TanStack Router & React Query
+* Supabase
+* AI SDK / OpenAI-compatible providers
 
-## Development
+## Getting Started
 
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
-
-```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
+```bash
+git clone https://github.com/sri951/pratikriya.git
+cd pratikriya
+npm install
 npm run dev
 ```
+
+Create a `.env` file with the required Supabase and AI provider credentials before running the application.
+
+## Available Scripts
+
+```bash
+npm run dev
+npm run build
+npm run preview
+npm run lint
+npm run format
+```
+
+## Status
+
+🚀 Actively under development.
+
+## License
+
+No license has been specified yet.
