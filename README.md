@@ -109,6 +109,14 @@ Pratikriya is built around three guiding tenets:
 
 ## 🏗️ System Architecture
 
+
+
+<img width="2627" height="1925" alt="mermaid-diagram (2)" src="https://github.com/user-attachments/assets/e432fa43-c472-46d8-b81e-81c1cbde3ef0" />
+
+<img width="3559" height="2203" alt="mermaid-diagram (1)" src="https://github.com/user-attachments/assets/ea444323-64c9-4a1b-bce8-c12e3f3ca000" />
+
+
+
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                       STUDENT / USER                        │
@@ -326,7 +334,15 @@ pratikriya/
 - [ ] **Native Mobile Application**: Capacitor / React Native wrappers for iOS and Android.
 - [ ] **Classroom Teacher Dashboard**: Group analytics for school educators to spot class-wide misconceptions early.
 
----
+
+<img width="1920" height="1080" alt="Screenshot 2026-08-22 212955" src="https://github.com/user-attachments/assets/fc826d2d-7771-457a-b6c3-37636daed165" />
+<img width="1920" height="1080" alt="Screenshot 2026-08-22 213003" src="https://github.com/user-attachments/assets/e5f94a19-7ee7-4bf1-86e0-adcaa77b34bd" />
+<img width="1920" height="1080" alt="Screenshot 2026-08-22 213014" src="https://github.com/user-attachments/assets/280d9a83-6582-435e-88bf-d195b5e342c7" />
+<img width="1920" height="1080" alt="Screenshot 2026-08-22 213040" src="https://github.com/user-attachments/assets/ff4111b1-d630-4a2b-9822-3846fdde376a" />
+<img width="1920" height="1080" alt="Screenshot 2026-08-22 213052" src="https://github.com/user-attachments/assets/66a31f7a-48c3-4029-838e-26b847790ec2" />
+<img width="1920" height="1080" alt="Screenshot 2026-08-22 213103" src="https://github.com/user-attachments/assets/02b3cbde-1441-4d02-8b6b-d45e8118af69" />
+<img width="1920" height="1080" alt="Screenshot 2026-08-22 213115" src="https://github.com/user-attachments/assets/f8a76688-5a65-4fd7-90ec-e86b6e608d45" />
+
 
 ## 📄 License
 
