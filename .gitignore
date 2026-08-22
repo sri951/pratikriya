@@ -10,11 +10,22 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+build
 .output
 .vinxi
 .tanstack/**
 .nitro
+coverage/
 *.local
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# n8n local data
+n8n_data/
 
 # Wrangler / Cloudflare
 .wrangler/
