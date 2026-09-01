@@ -84,6 +84,12 @@ export type DetectiveCase = {
   updated_at: string;
 };
 
+function toPercent(n: number): number {
+  const v = Number.isFinite(n) ? n : 0;
+  const scaled = v > 0 && v <= 1 ? v * 100 : v;
+  return Math.max(0, Math.min(100, Math.round(scaled)));
+}
+
 const SELECT =
   "id, case_number, subject, topic, question, student_answer, correct_answer, confidence, time_taken_seconds, status, root_cause, root_cause_confidence, misconception, report, probes, repair_path, completed_steps, tags, created_at, updated_at";
 
@@ -179,6 +185,12 @@ Time taken: ${data.timeTakenSeconds} seconds`;
       id: p.id?.trim() || `p${i + 1}`,
       choices: p.choices.slice(0, 4),
     }));
+
+    report.suspects = report.suspects.map((s) => ({
+      ...s,
+      confidence: toPercent(s.confidence),
+    }));
+
 
     const caseNumber = `#${Math.floor(10_000 + Math.random() * 89_999)}`;
 
@@ -327,9 +339,9 @@ ${probeTranscript}`;
       .update({
         status: "diagnosed",
         root_cause: verdict.rootCause.slice(0, 300),
-        root_cause_confidence: Math.max(0, Math.min(100, Math.round(verdict.rootCauseConfidence))),
+        root_cause_confidence: toPercent(verdict.rootCauseConfidence),
         misconception: verdict.misconception.slice(0, 500),
-        report: { ...kase.report, ...verdict },
+        report: { ...kase.report, ...verdict, rootCauseConfidence: toPercent(verdict.rootCauseConfidence) },
         probes,
         repair_path: verdict.repairPath,
         tags: verdict.tags.map((t) => t.toLowerCase().slice(0, 40)).slice(0, 6),
