@@ -334,9 +334,9 @@ function Home() {
         <div className="flex min-w-0 items-center gap-2">
           <motion.div
             {...(headerOwnsBrand ? { layoutId: BRAND_LAYOUT_ID } : {})}
-            className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-[image:var(--gradient-primary)] shadow-[var(--shadow-soft)]"
+            className="grid h-10 w-10 shrink-0 place-items-center rounded-xl"
           >
-            <BrandMark size={22} />
+            <BrandMark size={38} />
           </motion.div>
           <span className="truncate font-display text-xl font-semibold tracking-tight">
             Pratikriya

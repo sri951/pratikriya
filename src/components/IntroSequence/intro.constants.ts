@@ -1,9 +1,7 @@
-import introVideo from "@/assets/intro-bg.mp4.asset.json";
 import introAudio from "@/assets/intro-theme.mp3.asset.json";
 
 /** Single source of truth for the cinematic intro. All times in ms. */
 export const INTRO_MEDIA = {
-  videoSrc: introVideo.url,
   audioSrc: introAudio.url,
 } as const;
 

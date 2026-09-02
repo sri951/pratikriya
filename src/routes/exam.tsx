@@ -1,3 +1,4 @@
+import { BrandMark } from "@/components/IntroSequence/LogoReveal";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
@@ -284,9 +285,7 @@ function Header() {
   return (
     <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
       <Link to="/" className="flex items-center gap-2">
-        <div className="grid h-9 w-9 place-items-center rounded-xl bg-primary text-primary-foreground">
-          <Sparkles className="h-5 w-5" aria-hidden />
-        </div>
+        <BrandMark size={34} />
         <span className="font-display text-xl font-semibold tracking-tight">Pratikriya</span>
       </Link>
       <Link

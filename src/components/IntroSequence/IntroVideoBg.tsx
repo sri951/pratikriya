@@ -1,13 +1,9 @@
 import { useEffect, useRef } from "react";
-import { INTRO_COLORS, INTRO_MEDIA } from "./intro.constants";
+import { INTRO_COLORS } from "./intro.constants";
 
 type Props = {
-  videoRef: React.RefObject<HTMLVideoElement | null>;
   /** Fade the whole layer out during the Scene 5 handoff. */
   fadedOut: boolean;
-  /** Show the particle canvas instead of the video (autoplay blocked / error). */
-  fallback: boolean;
-  onVideoFailure: () => void;
 };
 
 /** High-DPI aware ambient particle field used when the video cannot play. */
@@ -89,28 +85,14 @@ function ParticleCanvas() {
   return <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" aria-hidden="true" />;
 }
 
-export function IntroVideoBg({ videoRef, fadedOut, fallback, onVideoFailure }: Props) {
+export function IntroVideoBg({ fadedOut }: Props) {
   return (
     <div
       aria-hidden="true"
       className="pointer-events-none absolute inset-0 z-0 transition-opacity duration-[1400ms] ease-out"
       style={{ backgroundColor: INTRO_COLORS.atmosphere, opacity: fadedOut ? 0 : 1 }}
     >
-      {fallback ? (
-        <ParticleCanvas />
-      ) : (
-        <video
-          ref={videoRef}
-          className="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover"
-          autoPlay
-          muted
-          playsInline
-          preload="auto"
-          onError={onVideoFailure}
-        >
-          <source src={INTRO_MEDIA.videoSrc} type="video/mp4" />
-        </video>
-      )}
+      <ParticleCanvas />
 
       {/* Contrast overlay */}
       <div className="absolute inset-0 z-10 bg-[#050505]/30" />
