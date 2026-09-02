@@ -20,7 +20,7 @@ export default defineConfig({
         injectRegister: null,
         filename: "sw.js",
         devOptions: { enabled: false },
-        includeAssets: ["favicon.ico", "apple-touch-icon.png"],
+        includeAssets: ["favicon.png", "apple-touch-icon.png"],
         manifest: {
           name: "Pratikriya — Instant AI feedback",
           short_name: "Pratikriya",
