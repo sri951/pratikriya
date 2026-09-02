@@ -31,7 +31,6 @@ export function IntroSequence({ onComplete, onHandoff }: Props) {
   }, []);
   const { hasSeenIntro, setHasSeenIntro, muted, setMuted, reducedMotion } = useIntroPreferences();
 
-  const videoRef = useRef<HTMLVideoElement | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const timeouts = useRef<number[]>([]);
   const finished = useRef(false);
@@ -41,7 +40,6 @@ export function IntroSequence({ onComplete, onHandoff }: Props) {
   const [showLogo, setShowLogo] = useState(false);
   const [showTagline, setShowTagline] = useState(false);
   const [handoff, setHandoff] = useState(false);
-  const [videoFallback, setVideoFallback] = useState(false);
 
   const schedule = useCallback((fn: () => void, ms: number) => {
     timeouts.current.push(window.setTimeout(fn, ms));
@@ -50,11 +48,6 @@ export function IntroSequence({ onComplete, onHandoff }: Props) {
   const cleanup = useCallback(() => {
     timeouts.current.forEach((t) => window.clearTimeout(t));
     timeouts.current = [];
-    const v = videoRef.current;
-    if (v) {
-      v.pause();
-      v.removeAttribute("src");
-    }
     const a = audioRef.current;
     if (a) {
       a.pause();
@@ -97,23 +90,6 @@ export function IntroSequence({ onComplete, onHandoff }: Props) {
 
   // ---- Media --------------------------------------------------------------
   useEffect(() => {
-    if (reducedMotion) return;
-    const v = videoRef.current;
-    if (!v) return;
-
-    // Keep the logo reveal locked to the video's focal collapse point.
-    const onTimeUpdate = () => {
-      if (v.currentTime >= TIMINGS.logoRevealAt / 1000) setShowLogo(true);
-    };
-    v.addEventListener("timeupdate", onTimeUpdate);
-
-    const p = v.play();
-    if (p && typeof p.catch === "function") p.catch(() => setVideoFallback(true));
-
-    return () => v.removeEventListener("timeupdate", onTimeUpdate);
-  }, [reducedMotion]);
-
-  useEffect(() => {
     if (reducedMotion || muted) return;
     const a = audioRef.current;
     if (!a) return;
@@ -149,12 +125,7 @@ export function IntroSequence({ onComplete, onHandoff }: Props) {
       </span>
 
       {!reducedMotion && (
-        <IntroVideoBg
-          videoRef={videoRef}
-          fadedOut={handoff}
-          fallback={videoFallback}
-          onVideoFailure={() => setVideoFallback(true)}
-        />
+        <IntroVideoBg fadedOut={handoff} />
       )}
 
       {!reducedMotion && (
