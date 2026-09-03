@@ -38,8 +38,6 @@ import {
   FileText,
   GraduationCap,
   BookMarked,
-  Settings as SettingsIcon,
-  Play,
   ChevronDown,
 } from "lucide-react";
 import { askDoubt, deepenAnswer, type DoubtAnswer } from "@/lib/ask.functions";
