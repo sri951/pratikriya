@@ -1,4 +1,4 @@
-import { BrandMark } from "@/components/IntroSequence/LogoReveal";
+import { BrandMark } from "@/components/brand-mark";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
