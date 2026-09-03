@@ -1,3 +1,4 @@
+import { AppHeader } from "@/components/app-header";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
@@ -100,17 +101,8 @@ function TeachPage() {
         }}
       />
       <div className="relative mx-auto max-w-6xl px-4 py-6 sm:px-6">
-        <header className="mb-8 flex items-center justify-between gap-3">
-          <Link
-            to="/"
-            className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
-          >
-            <ArrowLeft className="h-4 w-4" aria-hidden="true" /> Back to Pratikriya
-          </Link>
-          <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs text-muted-foreground backdrop-blur">
-            <GraduationCap className="h-3.5 w-3.5" aria-hidden="true" /> Reverse Teacher Mode
-          </span>
-        </header>
+        <AppHeader current="Reverse Teacher" />
+        <div className="mb-8" />
 
         <main>
           {loading ? (

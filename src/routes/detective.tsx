@@ -1,3 +1,4 @@
+import { AppHeader } from "@/components/app-header";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
@@ -209,17 +210,7 @@ function DetectivePage() {
 
   return (
     <div className="min-h-dvh bg-background font-sans text-foreground">
-      <header className="flex items-center justify-between gap-3 px-4 py-5 sm:px-6 lg:px-8">
-        <Button asChild variant="ghost" size="sm" className="rounded-full">
-          <Link to="/">
-            <ArrowLeft className="h-4 w-4" aria-hidden="true" /> Back
-          </Link>
-        </Button>
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <Fingerprint className="h-4 w-4 text-primary" aria-hidden="true" />
-          AI Detective
-        </div>
-      </header>
+      <AppHeader current="AI Detective" />
 
       <main className="mx-auto w-full max-w-7xl px-4 pb-24 sm:px-6 lg:px-8">
         <section className="mb-8 max-w-2xl">
