@@ -310,28 +310,6 @@ function Home() {
         <div className="flex shrink-0 items-center justify-end gap-1 sm:gap-2">
           <OfflineBadge />
           <InstallButton />
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                size="sm"
-                variant="ghost"
-                className="rounded-full"
-                aria-label="Settings"
-              >
-                <SettingsIcon className="h-4 w-4" aria-hidden="true" />
-                <span className="sr-only">Settings</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
-              <DropdownMenuLabel>Settings</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={replayIntro}>
-                <Play className="h-4 w-4" aria-hidden="true" />
-                Replay intro
-                <span className="ml-auto text-xs tracking-wider text-muted-foreground">⇧R</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
           {!authLoading && !isAuthenticated && (
             <Button
               size="sm"
