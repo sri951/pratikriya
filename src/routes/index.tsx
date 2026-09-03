@@ -38,8 +38,6 @@ import {
   FileText,
   GraduationCap,
   BookMarked,
-  Settings as SettingsIcon,
-  Play,
   ChevronDown,
 } from "lucide-react";
 import { askDoubt, deepenAnswer, type DoubtAnswer } from "@/lib/ask.functions";
@@ -61,11 +59,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import heroImg from "@/assets/hero.jpg";
-import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
-import { IntroSequence } from "@/components/IntroSequence/IntroSequence";
-import { BrandMark } from "@/components/IntroSequence/LogoReveal";
-import { useIntroPreferences } from "@/components/IntroSequence/useIntroPreferences";
-import { BRAND_LAYOUT_ID } from "@/components/IntroSequence/intro.constants";
+import { BrandMark } from "@/components/brand-mark";
 
 export const Route = createFileRoute("/")({
   component: Home,
@@ -263,65 +257,7 @@ function Home() {
     setImageName(file.name);
   };
 
-  // Cinematic intro gate — HomeScreen stays mounted underneath the whole time.
-  const { hydrated, hasSeenIntro, setHasSeenIntro } = useIntroPreferences();
-  const [introDone, setIntroDone] = useState(false);
-  const [brandHandoff, setBrandHandoff] = useState(false);
-  const [replayKey, setReplayKey] = useState(0);
-  const showIntro = hydrated && !hasSeenIntro && !introDone;
-
-  const replayIntro = () => {
-    setBrandHandoff(false);
-    setIntroDone(false);
-    setHasSeenIntro(false);
-    setReplayKey((k) => k + 1);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    toast.info("Replaying Pratikriya intro...", { duration: 2000 });
-  };
-
-  // Global keyboard shortcut to replay the intro: Shift + R (outside inputs).
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (!e.shiftKey || e.metaKey || e.ctrlKey || e.altKey) return;
-      const key = (e.key || "").toLowerCase();
-      if (key !== "r") return;
-      const target = e.target as HTMLElement | null;
-      const tag = target?.tagName?.toLowerCase?.() ?? "";
-      if (tag === "input" || tag === "textarea" || tag === "select" || target?.isContentEditable) return;
-      e.preventDefault();
-      replayIntro();
-    };
-    // Capture phase on the document so overlays/menus can't swallow the key,
-    // and make sure the frame is focused so key events actually arrive.
-    const focusFrame = () => {
-      try {
-        if (!document.hasFocus()) window.focus();
-      } catch {
-        /* cross-origin frame — non fatal */
-      }
-    };
-    document.addEventListener("keydown", onKey, true);
-    window.addEventListener("pointerdown", focusFrame, true);
-    return () => {
-      document.removeEventListener("keydown", onKey, true);
-      window.removeEventListener("pointerdown", focusFrame, true);
-    };
-  }, []);
-  // The header only claims the shared layoutId once the intro releases it,
-  // otherwise two elements would fight over the same layout animation.
-  const headerOwnsBrand = !showIntro || brandHandoff;
-
   return (
-    <LayoutGroup>
-    <AnimatePresence>
-      {showIntro && (
-        <IntroSequence
-          key={`intro-${replayKey}`}
-          onHandoff={() => setBrandHandoff(true)}
-          onComplete={() => setIntroDone(true)}
-        />
-      )}
-    </AnimatePresence>
     <div className="min-h-dvh bg-background font-sans text-foreground">
       <a
         href="#ask"
@@ -332,12 +268,9 @@ function Home() {
 
       <header className="grid w-full grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 px-4 py-5 sm:px-6 lg:gap-6 lg:px-8">
         <div className="flex min-w-0 items-center gap-2">
-          <motion.div
-            {...(headerOwnsBrand ? { layoutId: BRAND_LAYOUT_ID } : {})}
-            className="grid h-10 w-10 shrink-0 place-items-center rounded-xl"
-          >
+          <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl">
             <BrandMark size={38} />
-          </motion.div>
+          </div>
           <span className="truncate font-display text-xl font-semibold tracking-tight">
             Pratikriya
           </span>
@@ -375,28 +308,6 @@ function Home() {
         <div className="flex shrink-0 items-center justify-end gap-1 sm:gap-2">
           <OfflineBadge />
           <InstallButton />
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                size="sm"
-                variant="ghost"
-                className="rounded-full"
-                aria-label="Settings"
-              >
-                <SettingsIcon className="h-4 w-4" aria-hidden="true" />
-                <span className="sr-only">Settings</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
-              <DropdownMenuLabel>Settings</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={replayIntro}>
-                <Play className="h-4 w-4" aria-hidden="true" />
-                Replay intro
-                <span className="ml-auto text-xs tracking-wider text-muted-foreground">⇧R</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
           {!authLoading && !isAuthenticated && (
             <Button
               size="sm"
@@ -775,7 +686,6 @@ function Home() {
         </div>
       </footer>
     </div>
-    </LayoutGroup>
   );
 }
 

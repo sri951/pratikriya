@@ -1,3 +1,4 @@
+import { AppHeader } from "@/components/app-header";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
@@ -195,16 +196,7 @@ function NotesPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-30 border-b border-border/60 bg-background/80 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-3">
-          <Link to="/" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground">
-            <ArrowLeft className="h-4 w-4" /> Home
-          </Link>
-          <span className="ml-auto inline-flex items-center gap-2 text-sm font-semibold">
-            <Brain className="h-4 w-4 text-primary" /> AI Notes Intelligence
-          </span>
-        </div>
-      </header>
+      <AppHeader current="Notes AI" />
 
       <main className="mx-auto max-w-6xl space-y-8 px-4 py-8">
         <section>

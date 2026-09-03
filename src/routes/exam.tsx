@@ -1,4 +1,5 @@
-import { BrandMark } from "@/components/IntroSequence/LogoReveal";
+import { AppHeader } from "@/components/app-header";
+import { BrandMark } from "@/components/brand-mark";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
@@ -283,18 +284,7 @@ function ExamPage() {
 
 function Header() {
   return (
-    <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
-      <Link to="/" className="flex items-center gap-2">
-        <BrandMark size={34} />
-        <span className="font-display text-xl font-semibold tracking-tight">Pratikriya</span>
-      </Link>
-      <Link
-        to="/"
-        className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
-      >
-        <ArrowLeft className="h-4 w-4" /> Back to doubts
-      </Link>
-    </header>
+    <AppHeader current="Exam mode" />
   );
 }
 
