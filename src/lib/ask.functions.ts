@@ -2,6 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { generateObject, generateText, NoObjectGeneratedError } from "ai";
 import { z } from "zod";
 import { createLovableAiGatewayProvider } from "./ai-gateway.server";
+import { normalizeAnswer, tryParseFallback } from "./answer-normalize";
 
 const Input = z.object({
   question: z.string().min(1).max(4000),
@@ -118,64 +119,6 @@ Structure rules (strict):
     }
   });
 
-function tryParseFallback(text: string | undefined): unknown {
-  if (!text) return null;
-  const trimmed = text.trim().replace(/^```json\s*/i, "").replace(/^```\s*/i, "").replace(/```$/, "");
-  try {
-    return JSON.parse(trimmed);
-  } catch {
-    const match = trimmed.match(/\{[\s\S]*\}/);
-    if (!match) return null;
-    try {
-      return JSON.parse(match[0]);
-    } catch {
-      return null;
-    }
-  }
-}
-
-function normalizeAnswer(raw: unknown): DoubtAnswer {
-  const obj = (raw ?? {}) as Partial<DoubtAnswer> & Record<string, unknown>;
-  const takeaways = Array.isArray(obj.keyTakeaways)
-    ? obj.keyTakeaways.filter((t): t is string => typeof t === "string" && t.trim().length > 0).slice(0, 5)
-    : [];
-  const rawResources = Array.isArray((obj as { relatedResources?: unknown }).relatedResources)
-    ? ((obj as { relatedResources: unknown[] }).relatedResources)
-    : [];
-  const allowedTypes = new Set(["article", "video", "lesson", "reference"]);
-  const resources = rawResources
-    .map((r) => {
-      if (!r || typeof r !== "object") return null;
-      const rec = r as Record<string, unknown>;
-      const title = typeof rec.title === "string" ? rec.title.trim() : "";
-      const url = typeof rec.url === "string" ? rec.url.trim() : "";
-      if (!title || !url) return null;
-      const type = allowedTypes.has(rec.type as string) ? (rec.type as "article" | "video" | "lesson" | "reference") : "article";
-      const description = typeof rec.description === "string" ? rec.description : "";
-      return { title, description, url, type };
-    })
-    .filter((r): r is { title: string; description: string; url: string; type: "article" | "video" | "lesson" | "reference" } => r !== null)
-    .slice(0, 6);
-  return {
-    summary: typeof obj.summary === "string" ? obj.summary : "",
-    explanation: typeof obj.explanation === "string" ? obj.explanation : "",
-    diagram:
-      obj.diagram &&
-      typeof obj.diagram === "object" &&
-      typeof (obj.diagram as { mermaid?: unknown }).mermaid === "string"
-        ? {
-            mermaid: (obj.diagram as { mermaid: string }).mermaid,
-            caption:
-              typeof (obj.diagram as { caption?: unknown }).caption === "string"
-                ? (obj.diagram as { caption: string }).caption
-                : "",
-          }
-        : null,
-    keyTakeaways: takeaways.length > 0 ? takeaways : ["Key idea captured above."],
-    reflection: typeof obj.reflection === "string" ? obj.reflection : "Does this make sense so far?",
-    relatedResources: resources.length > 0 ? resources : null,
-  };
-}
 
 const DeepenInput = z.object({
   question: z.string().min(1).max(4000),
