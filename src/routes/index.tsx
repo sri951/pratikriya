@@ -60,6 +60,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import heroImg from "@/assets/hero.jpg";
 import { BrandMark } from "@/components/brand-mark";
+import HeroScrollAnimation from "@/components/ui/hero-scroll-animation";
 
 export const Route = createFileRoute("/")({
   component: Home,
@@ -391,6 +392,9 @@ function Home() {
           </div>
         </div>
       </section>
+
+      {/* Scroll-driven intro between hero and problem */}
+      <HeroScrollAnimation />
 
       {/* Problem */}
       <section id="problem" className="mx-auto max-w-6xl px-6 py-20">
