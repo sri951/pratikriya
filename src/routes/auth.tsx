@@ -6,6 +6,7 @@ import { lovable } from "@/integrations/lovable/index";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { AuthSwitch, type AuthMode } from "@/components/ui/auth-switch";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/auth")({
@@ -26,7 +27,7 @@ export const Route = createFileRoute("/auth")({
 
 function AuthPage() {
   const navigate = useNavigate();
-  const [mode, setMode] = useState<"signin" | "signup">("signin");
+  const [mode, setMode] = useState<AuthMode>("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -114,6 +115,8 @@ function AuthPage() {
             </div>
           </div>
 
+          <AuthSwitch mode={mode} onChange={(next) => setMode(next)} className="mb-6" />
+
           <Button
             type="button"
             variant="outline"
@@ -167,16 +170,6 @@ function AuthPage() {
             </Button>
           </form>
 
-          <p className="mt-6 text-center text-sm text-muted-foreground">
-            {mode === "signin" ? "New to Pratikriya?" : "Already have an account?"}{" "}
-            <button
-              type="button"
-              className="font-medium text-primary underline-offset-4 hover:underline"
-              onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
-            >
-              {mode === "signin" ? "Create an account" : "Sign in instead"}
-            </button>
-          </p>
         </div>
       </div>
     </div>
