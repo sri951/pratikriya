@@ -115,6 +115,8 @@ function AuthPage() {
             </div>
           </div>
 
+          <AuthSwitch mode={mode} onChange={(next) => setMode(next)} className="mb-6" />
+
           <Button
             type="button"
             variant="outline"
