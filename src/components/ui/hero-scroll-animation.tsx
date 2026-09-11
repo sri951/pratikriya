@@ -31,7 +31,7 @@ const TOOLS = [
 
 export default function HeroScrollAnimation() {
   return (
-    <section className="relative overflow-hidden bg-background pt-10 pb-16 sm:pt-14 sm:pb-24">
+    <section className="relative overflow-hidden bg-background pt-6 pb-16 sm:pt-8 sm:pb-24">
       <div className="mx-auto max-w-6xl px-6">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
