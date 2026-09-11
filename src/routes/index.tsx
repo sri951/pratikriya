@@ -353,7 +353,7 @@ function Home() {
         className="relative overflow-hidden"
         style={{ backgroundImage: "var(--gradient-hero)" }}
       >
-        <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-12 px-6 py-16 sm:py-24 lg:grid-cols-[minmax(0,1fr)_auto]">
+        <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-12 px-6 pt-16 pb-12 sm:pt-24 sm:pb-16 lg:grid-cols-[minmax(0,1fr)_auto]">
           <div className="min-w-0">
             <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1 text-xs font-medium text-muted-foreground backdrop-blur">
               <span className="h-1.5 w-1.5 rounded-full bg-primary" aria-hidden="true" />
@@ -380,13 +380,13 @@ function Home() {
               </Button>
             </div>
           </div>
-          <div className="relative mx-auto w-full max-w-md lg:max-w-none">
+          <div className="relative mx-auto w-full max-w-sm sm:max-w-md lg:max-w-[420px]">
             <div className="absolute -inset-6 rounded-[2rem] bg-[image:var(--gradient-primary)] opacity-20 blur-3xl" aria-hidden="true" />
             <img
               src={heroImg}
               alt="Illustration of a calm student thinking with ideas and formulas floating above an open book"
-              width={520}
-              height={520}
+              width={420}
+              height={420}
               className="relative rounded-[2rem] shadow-[var(--shadow-soft)]"
             />
           </div>
