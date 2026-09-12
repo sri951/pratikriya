@@ -161,15 +161,7 @@ VITE_SUPABASE_ANON_KEY=your-anon-key
 LOVABLE_API_KEY=your-ai-gateway-key
 ```
 
-### 4. Start n8n Local Engine (Optional / Background Orchestration)
-
-```bash
-docker compose up -d
-```
-
-Access the n8n console at `http://localhost:5678` (Credentials: `admin` / `pratikriya_admin_secure_password`).
-
-### 5. Run the Application
+### 4. Run the Application
 
 ```bash
 # Start development server with SSR & Hot Reloading
