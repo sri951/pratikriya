@@ -1,159 +1,161 @@
-# 🚀 Pratikriya AI — Cognitive Active Learning Companion
+<div align="center">
 
-[![CI Status](https://img.shields.io/badge/CI-Passing-brightgreen?style=for-the-badge&logo=githubactions&logoColor=white)](https://github.com/sri951/pratikriya/actions)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.8_100%25_Strict-blue?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![React 19](https://img.shields.io/badge/React-19_SSR-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
-[![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL_RLS-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
+<img src="public/pratikriya-logo.png" alt="Pratikriya AI logo" width="140" />
 
-An AI-powered personalized learning platform that helps students ask doubts, master concepts, learn from mistakes, transform study materials into interactive resources, teach an AI student, and track holistic cognitive mastery.
+# Pratikriya AI
 
-Pratikriya AI moves beyond passive question-answering. It unifies an **AI Tutor**, **AI Notes Intelligence System**, **Personalized Exam Generator & OCR Grader**, **Reverse Teacher Mode**, **AI Detective**, and **Personalized Learning Profile** into a single active learning ecosystem.
+### The Cognitive Active Learning Companion
 
----
+**Respond. Restore. Revive.**
 
-## 📑 Table of Contents
+[![Live App](https://img.shields.io/badge/🚀_Live_App-pratikriya.lovable.app-2ea44f?style=for-the-badge)](https://pratikriya.lovable.app)
 
-- [🎯 The Problem](#-the-problem--learning-shouldnt-wait)
-- [💡 The Solution](#-the-solution--instant-active-judgment-free-learning)
-- [🌟 Key Features (All 5 Modes + Profile)](#-key-features)
-- [🏗️ System Architecture](#️-system-architecture)
-- [🛠️ Technology Stack](#️-technology-stack)
-- [💻 Local Installation & Setup](#-local-installation--setup)
-- [📂 Project Structure](#-project-structure)
-- [📚 Documentation Index](#-documentation)
-- [🔮 Future Roadmap](#-future-roadmap)
-- [📄 License](#-license)
+[![CI Status](https://img.shields.io/badge/CI-Passing-brightgreen?style=flat-square&logo=githubactions&logoColor=white)](https://github.com/sri951/pratikriya/actions)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.8_Strict-blue?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![React 19](https://img.shields.io/badge/React-19_SSR-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev/)
+[![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL_RLS-3ECF8E?style=flat-square&logo=supabase&logoColor=white)](https://supabase.com/)
+[![PWA](https://img.shields.io/badge/PWA-Offline_Ready-5A0FC8?style=flat-square&logo=pwa&logoColor=white)](https://pratikriya.lovable.app)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](LICENSE)
+
+An AI-powered learning platform that doesn't just answer questions — it diagnoses mistakes,
+turns notes into study packs, grades handwritten exams, and lets you learn by teaching.
+
+[Features](#-key-features) · [Architecture](#️-system-architecture) · [Setup](#-local-installation--setup) · [Docs](#-documentation) · [Roadmap](#-future-roadmap)
+
+</div>
 
 ---
 
 ## 🎯 The Problem — Learning Shouldn't Wait
 
-Students frequently encounter obstacles while studying independently, yet feedback from instructors or peers often takes hours or days.
+Students frequently hit obstacles while studying independently, yet feedback from instructors or peers takes hours or days. When feedback is delayed:
 
-When feedback is delayed:
-
-- ❌ Learning momentum is broken.
-- ❌ The original train of thought is lost.
-- ❌ Misconceptions harden into bad habits.
-- ❌ Students become hesitant to ask "basic" questions.
-
----
+- ❌ Learning momentum is broken
+- ❌ The original train of thought is lost
+- ❌ Misconceptions harden into bad habits
+- ❌ Students become hesitant to ask "basic" questions
 
 ## 💡 The Solution — Instant, Active, Judgment-Free Learning
 
-Pratikriya is built around three guiding tenets:
-
-- ⚡ **Instant, Not Eventual**: Explanations, error diagnostics, and quizzes the second a question or document is submitted.
-- 🎯 **Personalized to You**: Calibrated to student confidence, strengths, missing prerequisites, and past mistake history.
-- ❤️ **Kind by Default**: Judgment-free environment encouraging experimentation, active teaching, and curiosity.
+- ⚡ **Instant, not eventual** — explanations, error diagnostics, and quizzes the second a question or document is submitted
+- 🎯 **Personalized to you** — calibrated to confidence, strengths, missing prerequisites, and past mistake history
+- ❤️ **Kind by default** — a judgment-free environment that encourages experimentation, teaching, and curiosity
 
 ---
 
 ## 🌟 Key Features
 
-### 1. 💬 AI Tutor (Ask Doubt & Deepen)
+### 💬 1. AI Tutor — Ask Doubt & Deepen
 
-- Ask academic questions in natural language with optional subject categories and tags.
-- Attach diagrams, homework photos, or equation snapshots.
-- Receive step-by-step markdown breakdowns, Mermaid.js visual flowcharts, key takeaways, and self-check reflection questions.
-- Built-in **Text-to-Speech Audio** to listen to concise spoken summaries.
-- Interactive **Deepen Answer** module to clarify specific steps without re-generating from scratch.
+- Ask questions in natural language with subject categories and tags
+- Attach diagrams, homework photos, or equation snapshots (multimodal input)
+- Step-by-step markdown breakdowns, Mermaid.js flowcharts, key takeaways, self-check questions
+- **Text-to-Speech** spoken summaries and a **Deepen Answer** module to clarify specific steps
 
-### 2. 📚 AI Notes Intelligence
+### 📚 2. AI Notes Intelligence
 
-- Ingest PDFs, documents, presentations, or handwritten notes.
-- Generates a full 8-resource study pack:
-  - 📄 3-tier summaries (5-min quick recap, 15-min review, full deep-dive)
-  - 🧠 Smart Topic Notes with exam tips and memory hooks
-  - 🗂️ 12–30 Spaced Repetition Flashcards (SuperMemo/Leitner algorithm)
-  - ❓ 10–50 Multi-choice questions with answer keys and rationale
-  - 🗺️ Interactive Mermaid.js Mindmap diagram
-  - 📐 Comprehensive Formula Sheet with symbol meanings and units
-  - 📅 7-day structured revision schedule
-  - 🔍 In-context _"Ask My Notes / ELI10"_ Q&A tutor grounded in uploaded files
+Upload PDFs, documents, slides, or handwritten notes and get a full 8-resource study pack:
 
-### 3. 📝 Personalized Exam Mode & OCR Grader
+| Resource | Description |
+| :------- | :---------- |
+| 📄 3-tier summaries | 5-min recap, 15-min review, full deep-dive |
+| 🧠 Smart topic notes | Exam tips and memory hooks |
+| 🗂️ Flashcards | 12–30 spaced-repetition cards (SuperMemo/Leitner) |
+| ❓ MCQs | 10–50 questions with answer keys and rationale |
+| 🗺️ Mindmap | Interactive Mermaid.js diagram |
+| 📐 Formula sheet | Symbol meanings and units |
+| 📅 Revision plan | Structured 7-day schedule |
+| 🔍 Ask My Notes | In-context ELI10 Q&A grounded in your files |
 
-- Generate source-grounded exams tailored to difficulty (Easy, Medium, Hard, Mixed) and custom topic focus.
-- Timed quiz interface with multiple-choice and open-ended questions.
-- Automated AI Grader with OCR capability: type answers or upload photos of handwritten work.
-- Diagnostic evaluation: Score dial (/10), accuracy percentage, question-by-question breakdown, strengths, mistakes, missing concepts, and **"Generate quiz on weak topics"** 1-click remediation.
+### 📝 3. Exam Mode & OCR Grader
 
-### 4. 🕵️ AI Detective (Mistake Root-Cause Investigation)
+- Generate source-grounded exams by difficulty (Easy / Medium / Hard / Mixed) and topic focus
+- Timed interface with multiple-choice and open-ended questions
+- AI grading with OCR — type answers or upload photos of handwritten work
+- Diagnostics: score dial (/10), accuracy %, per-question breakdown, strengths, mistakes, missing concepts
+- **"Generate quiz on weak topics"** one-click remediation
 
-- Investigates _why_ a mistake occurred instead of just giving the right answer.
-- **Phase 1 (Intake & Suspects)**: Analyzes student wrong answer + confidence rating, extracts evidence, ranks 3-6 suspect root causes, and issues 2-3 diagnostic multiple-choice probes.
-- **Phase 2 (Verdict & Concept Tree)**: Evaluates probe answers, delivers root cause verdict, identifies underlying misconception, renders a Mermaid.js concept dependency tree highlighting the missing node, and provides an interactive step-by-step repair checklist.
-- Mistake timeline, repeat pattern tracking, and topic error heatmaps.
+### 🕵️ 4. AI Detective — Mistake Root-Cause Investigation
 
-### 5. 🎓 Reverse Teacher Mode (Learn by Teaching)
+- Investigates *why* a mistake happened, not just what the right answer is
+- **Phase 1 — Intake & Suspects**: analyzes the wrong answer + confidence rating, ranks 3–6 suspect root causes, issues diagnostic probes
+- **Phase 2 — Verdict & Concept Tree**: identifies the underlying misconception, renders a concept dependency tree highlighting the missing node, and provides a step-by-step repair checklist
+- Mistake timeline, repeat-pattern tracking, and topic error heatmaps
 
-- The best way to learn is to teach. Students become the teacher while an AI persona acts as the student.
-- 5 distinct student personalities: _Curious_, _Skeptical_, _Exam-focused_, _Fast_, _Novice_.
-- Multi-modal teaching: text, speech-to-text voice input, photo attachment, and **Interactive Whiteboard Canvas** with drawing tools.
-- Autonomous AI Student Notebook: the AI student takes structured notes in real-time.
-- Comprehensive Session Report: teaching clarity score, communication score, AI understanding gained (10-100%), earned badges, and a personal thank-you letter from the AI student.
+### 🎓 5. Reverse Teacher Mode — Learn by Teaching
 
-### 6. 📊 Personalized Learning Profile & Analytics (`/profile`)
+- You become the teacher; an AI persona becomes the student (Protégé Effect)
+- 5 student personalities: *Curious, Skeptical, Exam-focused, Fast, Novice*
+- Multi-modal teaching: text, speech-to-text voice, photo attachments, and an **interactive whiteboard**
+- The AI student takes structured notes in real time
+- Session report: teaching clarity score, AI understanding gained (10–100%), earned badges, and a thank-you letter from your AI student
 
-- Unified cognitive dashboard aggregating learning events across all 5 modes.
-- Live Level, Rank Title (_"Grandmaster Scholar"_), and XP Progress Meter.
-- Overall Cognitive Mastery percentage dial.
-- Granular **Topic Competency Matrix** with status filters (_Mastered &ge;80%_, _Developing 50-79%_, _Needs Attention <50%_).
-- Recurring misconception pattern detection and prioritized revision schedule.
+### 📊 6. Learning Profile & Analytics
+
+- Unified dashboard aggregating events across all 5 modes
+- Level, rank title, XP progress meter, and overall cognitive mastery dial
+- Topic Competency Matrix with status filters (*Mastered ≥80%*, *Developing 50–79%*, *Needs Attention <50%*)
+- Recurring misconception detection and prioritized revision schedule
+
+---
+
+## 📸 Screenshots
+
+<div align="center">
+<img width="49%" alt="AI Tutor answering a doubt" src="https://github.com/user-attachments/assets/fc826d2d-7771-457a-b6c3-37636daed165" />
+<img width="49%" alt="Structured answer with diagram" src="https://github.com/user-attachments/assets/e5f94a19-7ee7-4bf1-86e0-adcaa77b34bd" />
+<img width="49%" alt="Notes Intelligence study pack" src="https://github.com/user-attachments/assets/280d9a83-6582-435e-88bf-d195b5e342c7" />
+<img width="49%" alt="Exam Mode grading dashboard" src="https://github.com/user-attachments/assets/ff4111b1-d630-4a2b-9822-3846fdde376a" />
+<img width="49%" alt="AI Detective investigation" src="https://github.com/user-attachments/assets/66a31f7a-48c3-4029-838e-26b847790ec2" />
+<img width="49%" alt="Reverse Teacher session" src="https://github.com/user-attachments/assets/02b3cbde-1441-4d02-8b6b-d45e8118af69" />
+<img width="49%" alt="Learning profile analytics" src="https://github.com/user-attachments/assets/f8a76688-5a65-4fd7-90ec-e86b6e608d45" />
+</div>
 
 ---
 
 ## 🏗️ System Architecture
 
+<img width="90%" alt="Pratikriya AI system architecture" src="https://github.com/user-attachments/assets/e432fa43-c472-46d8-b81e-81c1cbde3ef0" />
 
+<details>
+<summary><b>Data flow diagram</b></summary>
 
-<img width="2627" height="1925" alt="mermaid-diagram (2)" src="https://github.com/user-attachments/assets/e432fa43-c472-46d8-b81e-81c1cbde3ef0" />
+<img width="90%" alt="Pratikriya AI data flow" src="https://github.com/user-attachments/assets/ea444323-64c9-4a1b-bce8-c12e3f3ca000" />
 
-<img width="3559" height="2203" alt="mermaid-diagram (1)" src="https://github.com/user-attachments/assets/ea444323-64c9-4a1b-bce8-c12e3f3ca000" />
+</details>
 
+Full details in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ## 🛠️ Technology Stack
 
-- **Frontend**: React 19, TanStack Start (SSR), TanStack Router, TanStack Query, TailwindCSS 4, Radix UI primitives, Lucide React, Framer Motion.
-- **AI & TTS**: Google Gemini 3 Flash (`google/gemini-3-flash-preview`), OpenAI TTS (`openai/gpt-4o-mini-tts`), Vercel AI SDK (`ai`, `@ai-sdk/openai-compatible`).
-- **Database & Auth**: Supabase (PostgreSQL with RLS), Supabase Auth JWT Middleware.
-- **Offline & PWA**: `vite-plugin-pwa`, IndexedDB (`idb`), Service Worker caching.
-- **Visualizations**: Mermaid.js, Recharts, HTML5 Canvas Whiteboard.
-- **Testing & Quality**: Vitest / Node Test Runner, ESLint 9, Prettier, TypeScript 5.8.
+| Layer | Stack |
+| :---- | :---- |
+| **Frontend** | React 19 · TanStack Start (SSR) · TanStack Router & Query · Tailwind CSS 4 · Radix/shadcn UI · Framer Motion |
+| **AI & TTS** | Google Gemini 3 Flash · OpenAI TTS · Vercel AI SDK (structured Zod outputs) |
+| **Backend & Auth** | Supabase PostgreSQL with Row-Level Security · Supabase Auth (Email + Google OAuth) |
+| **Offline / PWA** | vite-plugin-pwa · Workbox caching · IndexedDB (`idb`) |
+| **Visualizations** | Mermaid.js · Recharts · HTML5 Canvas whiteboard |
+| **Quality** | Vitest · ESLint 9 · Prettier · TypeScript 5.8 strict |
 
 ---
 
 ## 💻 Local Installation & Setup
 
-### Prerequisites
-
-- Node.js &ge; 20.x
-- Git
-
-### 1. Clone the Repository
+**Prerequisites:** Node.js ≥ 20.x, Git
 
 ```bash
+# 1. Clone
 git clone https://github.com/sri951/pratikriya.git
 cd pratikriya
-```
 
-### 2. Install Dependencies
-
-```bash
+# 2. Install
 npm install
-```
 
-### 3. Configure Environment Variables
-
-Copy `.env.example` to `.env`:
-
-```bash
+# 3. Configure environment
 cp .env.example .env
 ```
 
-Fill in your Supabase project credentials and AI Gateway key:
+Fill in `.env`:
 
 ```ini
 VITE_SUPABASE_URL=https://your-project.supabase.co
@@ -161,95 +163,76 @@ VITE_SUPABASE_ANON_KEY=your-anon-key
 LOVABLE_API_KEY=your-ai-gateway-key
 ```
 
-### 4. Run the Application
-
 ```bash
-# Start development server with SSR & Hot Reloading
-npm run dev
-
-# Run automated unit tests
-npm test
-
-# Run code linter
-npm run lint
-
-# Compile production bundle
-npm run build
+npm run dev    # dev server with SSR + HMR
+npm test       # unit tests
+npm run lint   # linter
+npm run build  # production build
 ```
 
 ---
 
 ## 📂 Project Structure
 
-```
+```text
 pratikriya/
 ├── .github/
-│   └── workflows/ci.yml       # GitHub Actions CI validation pipeline
-├── docs/
-│   ├── DEMO_SCRIPT.md          # 3-minute hackathon pitch & live demo guide
-│   └── DEMO_SCRIPT.md          # 3-minute hackathon pitch & live demo guide
-├── public/                     # Static assets, icons, robots.txt, manifest
+│   ├── workflows/             # CI pipeline
+│   └── ISSUE_TEMPLATE/        # Bug report & feature request templates
+├── docs/                      # Architecture, demo script, contributing, security
+├── public/                    # Logo, icons, manifest, robots.txt
 ├── src/
-│   ├── components/             # Reusable UI components & dialogs
-│   │   ├── notes/              # Notes detail, MCQs, flashcards view
-│   │   ├── teach/              # Interactive whiteboard canvas
-│   │   └── ui/                 # Radix UI primitives & design system
-│   ├── hooks/                  # Auth, mobile, online, workflow status hooks
-│   ├── integrations/           # Supabase client, auth middleware, types
-│   ├── lib/                    # Server functions, schemas, AI gateway
-│   │   ├── __tests__/          # Automated validator unit tests
-│   │   ├── ask.functions.ts    # AI Tutor backend
-│   │   ├── detective.functions.ts # AI Detective backend
-│   │   ├── exam.functions.ts   # Exam Generator & OCR Grader backend
-│   │   ├── notes.functions.ts  # Notes Intelligence backend
-│   │   ├── profile.functions.ts# Learning Profile backend
-│   │   └── teach.functions.ts  # Reverse Teacher backend
-│   ├── routes/                 # File-based TanStack Router pages
-│   │   ├── index.tsx           # Landing page & AI Tutor
-│   │   ├── auth.tsx            # Authentication
-│   │   ├── detective.tsx       # AI Detective
-│   │   ├── exam.tsx            # Personalized Exam Mode
-│   │   ├── notes.tsx           # Notes Intelligence
-│   │   ├── profile.tsx         # Unified Learning Profile Dashboard
-│   │   └── teach.tsx           # Reverse Teacher Mode
-├── supabase/
-│   └── migrations/             # 7 PostgreSQL migrations with RLS policies
-├── package.json
-├── tsconfig.json
-├── vite.config.ts
+│   ├── components/            # Shared UI
+│   │   ├── notes/             # Notes detail, MCQs, flashcards
+│   │   ├── teach/             # Interactive whiteboard canvas
+│   │   └── ui/                # shadcn design system
+│   ├── hooks/                 # Auth, online status, workflow hooks
+│   ├── integrations/          # Supabase client & auth middleware
+│   ├── lib/                   # Server functions, schemas, AI gateway
+│   │   ├── __tests__/         # Unit tests
+│   │   ├── ask.functions.ts       # AI Tutor
+│   │   ├── detective.functions.ts # AI Detective
+│   │   ├── exam.functions.ts      # Exam Generator & OCR Grader
+│   │   ├── notes.functions.ts     # Notes Intelligence
+│   │   ├── profile.functions.ts   # Learning Profile
+│   │   └── teach.functions.ts     # Reverse Teacher
+│   └── routes/                # File-based pages (/, /auth, /exam, /notes, /teach, /detective, /profile)
+├── supabase/migrations/       # 7 PostgreSQL migrations with RLS
 └── README.md
 ```
 
 ---
 
-## 📚 Documentation Index
+## 📚 Documentation
 
-| Guide                                                 | Description                                                               |
-| :---------------------------------------------------- | :------------------------------------------------------------------------ |
-| [🏛️ System Architecture](docs/ARCHITECTURE.md)        | In-depth technical architecture, data lifecycle, and security model       |
-| [🎤 Live Demo Script](docs/DEMO_SCRIPT.md)            | 3-minute hackathon pitch script and complete live walkthrough guide       |
-| [🤝 Contributing Guidelines](docs/CONTRIBUTING.md)    | Development standards, testing procedures, and PR workflows               |
-| [🔒 Security Policy](docs/SECURITY.md)                | RLS enforcement, JWT middleware verification, and vulnerability reporting |
+| Guide | Description |
+| :---- | :---------- |
+| [🏛️ Architecture](docs/ARCHITECTURE.md) | Technical architecture, data lifecycle, security model |
+| [🎤 Demo Script](docs/DEMO_SCRIPT.md) | 3-minute pitch and complete live walkthrough |
+| [🤝 Contributing](docs/CONTRIBUTING.md) | Development standards, testing, PR workflow |
+| [🔒 Security Policy](docs/SECURITY.md) | RLS enforcement, auth model, vulnerability reporting |
 
 ---
 
 ## 🔮 Future Roadmap
 
-- [ ] **Collaborative Peer Teaching**: Multiplayer Reverse Teacher mode where two students co-teach an AI student.
-- [ ] **Voice-to-Voice Real-Time Streaming**: Native WebRTC duplex audio conversation with AI student personas.
-- [ ] **Native Mobile Application**: Capacitor / React Native wrappers for iOS and Android.
-- [ ] **Classroom Teacher Dashboard**: Group analytics for school educators to spot class-wide misconceptions early.
+- [ ] **Collaborative Peer Teaching** — multiplayer Reverse Teacher where two students co-teach an AI student
+- [ ] **Voice-to-Voice Streaming** — real-time duplex audio conversation with AI student personas
+- [ ] **Native Mobile App** — Capacitor / React Native wrappers for iOS and Android
+- [ ] **Classroom Dashboard** — group analytics for educators to spot class-wide misconceptions early
 
+---
 
-<img width="1920" height="1080" alt="Screenshot 2026-08-22 212955" src="https://github.com/user-attachments/assets/fc826d2d-7771-457a-b6c3-37636daed165" />
-<img width="1920" height="1080" alt="Screenshot 2026-08-22 213003" src="https://github.com/user-attachments/assets/e5f94a19-7ee7-4bf1-86e0-adcaa77b34bd" />
-<img width="1920" height="1080" alt="Screenshot 2026-08-22 213014" src="https://github.com/user-attachments/assets/280d9a83-6582-435e-88bf-d195b5e342c7" />
-<img width="1920" height="1080" alt="Screenshot 2026-08-22 213040" src="https://github.com/user-attachments/assets/ff4111b1-d630-4a2b-9822-3846fdde376a" />
-<img width="1920" height="1080" alt="Screenshot 2026-08-22 213052" src="https://github.com/user-attachments/assets/66a31f7a-48c3-4029-838e-26b847790ec2" />
-<img width="1920" height="1080" alt="Screenshot 2026-08-22 213103" src="https://github.com/user-attachments/assets/02b3cbde-1441-4d02-8b6b-d45e8118af69" />
-<img width="1920" height="1080" alt="Screenshot 2026-08-22 213115" src="https://github.com/user-attachments/assets/f8a76688-5a65-4fd7-90ec-e86b6e608d45" />
+## 🤝 Contributing
 
+Contributions are welcome! Please read the [Contributing Guidelines](docs/CONTRIBUTING.md) and use the issue templates to report bugs or propose features.
 
 ## 📄 License
 
 This project is licensed under the [MIT License](LICENSE).
+
+<div align="center">
+
+**Built with 💚 for every student who ever waited too long for an answer.**
+
+</div>
