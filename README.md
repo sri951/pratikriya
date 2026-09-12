@@ -3,13 +3,12 @@
 [![CI Status](https://img.shields.io/badge/CI-Passing-brightgreen?style=for-the-badge&logo=githubactions&logoColor=white)](https://github.com/sri951/pratikriya/actions)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.8_100%25_Strict-blue?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![React 19](https://img.shields.io/badge/React-19_SSR-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
-[![n8n Orchestration](https://img.shields.io/badge/n8n-Orchestration_Engine-EA4B71?style=for-the-badge&logo=n8n&logoColor=white)](https://n8n.io/)
 [![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL_RLS-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
 
 An AI-powered personalized learning platform that helps students ask doubts, master concepts, learn from mistakes, transform study materials into interactive resources, teach an AI student, and track holistic cognitive mastery.
 
-Pratikriya AI moves beyond passive question-answering. It unifies an **AI Tutor**, **AI Notes Intelligence System**, **Personalized Exam Generator & OCR Grader**, **Reverse Teacher Mode**, **AI Detective**, and **Personalized Learning Profile** into a single active learning ecosystem orchestrated with **n8n**.
+Pratikriya AI moves beyond passive question-answering. It unifies an **AI Tutor**, **AI Notes Intelligence System**, **Personalized Exam Generator & OCR Grader**, **Reverse Teacher Mode**, **AI Detective**, and **Personalized Learning Profile** into a single active learning ecosystem.
 
 ---
 
@@ -19,7 +18,6 @@ Pratikriya AI moves beyond passive question-answering. It unifies an **AI Tutor*
 - [💡 The Solution](#-the-solution--instant-active-judgment-free-learning)
 - [🌟 Key Features (All 5 Modes + Profile)](#-key-features)
 - [🏗️ System Architecture](#️-system-architecture)
-- [⚡ n8n Workflow Automation Engine](#-n8n-ai-workflow-orchestration)
 - [🛠️ Technology Stack](#️-technology-stack)
 - [💻 Local Installation & Setup](#-local-installation--setup)
 - [📂 Project Structure](#-project-structure)
@@ -120,7 +118,6 @@ Pratikriya is built around three guiding tenets:
 
 - **Frontend**: React 19, TanStack Start (SSR), TanStack Router, TanStack Query, TailwindCSS 4, Radix UI primitives, Lucide React, Framer Motion.
 - **AI & TTS**: Google Gemini 3 Flash (`google/gemini-3-flash-preview`), OpenAI TTS (`openai/gpt-4o-mini-tts`), Vercel AI SDK (`ai`, `@ai-sdk/openai-compatible`).
-- **Orchestration**: n8n Workflow Automation Engine, Docker Compose.
 - **Database & Auth**: Supabase (PostgreSQL with RLS), Supabase Auth JWT Middleware.
 - **Offline & PWA**: `vite-plugin-pwa`, IndexedDB (`idb`), Service Worker caching.
 - **Visualizations**: Mermaid.js, Recharts, HTML5 Canvas Whiteboard.
@@ -133,7 +130,6 @@ Pratikriya is built around three guiding tenets:
 ### Prerequisites
 
 - Node.js &ge; 20.x
-- Docker & Docker Compose (for local n8n instance)
 - Git
 
 ### 1. Clone the Repository
@@ -163,18 +159,9 @@ Fill in your Supabase project credentials and AI Gateway key:
 VITE_SUPABASE_URL=https://your-project.supabase.co
 VITE_SUPABASE_ANON_KEY=your-anon-key
 LOVABLE_API_KEY=your-ai-gateway-key
-VITE_N8N_BASE_URL=http://localhost:5678
 ```
 
-### 4. Start n8n Local Engine (Optional / Background Orchestration)
-
-```bash
-docker compose up -d
-```
-
-Access the n8n console at `http://localhost:5678` (Credentials: `admin` / `pratikriya_admin_secure_password`).
-
-### 5. Run the Application
+### 4. Run the Application
 
 ```bash
 # Start development server with SSR & Hot Reloading
@@ -200,14 +187,7 @@ pratikriya/
 │   └── workflows/ci.yml       # GitHub Actions CI validation pipeline
 ├── docs/
 │   ├── DEMO_SCRIPT.md          # 3-minute hackathon pitch & live demo guide
-│   └── N8N_INTEGRATION.md      # Detailed n8n orchestration guide
-├── n8n/
-│   └── workflows/              # 5 production n8n JSON workflow blueprints
-│       ├── ai-detective.json
-│       ├── exam-generator.json
-│       ├── learning-profile.json
-│       ├── notes-intelligence.json
-│       └── reverse-teacher.json
+│   └── DEMO_SCRIPT.md          # 3-minute hackathon pitch & live demo guide
 ├── public/                     # Static assets, icons, robots.txt, manifest
 ├── src/
 │   ├── components/             # Reusable UI components & dialogs
@@ -232,10 +212,8 @@ pratikriya/
 │   │   ├── notes.tsx           # Notes Intelligence
 │   │   ├── profile.tsx         # Unified Learning Profile Dashboard
 │   │   └── teach.tsx           # Reverse Teacher Mode
-│   └── services/n8n/           # Centralized n8n webhook dispatchers
 ├── supabase/
 │   └── migrations/             # 7 PostgreSQL migrations with RLS policies
-├── docker-compose.yml          # n8n Docker Compose configuration
 ├── package.json
 ├── tsconfig.json
 ├── vite.config.ts
@@ -249,7 +227,6 @@ pratikriya/
 | Guide                                                 | Description                                                               |
 | :---------------------------------------------------- | :------------------------------------------------------------------------ |
 | [🏛️ System Architecture](docs/ARCHITECTURE.md)        | In-depth technical architecture, data lifecycle, and security model       |
-| [⚡ n8n Orchestration Guide](docs/N8N_INTEGRATION.md) | Webhook payloads, schema contracts, and self-hosted Docker deployment     |
 | [🎤 Live Demo Script](docs/DEMO_SCRIPT.md)            | 3-minute hackathon pitch script and complete live walkthrough guide       |
 | [🤝 Contributing Guidelines](docs/CONTRIBUTING.md)    | Development standards, testing procedures, and PR workflows               |
 | [🔒 Security Policy](docs/SECURITY.md)                | RLS enforcement, JWT middleware verification, and vulnerability reporting |

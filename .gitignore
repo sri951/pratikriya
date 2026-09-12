@@ -24,8 +24,6 @@ coverage/
 .env.*.local
 !.env.example
 
-# n8n local data
-n8n_data/
 
 # Wrangler / Cloudflare
 .wrangler/
