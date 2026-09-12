@@ -212,10 +212,8 @@ pratikriya/
 │   │   ├── notes.tsx           # Notes Intelligence
 │   │   ├── profile.tsx         # Unified Learning Profile Dashboard
 │   │   └── teach.tsx           # Reverse Teacher Mode
-│   └── services/n8n/           # Centralized n8n webhook dispatchers
 ├── supabase/
 │   └── migrations/             # 7 PostgreSQL migrations with RLS policies
-├── docker-compose.yml          # n8n Docker Compose configuration
 ├── package.json
 ├── tsconfig.json
 ├── vite.config.ts
@@ -229,7 +227,6 @@ pratikriya/
 | Guide                                                 | Description                                                               |
 | :---------------------------------------------------- | :------------------------------------------------------------------------ |
 | [🏛️ System Architecture](docs/ARCHITECTURE.md)        | In-depth technical architecture, data lifecycle, and security model       |
-| [⚡ n8n Orchestration Guide](docs/N8N_INTEGRATION.md) | Webhook payloads, schema contracts, and self-hosted Docker deployment     |
 | [🎤 Live Demo Script](docs/DEMO_SCRIPT.md)            | 3-minute hackathon pitch script and complete live walkthrough guide       |
 | [🤝 Contributing Guidelines](docs/CONTRIBUTING.md)    | Development standards, testing procedures, and PR workflows               |
 | [🔒 Security Policy](docs/SECURITY.md)                | RLS enforcement, JWT middleware verification, and vulnerability reporting |
