@@ -187,14 +187,7 @@ pratikriya/
 │   └── workflows/ci.yml       # GitHub Actions CI validation pipeline
 ├── docs/
 │   ├── DEMO_SCRIPT.md          # 3-minute hackathon pitch & live demo guide
-│   └── N8N_INTEGRATION.md      # Detailed n8n orchestration guide
-├── n8n/
-│   └── workflows/              # 5 production n8n JSON workflow blueprints
-│       ├── ai-detective.json
-│       ├── exam-generator.json
-│       ├── learning-profile.json
-│       ├── notes-intelligence.json
-│       └── reverse-teacher.json
+│   └── DEMO_SCRIPT.md          # 3-minute hackathon pitch & live demo guide
 ├── public/                     # Static assets, icons, robots.txt, manifest
 ├── src/
 │   ├── components/             # Reusable UI components & dialogs
