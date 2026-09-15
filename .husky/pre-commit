@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+# Run lint-staged on the files being committed.
+# Fails the commit if lint or format issues remain.
+npx lint-staged

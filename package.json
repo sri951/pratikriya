@@ -1,5 +1,7 @@
 {
-  "name": "tanstack_start_ts",
+  "name": "pratikriya",
+  "version": "1.0.0",
+  "description": "Pratikriya AI — The Cognitive Active Learning Companion",
   "private": true,
   "sideEffects": false,
   "type": "module",
@@ -9,8 +11,21 @@
     "build:dev": "vite build --mode development",
     "preview": "vite preview",
     "lint": "eslint .",
-    "test": "npx tsx --test src/lib/__tests__/*.test.ts",
-    "format": "prettier --write ."
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "format": "prettier --write .",
+    "prepare": "husky || true"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,css}": [
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "@ai-sdk/openai-compatible": "^3.0.5",
@@ -91,11 +106,15 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^15.15.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.2.10",
     "nitro": "3.0.260603-beta",
     "prettier": "^3.7.3",
     "tsx": "^4.19.3",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.56.1",
-    "vite": "^8.0.16"
+    "vite": "^8.0.16",
+    "vitest": "^2.1.9",
+    "@vitest/coverage-v8": "^2.1.9"
   }
 }

@@ -1,36 +1,61 @@
-name: Build & Test
+name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  build:
+  ci:
+    name: Lint · Test · Build
     runs-on: ubuntu-latest
-    
+
     strategy:
+      fail-fast: false
       matrix:
-        node-version: [20.x]
-    
+        # ai@7 requires Node >= 22 (EBADENGINE on 20.x).
+        node-version: ["22.x"]
+
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    
-    - name: Install dependencies
-      run: npm ci
-    
-    - name: Lint
-      run: npm run lint
-    
-    - name: Run tests
-      run: npm test
-    
-    - name: Build
-      run: npm run build
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+
+      # `npm install` (not `npm ci`) because package-lock.json currently has
+      # drift vs package.json (e.g. @lovable.dev/vite-tanstack-config 2.13.1
+      # in package.json vs 2.9.0 in the lockfile). `npm install` reconciles.
+      # After the first green run, regenerate the lockfile locally and
+      # switch this back to `npm ci` for stricter reproducibility.
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+        env:
+          HUSKY: "0"
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Test (with coverage)
+        run: npm run test:coverage
+
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Build
+        run: npm run build

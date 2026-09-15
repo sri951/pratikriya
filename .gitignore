@@ -22,7 +22,24 @@ coverage/
 .env
 .env.local
 .env.*.local
+.env.production
+.env.development
 !.env.example
+
+# Test / coverage output
+coverage/
+.nyc_output/
+lighthouse-reports/
+.lighthouseci/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+*.swp
+
+# Docker
+.docker-volume/
 
 
 # Wrangler / Cloudflare

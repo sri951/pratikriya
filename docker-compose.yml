@@ -1,0 +1,34 @@
+# Docker Compose for local self-hosting of Pratikriya AI.
+#
+# NOTE: the primary production deployment is Vercel/Lovable + hosted Supabase.
+# This file is a self-host convenience — it is NOT a replacement for those
+# integrations.
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        VITE_SUPABASE_URL: ${VITE_SUPABASE_URL}
+        VITE_SUPABASE_ANON_KEY: ${VITE_SUPABASE_ANON_KEY}
+        VITE_SUPABASE_PROJECT_ID: ${VITE_SUPABASE_PROJECT_ID}
+    image: pratikriya:local
+    container_name: pratikriya-web
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      # Server-only secrets (never inlined by Vite).
+      LOVABLE_API_KEY: ${LOVABLE_API_KEY}
+      # Public Supabase values (already inlined at build; re-exposed for SSR).
+      VITE_SUPABASE_URL: ${VITE_SUPABASE_URL}
+      VITE_SUPABASE_ANON_KEY: ${VITE_SUPABASE_ANON_KEY}
+      VITE_SUPABASE_PROJECT_ID: ${VITE_SUPABASE_PROJECT_ID}
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "-", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s

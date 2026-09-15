@@ -12,6 +12,8 @@ Instead, report privately via GitHub's "Report a vulnerability" feature (Securit
 
 We aim to acknowledge reports within 72 hours.
 
+A machine-readable contact record following [RFC 9116](https://www.rfc-editor.org/rfc/rfc9116) is served at [`/.well-known/security.txt`](../public/.well-known/security.txt).
+
 ## Security Model
 
 - **Row-Level Security (RLS)** is enabled on every database table. Users can only access rows they own; policies are enforced server-side by Postgres, not in client code.

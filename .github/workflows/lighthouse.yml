@@ -1,0 +1,45 @@
+name: Lighthouse
+
+on:
+  workflow_dispatch:
+
+jobs:
+  lighthouse:
+    name: Lighthouse audit (production deployment)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+
+      - name: Install Lighthouse CI
+        run: npm install -g @lhci/cli@0.14.x
+
+      - name: Verify deployment is reachable
+        id: reachable
+        run: |
+          if curl -fsS --max-time 15 https://pratikriya.lovable.app > /dev/null; then
+            echo "reachable=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "reachable=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::Production deployment https://pratikriya.lovable.app is unreachable — skipping Lighthouse audit rather than fabricating a score."
+          fi
+
+      - name: Run Lighthouse CI against production
+        if: steps.reachable.outputs.reachable == 'true'
+        run: lhci autorun --config=./lighthouserc.json
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+
+      - name: Upload Lighthouse reports
+        if: always() && steps.reachable.outputs.reachable == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-reports
+          path: .lighthouseci/
+          if-no-files-found: warn
+          retention-days: 30

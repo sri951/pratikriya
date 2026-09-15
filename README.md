@@ -10,7 +10,6 @@
 
 [![Live App](https://img.shields.io/badge/🚀_Live_App-pratikriya.lovable.app-2ea44f?style=for-the-badge)](https://pratikriya.lovable.app)
 
-[![CI](https://github.com/sri951/pratikriya/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/sri951/pratikriya/actions/workflows/build.yml)
 [![Version](https://img.shields.io/badge/version-1.0.0-blue?style=flat-square)](CHANGELOG.md)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.8_Strict-blue?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![React 19](https://img.shields.io/badge/React-19_SSR-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev/)
@@ -57,16 +56,16 @@ Students frequently hit obstacles while studying independently, yet feedback fro
 
 Upload PDFs, documents, slides, or handwritten notes and get a full 8-resource study pack:
 
-| Resource | Description |
-| :------- | :---------- |
-| 📄 3-tier summaries | 5-min recap, 15-min review, full deep-dive |
-| 🧠 Smart topic notes | Exam tips and memory hooks |
-| 🗂️ Flashcards | 12–30 spaced-repetition cards (SuperMemo/Leitner) |
-| ❓ MCQs | 10–50 questions with answer keys and rationale |
-| 🗺️ Mindmap | Interactive Mermaid.js diagram |
-| 📐 Formula sheet | Symbol meanings and units |
-| 📅 Revision plan | Structured 7-day schedule |
-| 🔍 Ask My Notes | In-context ELI10 Q&A grounded in your files |
+| Resource             | Description                                       |
+| :------------------- | :------------------------------------------------ |
+| 📄 3-tier summaries  | 5-min recap, 15-min review, full deep-dive        |
+| 🧠 Smart topic notes | Exam tips and memory hooks                        |
+| 🗂️ Flashcards        | 12–30 spaced-repetition cards (SuperMemo/Leitner) |
+| ❓ MCQs              | 10–50 questions with answer keys and rationale    |
+| 🗺️ Mindmap           | Interactive Mermaid.js diagram                    |
+| 📐 Formula sheet     | Symbol meanings and units                         |
+| 📅 Revision plan     | Structured 7-day schedule                         |
+| 🔍 Ask My Notes      | In-context ELI10 Q&A grounded in your files       |
 
 ### 📝 3. Exam Mode & OCR Grader
 
@@ -78,7 +77,7 @@ Upload PDFs, documents, slides, or handwritten notes and get a full 8-resource s
 
 ### 🕵️ 4. AI Detective — Mistake Root-Cause Investigation
 
-- Investigates *why* a mistake happened, not just what the right answer is
+- Investigates _why_ a mistake happened, not just what the right answer is
 - **Phase 1 — Intake & Suspects**: analyzes the wrong answer + confidence rating, ranks 3–6 suspect root causes, issues diagnostic probes
 - **Phase 2 — Verdict & Concept Tree**: identifies the underlying misconception, renders a concept dependency tree highlighting the missing node, and provides a step-by-step repair checklist
 - Mistake timeline, repeat-pattern tracking, and topic error heatmaps
@@ -86,7 +85,7 @@ Upload PDFs, documents, slides, or handwritten notes and get a full 8-resource s
 ### 🎓 5. Reverse Teacher Mode — Learn by Teaching
 
 - You become the teacher; an AI persona becomes the student (Protégé Effect)
-- 5 student personalities: *Curious, Skeptical, Exam-focused, Fast, Novice*
+- 5 student personalities: _Curious, Skeptical, Exam-focused, Fast, Novice_
 - Multi-modal teaching: text, speech-to-text voice, photo attachments, and an **interactive whiteboard**
 - The AI student takes structured notes in real time
 - Session report: teaching clarity score, AI understanding gained (10–100%), earned badges, and a thank-you letter from your AI student
@@ -95,7 +94,7 @@ Upload PDFs, documents, slides, or handwritten notes and get a full 8-resource s
 
 - Unified dashboard aggregating events across all 5 modes
 - Level, rank title, XP progress meter, and overall cognitive mastery dial
-- Topic Competency Matrix with status filters (*Mastered ≥80%*, *Developing 50–79%*, *Needs Attention <50%*)
+- Topic Competency Matrix with status filters (_Mastered ≥80%_, _Developing 50–79%_, _Needs Attention <50%_)
 - Recurring misconception detection and prioritized revision schedule
 
 ---
@@ -148,14 +147,14 @@ Full details in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ## 🛠️ Technology Stack
 
-| Layer | Stack |
-| :---- | :---- |
-| **Frontend** | React 19 · TanStack Start (SSR) · TanStack Router & Query · Tailwind CSS 4 · Radix/shadcn UI · Framer Motion |
-| **AI & TTS** | Google Gemini 3 Flash · OpenAI TTS · Vercel AI SDK (structured Zod outputs) |
-| **Backend & Auth** | Supabase PostgreSQL with Row-Level Security · Supabase Auth (Email + Google OAuth) |
-| **Offline / PWA** | vite-plugin-pwa · Workbox caching · IndexedDB (`idb`) |
-| **Visualizations** | Mermaid.js · Recharts · HTML5 Canvas whiteboard |
-| **Quality** | Vitest · ESLint 9 · Prettier · TypeScript 5.8 strict |
+| Layer              | Stack                                                                                                        |
+| :----------------- | :----------------------------------------------------------------------------------------------------------- |
+| **Frontend**       | React 19 · TanStack Start (SSR) · TanStack Router & Query · Tailwind CSS 4 · Radix/shadcn UI · Framer Motion |
+| **AI & TTS**       | Google Gemini 3 Flash · OpenAI TTS · Vercel AI SDK (structured Zod outputs)                                  |
+| **Backend & Auth** | Supabase PostgreSQL with Row-Level Security · Supabase Auth (Email + Google OAuth)                           |
+| **Offline / PWA**  | vite-plugin-pwa · Workbox caching · IndexedDB (`idb`)                                                        |
+| **Visualizations** | Mermaid.js · Recharts · HTML5 Canvas whiteboard                                                              |
+| **Quality**        | Vitest · ESLint 9 · Prettier · TypeScript 5.8 strict                                                         |
 
 ---
 
@@ -208,7 +207,7 @@ Full instructions and env-var expectations: [docs/DEPLOYMENT.md](docs/DEPLOYMENT
 ### 🧪 Testing & CI
 
 - Tests run with [Vitest](https://vitest.dev/); coverage via `@vitest/coverage-v8` (see [`vitest.config.ts`](vitest.config.ts)). Coverage is scoped to pure library helpers under `src/lib/**`; SSR server functions and browser-runtime shims are excluded because they need a live server environment.
-- GitHub Actions [`build.yml`](.github/workflows/build.yml) runs lint → typecheck → tests-with-coverage → build on every push and PR.
+- GitHub Actions [`build.yml`](.github/workflows/build.yml) runs lint → tests-with-coverage → build on every push and PR. (A `typecheck` npm script is available locally but not enforced in CI yet.)
 - A weekly [`lighthouse.yml`](.github/workflows/lighthouse.yml) workflow audits the live production URL and uploads the report as an artifact. It skips honestly (rather than fabricating a score) if the site is unreachable.
 
 ### 🔒 Security
@@ -256,15 +255,15 @@ pratikriya/
 
 ## 📚 Documentation
 
-| Guide | Description |
-| :---- | :---------- |
-| [🏛️ Architecture](docs/ARCHITECTURE.md) | Technical architecture, data lifecycle, security model |
-| [🚀 Deployment](docs/DEPLOYMENT.md) | Local dev, Vercel, Docker, env vars, health checks |
-| [🔌 Server Functions / API](docs/API.md) | Reference for every `*.functions.ts` server call |
-| [🎤 Demo Script](docs/DEMO_SCRIPT.md) | 3-minute pitch and complete live walkthrough |
-| [🤝 Contributing](docs/CONTRIBUTING.md) | Development standards, testing, PR workflow |
-| [🔒 Security Policy](docs/SECURITY.md) | RLS enforcement, auth model, vulnerability reporting |
-| [📜 Changelog](CHANGELOG.md) | Release history following Keep-a-Changelog |
+| Guide                                    | Description                                            |
+| :--------------------------------------- | :----------------------------------------------------- |
+| [🏛️ Architecture](docs/ARCHITECTURE.md)  | Technical architecture, data lifecycle, security model |
+| [🚀 Deployment](docs/DEPLOYMENT.md)      | Local dev, Vercel, Docker, env vars, health checks     |
+| [🔌 Server Functions / API](docs/API.md) | Reference for every `*.functions.ts` server call       |
+| [🎤 Demo Script](docs/DEMO_SCRIPT.md)    | 3-minute pitch and complete live walkthrough           |
+| [🤝 Contributing](docs/CONTRIBUTING.md)  | Development standards, testing, PR workflow            |
+| [🔒 Security Policy](docs/SECURITY.md)   | RLS enforcement, auth model, vulnerability reporting   |
+| [📜 Changelog](CHANGELOG.md)             | Release history following Keep-a-Changelog             |
 
 ---
 

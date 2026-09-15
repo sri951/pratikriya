@@ -9,6 +9,7 @@ Pratikriya is live at **[pratikriya.lovable.app](https://pratikriya.lovable.app)
 ## Self-Hosted Deployment
 
 ### Prerequisites
+
 - Node.js 20+
 - npm or bun
 - Supabase account
@@ -58,21 +59,31 @@ Follow the prompts. Vercel auto-detects TanStack Start and configures correctly.
 
 ### Docker
 
-```dockerfile
-FROM node:20-alpine
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci
-COPY . .
-RUN npm run build
-EXPOSE 3000
-CMD ["npm", "run", "preview"]
-```
+A production-ready multi-stage `Dockerfile` and `docker-compose.yml` are
+included at the repository root.
 
 ```bash
-docker build -t pratikriya .
-docker run -p 3000:3000 pratikriya
+# One-shot build + run via Compose (reads env from your shell / .env).
+docker compose up --build
+
+# Or manually:
+docker build \
+  --build-arg VITE_SUPABASE_URL=$VITE_SUPABASE_URL \
+  --build-arg VITE_SUPABASE_ANON_KEY=$VITE_SUPABASE_ANON_KEY \
+  --build-arg VITE_SUPABASE_PROJECT_ID=$VITE_SUPABASE_PROJECT_ID \
+  -t pratikriya:local .
+
+docker run --rm -p 3000:3000 \
+  -e LOVABLE_API_KEY=$LOVABLE_API_KEY \
+  pratikriya:local
 ```
+
+The image runs the Nitro production server on port 3000 as a non-root user.
+`VITE_*` values must be provided as **build args** (Vite inlines them at
+build time); `LOVABLE_API_KEY` is a runtime env var.
+
+> Docker is a self-hosting convenience. The canonical production deployment
+> is Vercel / Lovable + hosted Supabase — see the sections above.
 
 ### Netlify
 
@@ -120,11 +131,13 @@ LOVABLE_API_KEY=your-api-key
 ### Get These Values
 
 **Supabase:**
+
 1. Create project at [supabase.com](https://supabase.com)
 2. Go to **Settings → API**
 3. Copy `Project URL` and `Anon Key`
 
 **Lovable API Key:**
+
 1. Get from Lovable dashboard
 2. Set as environment variable
 
@@ -158,15 +171,18 @@ curl https://your-domain.com/api/health
 ## Monitoring & Logs
 
 ### Vercel
+
 - Dashboard: [vercel.com/dashboard](https://vercel.com/dashboard)
 - Logs: Real-time in dashboard
 
 ### Docker
+
 ```bash
 docker logs -f pratikriya
 ```
 
 ### PM2
+
 ```bash
 pm2 logs pratikriya
 pm2 monit
