@@ -10,7 +10,8 @@
 
 [![Live App](https://img.shields.io/badge/🚀_Live_App-pratikriya.lovable.app-2ea44f?style=for-the-badge)](https://pratikriya.lovable.app)
 
-[![CI Status](https://img.shields.io/badge/CI-Passing-brightgreen?style=flat-square&logo=githubactions&logoColor=white)](https://github.com/sri951/pratikriya/actions)
+[![CI](https://github.com/sri951/pratikriya/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/sri951/pratikriya/actions/workflows/build.yml)
+[![Version](https://img.shields.io/badge/version-1.0.0-blue?style=flat-square)](CHANGELOG.md)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.8_Strict-blue?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![React 19](https://img.shields.io/badge/React-19_SSR-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev/)
 [![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL_RLS-3ECF8E?style=flat-square&logo=supabase&logoColor=white)](https://supabase.com/)
@@ -99,6 +100,25 @@ Upload PDFs, documents, slides, or handwritten notes and get a full 8-resource s
 
 ---
 
+## 🎥 Demo
+
+<!--
+  ADD REAL DEMO MEDIA HERE.
+  A short (30–90 s) screen recording as .mp4 / .webm / .gif walking through
+  the tutor → notes → exam → detective → teacher → profile flow works best.
+  Upload to GitHub via drag-and-drop into an issue or release to get a stable
+  URL, then replace the placeholder below.
+
+  Example when ready:
+    <video src="https://user-images.githubusercontent.com/…/demo.mp4"
+           controls muted playsinline width="80%"></video>
+-->
+
+> **Demo video coming soon.** In the meantime, see the annotated screenshot
+> gallery below or open the live app: **[pratikriya.lovable.app](https://pratikriya.lovable.app)**.
+
+---
+
 ## 📸 Screenshots
 
 <div align="center">
@@ -164,11 +184,42 @@ LOVABLE_API_KEY=your-ai-gateway-key
 ```
 
 ```bash
-npm run dev    # dev server with SSR + HMR
-npm test       # unit tests
-npm run lint   # linter
-npm run build  # production build
+npm run dev            # dev server with SSR + HMR
+npm run lint           # ESLint
+npm run typecheck      # tsc --noEmit
+npm test               # Vitest run
+npm run test:coverage  # Vitest + v8 coverage → ./coverage
+npm run build          # production build
 ```
+
+### 🐳 Docker
+
+A production-ready multi-stage `Dockerfile` and `docker-compose.yml` are
+included at the repo root for self-hosting. Docker is **additional**, not a
+replacement for the existing Vercel / Lovable + Supabase deployment.
+
+```bash
+docker compose up --build
+# open http://localhost:3000
+```
+
+Full instructions and env-var expectations: [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md#docker).
+
+### 🧪 Testing & CI
+
+- Tests run with [Vitest](https://vitest.dev/); coverage via `@vitest/coverage-v8` (see [`vitest.config.ts`](vitest.config.ts)). Coverage is scoped to pure library helpers under `src/lib/**`; SSR server functions and browser-runtime shims are excluded because they need a live server environment.
+- GitHub Actions [`build.yml`](.github/workflows/build.yml) runs lint → typecheck → tests-with-coverage → build on every push and PR.
+- A weekly [`lighthouse.yml`](.github/workflows/lighthouse.yml) workflow audits the live production URL and uploads the report as an artifact. It skips honestly (rather than fabricating a score) if the site is unreachable.
+
+### 🔒 Security
+
+- Full model: [docs/SECURITY.md](docs/SECURITY.md)
+- Machine-readable contact (RFC 9116): [`/.well-known/security.txt`](public/.well-known/security.txt)
+- Report vulnerabilities privately via **GitHub Security Advisories** — do not open a public issue.
+
+### 🤝 Contributing
+
+Read [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md). PRs run through the same CI as `main`; a Husky pre-commit hook runs lint-staged (ESLint + Prettier) on your staged files.
 
 ---
 
@@ -208,9 +259,12 @@ pratikriya/
 | Guide | Description |
 | :---- | :---------- |
 | [🏛️ Architecture](docs/ARCHITECTURE.md) | Technical architecture, data lifecycle, security model |
+| [🚀 Deployment](docs/DEPLOYMENT.md) | Local dev, Vercel, Docker, env vars, health checks |
+| [🔌 Server Functions / API](docs/API.md) | Reference for every `*.functions.ts` server call |
 | [🎤 Demo Script](docs/DEMO_SCRIPT.md) | 3-minute pitch and complete live walkthrough |
 | [🤝 Contributing](docs/CONTRIBUTING.md) | Development standards, testing, PR workflow |
 | [🔒 Security Policy](docs/SECURITY.md) | RLS enforcement, auth model, vulnerability reporting |
+| [📜 Changelog](CHANGELOG.md) | Release history following Keep-a-Changelog |
 
 ---
 
