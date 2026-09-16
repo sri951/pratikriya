@@ -226,29 +226,65 @@ Read [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md). PRs run through the same CI a
 
 ```text
 pratikriya/
-├── .github/
-│   ├── workflows/             # CI pipeline
-│   └── ISSUE_TEMPLATE/        # Bug report & feature request templates
-├── docs/                      # Architecture, demo script, contributing, security
-├── public/                    # Logo, icons, manifest, robots.txt
-├── src/
-│   ├── components/            # Shared UI
-│   │   ├── notes/             # Notes detail, MCQs, flashcards
-│   │   ├── teach/             # Interactive whiteboard canvas
-│   │   └── ui/                # shadcn design system
-│   ├── hooks/                 # Auth, online status, workflow hooks
-│   ├── integrations/          # Supabase client & auth middleware
-│   ├── lib/                   # Server functions, schemas, AI gateway
-│   │   ├── __tests__/         # Unit tests
-│   │   ├── ask.functions.ts       # AI Tutor
-│   │   ├── detective.functions.ts # AI Detective
-│   │   ├── exam.functions.ts      # Exam Generator & OCR Grader
-│   │   ├── notes.functions.ts     # Notes Intelligence
-│   │   ├── profile.functions.ts   # Learning Profile
-│   │   └── teach.functions.ts     # Reverse Teacher
-│   └── routes/                # File-based pages (/, /auth, /exam, /notes, /teach, /detective, /profile)
-├── supabase/migrations/       # 7 PostgreSQL migrations with RLS
-└── README.md
+│
+├── src/                          # ── Application source ──────────────────
+│   ├── routes/                   # File-based pages (TanStack Router)
+│   │   ├── __root.tsx            #   Root layout, <head> meta, error boundary
+│   │   ├── index.tsx             #   /            — landing + AI Tutor
+│   │   ├── auth.tsx              #   /auth        — email + Google OAuth
+│   │   ├── notes.tsx             #   /notes       — Notes Intelligence
+│   │   ├── exam.tsx              #   /exam        — Exam Mode & OCR grader
+│   │   ├── detective.tsx         #   /detective   — AI Detective
+│   │   └── teach.tsx             #   /teach       — Reverse Teacher
+│   ├── lib/                      # Server functions, schemas, AI gateway
+│   │   ├── *.functions.ts        #   Server fns — see docs/API.md
+│   │   ├── answer-normalize.ts   #   Defensive normalizer for model output
+│   │   ├── ai-gateway.server.ts  #   AI provider client (server-only)
+│   │   └── __tests__/            #   Vitest unit tests
+│   ├── components/               # Shared UI
+│   │   ├── ui/                   #   shadcn/Radix design system
+│   │   ├── notes/                #   Note detail, MCQs, flashcards
+│   │   └── teach/                #   Interactive whiteboard canvas
+│   ├── hooks/                    # Auth state, online status
+│   ├── integrations/             # Supabase client + auth middleware, Lovable
+│   └── styles.css                # Tailwind entry + design tokens
+│
+├── supabase/
+│   ├── migrations/               # 6 PostgreSQL migrations (RLS + GRANTs)
+│   └── config.toml               # Supabase CLI project config
+│
+├── public/                       # ── Static assets ───────────────────────
+│   ├── .well-known/security.txt  # RFC 9116 security contact
+│   ├── icon-*.png, favicon.png   # PWA icons
+│   └── robots.txt, llms.txt      # Crawler directives
+│
+├── docs/                         # ── Documentation ───────────────────────
+│   ├── ARCHITECTURE.md           # System design, data lifecycle
+│   ├── API.md                    # Server-function reference
+│   ├── DEPLOYMENT.md             # Vercel, Docker, env vars
+│   ├── CONTRIBUTING.md           # Dev standards, PR workflow
+│   ├── SECURITY.md               # RLS model, vuln reporting
+│   └── DEMO_SCRIPT.md            # Walkthrough script
+│
+├── .github/                      # ── GitHub config ───────────────────────
+│   ├── workflows/build.yml       # CI: install → lint → test → build
+│   ├── workflows/lighthouse.yml  # Manual Lighthouse audit (live URL)
+│   ├── lighthouserc.json         # Lighthouse CI thresholds
+│   ├── ISSUE_TEMPLATE/           # Bug, feature, contact links
+│   └── PULL_REQUEST_TEMPLATE.md
+│
+├── .husky/pre-commit             # ── Tooling ─────────────────────────────
+├── vite.config.ts                # Vite + TanStack Start + PWA
+├── vitest.config.ts              # Test + v8 coverage config
+├── tsconfig.json                 # TypeScript (strict)
+├── eslint.config.js              # ESLint 9 flat config
+├── .prettierrc                   # Formatter rules
+├── components.json               # shadcn/ui generator config
+├── Dockerfile                    # ── Deployment ──────────────────────────
+├── docker-compose.yml            # Self-host convenience (not primary)
+├── .env.example                  # Required env vars (never commit .env)
+├── CHANGELOG.md                  # Keep-a-Changelog release history
+└── LICENSE                       # MIT
 ```
 
 ---

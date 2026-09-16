@@ -31,7 +31,7 @@ jobs:
 
       - name: Run Lighthouse CI against production
         if: steps.reachable.outputs.reachable == 'true'
-        run: lhci autorun --config=./lighthouserc.json
+        run: lhci autorun --config=./.github/lighthouserc.json
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
 
