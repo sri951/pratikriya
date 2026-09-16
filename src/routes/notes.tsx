@@ -212,17 +212,28 @@ function NotesPage() {
 
         {!loading && !isAuthenticated ? (
           <div className={`${glass} p-8 text-center`}>
-            <p className="mb-4 text-muted-foreground">Sign in to build and keep your learning library.</p>
-            <Button asChild><Link to="/auth">Sign in to continue</Link></Button>
+            <p className="mb-4 text-muted-foreground">
+              Sign in to build and keep your learning library.
+            </p>
+            <Button asChild>
+              <Link to="/auth">Sign in to continue</Link>
+            </Button>
           </div>
         ) : (
           <>
             {/* upload */}
             <section className={`${glass} p-5 sm:p-6`} aria-label="Upload study material">
               <div
-                onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
+                onDragOver={(e) => {
+                  e.preventDefault();
+                  setDragging(true);
+                }}
                 onDragLeave={() => setDragging(false)}
-                onDrop={(e) => { e.preventDefault(); setDragging(false); addFiles(e.dataTransfer.files); }}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  setDragging(false);
+                  addFiles(e.dataTransfer.files);
+                }}
                 className={`flex flex-col items-center justify-center rounded-2xl border-2 border-dashed p-10 text-center transition ${
                   dragging ? "border-primary bg-primary/5" : "border-border"
                 }`}
@@ -232,7 +243,11 @@ function NotesPage() {
                 <p className="mt-1 text-sm text-muted-foreground">
                   PDF, DOC, DOCX, PPT, PPTX, JPG, PNG, WEBP · up to 50 MB each · 5 files max
                 </p>
-                <Button className="mt-4" variant="outline" onClick={() => inputRef.current?.click()}>
+                <Button
+                  className="mt-4"
+                  variant="outline"
+                  onClick={() => inputRef.current?.click()}
+                >
                   Browse files
                 </Button>
                 <input
@@ -241,26 +256,43 @@ function NotesPage() {
                   multiple
                   accept={ACCEPT}
                   className="hidden"
-                  onChange={(e) => { addFiles(e.target.files); e.target.value = ""; }}
+                  onChange={(e) => {
+                    addFiles(e.target.files);
+                    e.target.value = "";
+                  }}
                 />
               </div>
 
               {!!files.length && (
                 <ul className="mt-4 grid gap-2 sm:grid-cols-2">
                   {files.map((f) => (
-                    <li key={f.id} className="flex items-center gap-3 rounded-xl border border-border/60 bg-muted/30 p-2.5">
+                    <li
+                      key={f.id}
+                      className="flex items-center gap-3 rounded-xl border border-border/60 bg-muted/30 p-2.5"
+                    >
                       {f.preview ? (
                         <img src={f.preview} alt="" className="h-10 w-10 rounded-lg object-cover" />
                       ) : (
                         <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-                          {f.file.type.startsWith("image/") ? <ImageIcon className="h-5 w-5" /> : <FileText className="h-5 w-5" />}
+                          {f.file.type.startsWith("image/") ? (
+                            <ImageIcon className="h-5 w-5" />
+                          ) : (
+                            <FileText className="h-5 w-5" />
+                          )}
                         </span>
                       )}
                       <span className="min-w-0 flex-1">
                         <span className="block truncate text-sm font-medium">{f.file.name}</span>
-                        <span className="text-xs text-muted-foreground">{(f.file.size / 1024 / 1024).toFixed(1)} MB</span>
+                        <span className="text-xs text-muted-foreground">
+                          {(f.file.size / 1024 / 1024).toFixed(1)} MB
+                        </span>
                       </span>
-                      <Button size="icon" variant="ghost" aria-label={`Remove ${f.file.name}`} onClick={() => setFiles((x) => x.filter((y) => y.id !== f.id))}>
+                      <Button
+                        size="icon"
+                        variant="ghost"
+                        aria-label={`Remove ${f.file.name}`}
+                        onClick={() => setFiles((x) => x.filter((y) => y.id !== f.id))}
+                      >
                         <X className="h-4 w-4" />
                       </Button>
                     </li>
@@ -269,10 +301,19 @@ function NotesPage() {
               )}
 
               <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                <Input placeholder="Subject (optional) — e.g. Electronic Devices" value={subject} onChange={(e) => setSubject(e.target.value)} />
+                <Input
+                  placeholder="Subject (optional) — e.g. Electronic Devices"
+                  value={subject}
+                  onChange={(e) => setSubject(e.target.value)}
+                />
                 <div className="flex flex-wrap items-center gap-1.5">
                   {(["beginner", "intermediate", "advanced"] as const).map((d) => (
-                    <Button key={d} size="sm" variant={depth === d ? "default" : "outline"} onClick={() => setDepth(d)}>
+                    <Button
+                      key={d}
+                      size="sm"
+                      variant={depth === d ? "default" : "outline"}
+                      onClick={() => setDepth(d)}
+                    >
                       {d}
                     </Button>
                   ))}
@@ -288,27 +329,51 @@ function NotesPage() {
               <div className="mt-3 flex flex-wrap items-center gap-3">
                 <span className="text-sm text-muted-foreground">MCQs:</span>
                 {[10, 15, 25, 50].map((n) => (
-                  <Button key={n} size="sm" variant={mcqCount === n ? "secondary" : "ghost"} onClick={() => setMcqCount(n)}>{n}</Button>
+                  <Button
+                    key={n}
+                    size="sm"
+                    variant={mcqCount === n ? "secondary" : "ghost"}
+                    onClick={() => setMcqCount(n)}
+                  >
+                    {n}
+                  </Button>
                 ))}
                 <Button
                   className="ml-auto"
                   onClick={() => run.mutate()}
                   disabled={run.isPending || (!files.length && !pastedText.trim())}
                 >
-                  {run.isPending ? <Loader2 className="mr-1.5 h-4 w-4 animate-spin" /> : <Sparkles className="mr-1.5 h-4 w-4" />}
+                  {run.isPending ? (
+                    <Loader2 className="mr-1.5 h-4 w-4 animate-spin" />
+                  ) : (
+                    <Sparkles className="mr-1.5 h-4 w-4" />
+                  )}
                   Analyze my notes
                 </Button>
               </div>
 
               {run.isPending && (
-                <div className="mt-5 rounded-2xl border border-primary/30 bg-primary/5 p-5" role="status" aria-live="polite">
+                <div
+                  className="mt-5 rounded-2xl border border-primary/30 bg-primary/5 p-5"
+                  role="status"
+                  aria-live="polite"
+                >
                   <p className="mb-3 flex items-center gap-2 font-medium">
                     <Loader2 className="h-4 w-4 animate-spin" /> Analyzing your notes…
                   </p>
                   <ol className="space-y-2 text-sm">
                     {STEPS.map((s, i) => (
-                      <li key={s} className={`flex items-center gap-2 ${i <= step ? "text-foreground" : "text-muted-foreground/60"}`}>
-                        {i < step ? <CheckCircle2 className="h-4 w-4 text-emerald-600" /> : i === step ? <Loader2 className="h-4 w-4 animate-spin" /> : <span className="h-4 w-4 rounded-full border border-current" />}
+                      <li
+                        key={s}
+                        className={`flex items-center gap-2 ${i <= step ? "text-foreground" : "text-muted-foreground/60"}`}
+                      >
+                        {i < step ? (
+                          <CheckCircle2 className="h-4 w-4 text-emerald-600" />
+                        ) : i === step ? (
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                        ) : (
+                          <span className="h-4 w-4 rounded-full border border-current" />
+                        )}
                         Step {i + 1}: {s}
                       </li>
                     ))}
@@ -320,8 +385,16 @@ function NotesPage() {
 
             {/* gamification */}
             <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              <Stat icon={<Library className="h-4 w-4" />} label="Materials" value={String(notes.length)} />
-              <Stat icon={<Brain className="h-4 w-4" />} label="Flashcards mastered" value={`${mastered}/${cards.length}`} />
+              <Stat
+                icon={<Library className="h-4 w-4" />}
+                label="Materials"
+                value={String(notes.length)}
+              />
+              <Stat
+                icon={<Brain className="h-4 w-4" />}
+                label="Flashcards mastered"
+                value={`${mastered}/${cards.length}`}
+              />
               <Stat icon={<Flame className="h-4 w-4" />} label="Learning XP" value={String(xp)} />
               <div className={`${glass} p-4`}>
                 <p className="mb-2 flex items-center gap-1.5 text-xs uppercase tracking-wide text-muted-foreground">
@@ -330,7 +403,8 @@ function NotesPage() {
                 <ul className="space-y-1 text-xs">
                   {achievements.map((a) => (
                     <li key={a.label} className={a.done ? "" : "text-muted-foreground/60"}>
-                      {a.icon} {a.label}{a.done ? " ✓" : ""}
+                      {a.icon} {a.label}
+                      {a.done ? " ✓" : ""}
                     </li>
                   ))}
                 </ul>
@@ -347,24 +421,47 @@ function NotesPage() {
               )}
               {subjects.map(([subjectName, items]) => (
                 <div key={subjectName} className="space-y-2">
-                  <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">{subjectName}</h3>
+                  <h3 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+                    {subjectName}
+                  </h3>
                   <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
                     {items.map((n) => {
                       const noteCards = cards.filter((c) => c.note_id === n.id);
                       const done = noteCards.filter((c) => c.learned).length;
                       return (
-                        <div key={n.id} className={`${glass} p-4 ${selectedId === n.id ? "ring-2 ring-primary/50" : ""}`}>
-                          <button type="button" className="w-full text-left" onClick={() => setSelectedId(n.id)}>
+                        <div
+                          key={n.id}
+                          className={`${glass} p-4 ${selectedId === n.id ? "ring-2 ring-primary/50" : ""}`}
+                        >
+                          <button
+                            type="button"
+                            className="w-full text-left"
+                            onClick={() => setSelectedId(n.id)}
+                          >
                             <p className="font-medium">{n.title}</p>
-                            {n.chapter && <p className="text-xs text-muted-foreground">{n.chapter}</p>}
+                            {n.chapter && (
+                              <p className="text-xs text-muted-foreground">{n.chapter}</p>
+                            )}
                             <p className="mt-1 text-xs text-muted-foreground">
-                              {n.pack?.mcqs?.length ?? 0} MCQs · {noteCards.length} cards · {n.topics.length} topics
+                              {n.pack?.mcqs?.length ?? 0} MCQs · {noteCards.length} cards ·{" "}
+                              {n.topics.length} topics
                             </p>
-                            <Progress className="mt-2 h-1.5" value={noteCards.length ? (done / noteCards.length) * 100 : 0} />
+                            <Progress
+                              className="mt-2 h-1.5"
+                              value={noteCards.length ? (done / noteCards.length) * 100 : 0}
+                            />
                           </button>
                           <div className="mt-3 flex gap-2">
-                            <Button size="sm" variant="outline" onClick={() => setSelectedId(n.id)}>Open</Button>
-                            <Button size="sm" variant="ghost" aria-label={`Delete ${n.title}`} onClick={() => del.mutate(n.id)} disabled={del.isPending}>
+                            <Button size="sm" variant="outline" onClick={() => setSelectedId(n.id)}>
+                              Open
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              aria-label={`Delete ${n.title}`}
+                              onClick={() => del.mutate(n.id)}
+                              disabled={del.isPending}
+                            >
                               <Trash2 className="h-4 w-4" />
                             </Button>
                           </div>
@@ -380,8 +477,17 @@ function NotesPage() {
               <section aria-label={`Learning pack for ${selected.title}`} className="space-y-4">
                 <div className="flex flex-wrap items-center gap-3">
                   <h2 className="text-2xl font-semibold">{selected.title}</h2>
-                  <span className="rounded-full bg-primary/10 px-3 py-1 text-xs text-primary">{selected.subject}</span>
-                  <Button size="sm" variant="ghost" className="ml-auto" onClick={() => setSelectedId(null)}>Close</Button>
+                  <span className="rounded-full bg-primary/10 px-3 py-1 text-xs text-primary">
+                    {selected.subject}
+                  </span>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    className="ml-auto"
+                    onClick={() => setSelectedId(null)}
+                  >
+                    Close
+                  </Button>
                 </div>
                 <NoteDetail note={selected} />
               </section>
@@ -396,7 +502,9 @@ function NotesPage() {
 function Stat({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
   return (
     <div className={`${glass} p-4`}>
-      <p className="flex items-center gap-1.5 text-xs uppercase tracking-wide text-muted-foreground">{icon} {label}</p>
+      <p className="flex items-center gap-1.5 text-xs uppercase tracking-wide text-muted-foreground">
+        {icon} {label}
+      </p>
       <p className="mt-1 text-2xl font-semibold">{value}</p>
     </div>
   );

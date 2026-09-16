@@ -94,10 +94,7 @@ function DetectivePage() {
   const cases = casesQuery.data ?? [];
 
   const [activeId, setActiveId] = useState<string | null>(null);
-  const activeCase = useMemo(
-    () => cases.find((c) => c.id === activeId) ?? null,
-    [cases, activeId],
-  );
+  const activeCase = useMemo(() => cases.find((c) => c.id === activeId) ?? null, [cases, activeId]);
 
   // intake state
   const [subject, setSubject] = useState("Electronics");
@@ -196,7 +193,12 @@ function DetectivePage() {
 
   const achievements = [
     { name: "Detective Rookie", need: 10, have: stats.total, hint: "Open 10 cases" },
-    { name: "Concept Hunter", need: 50, have: stats.misconceptions, hint: "Find 50 misconceptions" },
+    {
+      name: "Concept Hunter",
+      need: 50,
+      have: stats.misconceptions,
+      hint: "Find 50 misconceptions",
+    },
     { name: "Master Detective", need: 500, have: stats.solved, hint: "Repair 500 mistakes" },
     {
       name: "Perfect Investigation",
@@ -218,9 +220,9 @@ function DetectivePage() {
             Every mistake is a clue.
           </h1>
           <p className="mt-3 text-muted-foreground">
-            Most tutors tell you the right answer. The AI Detective investigates{" "}
-            <em>why</em> you got it wrong — collecting evidence, questioning suspects, naming the
-            root cause and prescribing a repair path so the mistake never returns.
+            Most tutors tell you the right answer. The AI Detective investigates <em>why</em> you
+            got it wrong — collecting evidence, questioning suspects, naming the root cause and
+            prescribing a repair path so the mistake never returns.
           </p>
         </section>
 
@@ -240,11 +242,17 @@ function DetectivePage() {
           {/* LEFT — the question / intake */}
           <div className="space-y-6">
             <section className={`${glass} p-5`} aria-labelledby="intake-h">
-              <h2 id="intake-h" className="flex items-center gap-2 font-display text-lg font-semibold">
+              <h2
+                id="intake-h"
+                className="flex items-center gap-2 font-display text-lg font-semibold"
+              >
                 <Search className="h-4 w-4 text-primary" aria-hidden="true" /> Report a mistake
               </h2>
 
-              <label className="mt-4 block text-xs font-medium text-muted-foreground" htmlFor="det-subject">
+              <label
+                className="mt-4 block text-xs font-medium text-muted-foreground"
+                htmlFor="det-subject"
+              >
                 Subject
               </label>
               <div className="mt-1 flex flex-wrap gap-1.5">
@@ -265,7 +273,10 @@ function DetectivePage() {
               </div>
               <input id="det-subject" type="hidden" value={subject} readOnly />
 
-              <label className="mt-4 block text-xs font-medium text-muted-foreground" htmlFor="det-q">
+              <label
+                className="mt-4 block text-xs font-medium text-muted-foreground"
+                htmlFor="det-q"
+              >
                 The question
               </label>
               <Textarea
@@ -279,7 +290,10 @@ function DetectivePage() {
                 className="mt-1 min-h-24 rounded-xl"
               />
 
-              <label className="mt-3 block text-xs font-medium text-muted-foreground" htmlFor="det-a">
+              <label
+                className="mt-3 block text-xs font-medium text-muted-foreground"
+                htmlFor="det-a"
+              >
                 What you answered
               </label>
               <Textarea
@@ -290,7 +304,10 @@ function DetectivePage() {
                 className="mt-1 min-h-20 rounded-xl"
               />
 
-              <label className="mt-3 block text-xs font-medium text-muted-foreground" htmlFor="det-c">
+              <label
+                className="mt-3 block text-xs font-medium text-muted-foreground"
+                htmlFor="det-c"
+              >
                 Correct answer (optional)
               </label>
               <Input
@@ -594,7 +611,9 @@ function InvestigationBoard({
                   <h4 className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
                     What actually happened
                   </h4>
-                  <p className="mt-1 whitespace-pre-wrap text-sm leading-relaxed">{r.explanation}</p>
+                  <p className="mt-1 whitespace-pre-wrap text-sm leading-relaxed">
+                    {r.explanation}
+                  </p>
                 </div>
               )}
 
@@ -647,9 +666,15 @@ function InvestigationBoard({
                         }`}
                       >
                         {done ? (
-                          <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+                          <CheckCircle2
+                            className="mt-0.5 h-4 w-4 shrink-0 text-primary"
+                            aria-hidden="true"
+                          />
                         ) : (
-                          <Circle className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+                          <Circle
+                            className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground"
+                            aria-hidden="true"
+                          />
                         )}
                         <span className="min-w-0">
                           <span className="block text-sm font-medium">{step.title}</span>
@@ -682,11 +707,7 @@ function InvestigationBoard({
             <EvidenceCard title="Learning prescription" items={r.prescription} />
           )}
           {diagnosed && r.prediction && r.prediction.length > 0 && (
-            <EvidenceCard
-              title="If left unfixed, expect trouble in"
-              items={r.prediction}
-              muted
-            />
+            <EvidenceCard title="If left unfixed, expect trouble in" items={r.prediction} muted />
           )}
           {kase.tags.length > 0 && (
             <div className={`${glass} p-4`}>
@@ -856,13 +877,7 @@ function MistakeTimeline({
   );
 }
 
-function PatternPanel({
-  stats,
-  achievements,
-}: {
-  stats: Stats;
-  achievements: Achievement[];
-}) {
+function PatternPanel({ stats, achievements }: { stats: Stats; achievements: Achievement[] }) {
   const max = Math.max(1, ...stats.heatmap.map(([, n]) => n));
   return (
     <section className={`${glass} p-5`}>
@@ -905,7 +920,9 @@ function PatternPanel({
               <span
                 key={tag}
                 className="rounded-full border border-primary/30 px-2.5 py-1 text-xs"
-                style={{ backgroundColor: `color-mix(in oklab, var(--primary) ${(n / max) * 45 + 6}%, transparent)` }}
+                style={{
+                  backgroundColor: `color-mix(in oklab, var(--primary) ${(n / max) * 45 + 6}%, transparent)`,
+                }}
               >
                 {tag} · {n}
               </span>

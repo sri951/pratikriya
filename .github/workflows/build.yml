@@ -13,7 +13,7 @@ concurrency:
 
 jobs:
   ci:
-    name: Test · Build
+    name: Lint · Test · Build
     runs-on: ubuntu-latest
 
     strategy:
@@ -32,17 +32,15 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: npm
 
-      # `npm install` (not `npm ci`) because package-lock.json currently drifts
-      # from package.json. `npm install` reconciles inside the runner.
+      # Skip husky's `prepare` script during CI installs — Git hooks are a
+      # local-dev concern, and CI shouldn't need them.
       - name: Install dependencies
-        run: npm install --no-audit --no-fund
+        run: npm ci --no-audit --no-fund
         env:
           HUSKY: "0"
 
-      # `npm run lint` is intentionally NOT run in CI right now: the codebase
-      # has ~1000 pre-existing Prettier formatting mismatches. Run
-      # `npm run format && npm run lint -- --fix` locally to clean them up,
-      # then re-enable this step.
+      - name: Lint
+        run: npm run lint
 
       - name: Test (with coverage)
         run: npm run test:coverage

@@ -125,7 +125,11 @@ export function MermaidDiagram({ code }: { code: string }) {
         await nav.share({ files: [file], title: "Pratikriya diagram" });
         return;
       }
-      if (navigator.clipboard && "write" in navigator.clipboard && typeof ClipboardItem !== "undefined") {
+      if (
+        navigator.clipboard &&
+        "write" in navigator.clipboard &&
+        typeof ClipboardItem !== "undefined"
+      ) {
         await navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]);
         toast.success("Diagram copied to clipboard");
         return;
@@ -183,7 +187,13 @@ export function MermaidDiagram({ code }: { code: string }) {
         />
       </button>
       <figcaption className="flex flex-wrap items-center justify-end gap-2 border-t border-border bg-card/60 px-3 py-2">
-        <Button type="button" size="sm" variant="ghost" onClick={openFullSize} className="rounded-full">
+        <Button
+          type="button"
+          size="sm"
+          variant="ghost"
+          onClick={openFullSize}
+          className="rounded-full"
+        >
           <Maximize2 className="h-4 w-4" aria-hidden="true" />
           View
         </Button>
@@ -191,7 +201,13 @@ export function MermaidDiagram({ code }: { code: string }) {
           <Share2 className="h-4 w-4" aria-hidden="true" />
           Share
         </Button>
-        <Button type="button" size="sm" variant="secondary" onClick={downloadPng} className="rounded-full">
+        <Button
+          type="button"
+          size="sm"
+          variant="secondary"
+          onClick={downloadPng}
+          className="rounded-full"
+        >
           <Download className="h-4 w-4" aria-hidden="true" />
           Download PNG
         </Button>

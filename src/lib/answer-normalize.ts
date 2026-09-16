@@ -12,8 +12,7 @@ export type NormalizedAnswer = {
   keyTakeaways: string[];
   reflection: string;
   relatedResources:
-    | { title: string; description: string; url: string; type: ResourceType }[]
-    | null;
+    { title: string; description: string; url: string; type: ResourceType }[] | null;
 };
 
 const ALLOWED_TYPES = new Set<ResourceType>(["article", "video", "lesson", "reference"]);
@@ -48,7 +47,9 @@ export function normalizeAnswer(raw: unknown): NormalizedAnswer {
         .slice(0, 5)
     : [];
 
-  const rawResources = Array.isArray(obj.relatedResources) ? (obj.relatedResources as unknown[]) : [];
+  const rawResources = Array.isArray(obj.relatedResources)
+    ? (obj.relatedResources as unknown[])
+    : [];
   const resources = rawResources
     .map((r) => {
       if (!r || typeof r !== "object") return null;
@@ -56,11 +57,16 @@ export function normalizeAnswer(raw: unknown): NormalizedAnswer {
       const title = typeof rec.title === "string" ? rec.title.trim() : "";
       const url = typeof rec.url === "string" ? rec.url.trim() : "";
       if (!title || !url) return null;
-      const type = ALLOWED_TYPES.has(rec.type as ResourceType) ? (rec.type as ResourceType) : "article";
+      const type = ALLOWED_TYPES.has(rec.type as ResourceType)
+        ? (rec.type as ResourceType)
+        : "article";
       const description = typeof rec.description === "string" ? rec.description : "";
       return { title, description, url, type };
     })
-    .filter((r): r is { title: string; description: string; url: string; type: ResourceType } => r !== null)
+    .filter(
+      (r): r is { title: string; description: string; url: string; type: ResourceType } =>
+        r !== null,
+    )
     .slice(0, 6);
 
   const diagram = obj.diagram as { mermaid?: unknown; caption?: unknown } | null | undefined;
@@ -76,7 +82,8 @@ export function normalizeAnswer(raw: unknown): NormalizedAnswer {
           }
         : null,
     keyTakeaways: takeaways.length > 0 ? takeaways : ["Key idea captured above."],
-    reflection: typeof obj.reflection === "string" ? obj.reflection : "Does this make sense so far?",
+    reflection:
+      typeof obj.reflection === "string" ? obj.reflection : "Does this make sense so far?",
     relatedResources: resources.length > 0 ? resources : null,
   };
 }

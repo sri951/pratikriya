@@ -144,18 +144,14 @@ export const SUBJECTS = MISCONCEPTION_LIBRARY.map((g) => g.subject);
 
 export function librarySnippet(subject?: string) {
   const groups = subject
-    ? MISCONCEPTION_LIBRARY.filter(
-        (g) => g.subject.toLowerCase() === subject.trim().toLowerCase(),
-      )
+    ? MISCONCEPTION_LIBRARY.filter((g) => g.subject.toLowerCase() === subject.trim().toLowerCase())
     : [];
   const chosen = groups.length > 0 ? groups : MISCONCEPTION_LIBRARY;
   return chosen
     .map(
       (g) =>
         `${g.subject}:\n` +
-        g.areas
-          .map((a) => `  ${a.area}: ${a.misconceptions.join("; ")}`)
-          .join("\n"),
+        g.areas.map((a) => `  ${a.area}: ${a.misconceptions.join("; ")}`).join("\n"),
     )
     .join("\n");
 }

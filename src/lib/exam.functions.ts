@@ -137,7 +137,7 @@ Strict rules:
       : `The source document is attached. Read all text, headings, equations, and figures.`;
 
     const parts: Array<
-      { type: "text"; text: string }
+      | { type: "text"; text: string }
       | { type: "image"; image: string; mediaType: string }
       | { type: "file"; data: string; mediaType: string }
     > = [{ type: "text", text: userText }];
@@ -154,7 +154,9 @@ Strict rules:
       generated = object;
     } catch (err) {
       if (NoObjectGeneratedError.isInstance(err)) {
-        throw new Error("Couldn't build a quiz from that source. Try a clearer file or paste text.");
+        throw new Error(
+          "Couldn't build a quiz from that source. Try a clearer file or paste text.",
+        );
       }
       throw err;
     }
@@ -293,7 +295,7 @@ ${data.answerText ?? "(none — see attached file)"}
 Return a strict grading JSON matching the schema.`;
 
     const parts: Array<
-      { type: "text"; text: string }
+      | { type: "text"; text: string }
       | { type: "image"; image: string; mediaType: string }
       | { type: "file"; data: string; mediaType: string }
     > = [{ type: "text", text: promptText }];
@@ -340,7 +342,9 @@ Return a strict grading JSON matching the schema.`;
         feedback: evaluation.feedback,
         revise_topics: evaluation.reviseTopics.slice(0, 12),
       })
-      .select("id, exam_id, score, accuracy, per_question, strengths, mistakes, missing_concepts, feedback, revise_topics, created_at")
+      .select(
+        "id, exam_id, score, accuracy, per_question, strengths, mistakes, missing_concepts, feedback, revise_topics, created_at",
+      )
       .single();
     if (attemptErr) throw new Error(attemptErr.message);
     return attempt as SavedAttempt;
@@ -351,7 +355,9 @@ export const listAttempts = createServerFn({ method: "GET" })
   .handler(async ({ context }): Promise<SavedAttempt[]> => {
     const { data, error } = await context.supabase
       .from("exam_attempts")
-      .select("id, exam_id, score, accuracy, per_question, strengths, mistakes, missing_concepts, feedback, revise_topics, created_at")
+      .select(
+        "id, exam_id, score, accuracy, per_question, strengths, mistakes, missing_concepts, feedback, revise_topics, created_at",
+      )
       .order("created_at", { ascending: false })
       .limit(100);
     if (error) throw new Error(error.message);
@@ -364,7 +370,9 @@ export const listAttemptsForExam = createServerFn({ method: "POST" })
   .handler(async ({ data, context }): Promise<SavedAttempt[]> => {
     const { data: rows, error } = await context.supabase
       .from("exam_attempts")
-      .select("id, exam_id, score, accuracy, per_question, strengths, mistakes, missing_concepts, feedback, revise_topics, created_at")
+      .select(
+        "id, exam_id, score, accuracy, per_question, strengths, mistakes, missing_concepts, feedback, revise_topics, created_at",
+      )
       .eq("exam_id", data.examId)
       .order("created_at", { ascending: false });
     if (error) throw new Error(error.message);

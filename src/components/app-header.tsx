@@ -1,12 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import {
-  ArrowLeft,
-  BookOpen,
-  ChevronDown,
-  Fingerprint,
-  GraduationCap,
-  Users,
-} from "lucide-react";
+import { ArrowLeft, BookOpen, ChevronDown, Fingerprint, GraduationCap, Users } from "lucide-react";
 import { BrandMark } from "@/components/brand-mark";
 import { Button } from "@/components/ui/button";
 import {
@@ -49,7 +42,11 @@ export function AppHeader({ current }: Props) {
           <OfflineBadge />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm" className="gap-1 font-normal text-muted-foreground hover:text-foreground">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="gap-1 font-normal text-muted-foreground hover:text-foreground"
+              >
                 Learning tools
                 <ChevronDown className="h-3.5 w-3.5" aria-hidden="true" />
               </Button>
@@ -64,7 +61,12 @@ export function AppHeader({ current }: Props) {
               ))}
             </DropdownMenuContent>
           </DropdownMenu>
-          <Button asChild variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
+          <Button
+            asChild
+            variant="ghost"
+            size="sm"
+            className="text-muted-foreground hover:text-foreground"
+          >
             <Link to="/">
               <ArrowLeft className="h-4 w-4" aria-hidden="true" />
               <span className="hidden sm:inline">Home</span>

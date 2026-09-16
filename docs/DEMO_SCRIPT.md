@@ -4,7 +4,7 @@ A complete walkthrough showing all five learning modes.
 
 ## 0:00 — 0:20 — Hook
 
-> "When a student gets stuck at 11 PM, help arrives in hours — or never. Pratikriya answers instantly, and then goes further: it figures out *why* the mistake happened."
+> "When a student gets stuck at 11 PM, help arrives in hours — or never. Pratikriya answers instantly, and then goes further: it figures out _why_ the mistake happened."
 
 Open the landing page. Ask: **"Explain the Pythagorean theorem with a simple example."**
 
@@ -30,7 +30,7 @@ Walk through the suspect root causes, answer the probing questions, and reveal t
 
 ## 2:20 — 3:00 — Reverse Teacher + Profile
 
-Go to **Reverse Teacher**. Pick the *Skeptical* student persona, explain a concept in two or three sentences (or use the whiteboard), and show the AI student's live notebook and the end-of-session report.
+Go to **Reverse Teacher**. Pick the _Skeptical_ student persona, explain a concept in two or three sentences (or use the whiteboard), and show the AI student's live notebook and the end-of-session report.
 
 Finish on **Profile**: XP level, mastery dial, and the topic competency matrix that unifies everything the student did across all five modes.
 

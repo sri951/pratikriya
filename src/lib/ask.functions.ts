@@ -16,22 +16,26 @@ const Input = z.object({
 
 const ResponseSchema = z.object({
   summary: z.string().describe("One or two sentence TL;DR of the answer."),
-  explanation: z.string().describe(
-    "Full step-by-step markdown explanation. Use short paragraphs and bullet lists. Use plain text formulas.",
-  ),
+  explanation: z
+    .string()
+    .describe(
+      "Full step-by-step markdown explanation. Use short paragraphs and bullet lists. Use plain text formulas.",
+    ),
   diagram: z
     .object({
-      mermaid: z.string().describe("A valid mermaid.js diagram (flowchart, sequenceDiagram, graph, pie, etc.) that clarifies the concept. Keep node labels short."),
+      mermaid: z
+        .string()
+        .describe(
+          "A valid mermaid.js diagram (flowchart, sequenceDiagram, graph, pie, etc.) that clarifies the concept. Keep node labels short.",
+        ),
       caption: z.string().describe("One line caption for the diagram."),
     })
     .nullable()
-    .describe("Include a diagram ONLY when it genuinely aids understanding. Otherwise return null."),
-  keyTakeaways: z
-    .array(z.string())
-    .describe("Bullet-point takeaways the student should remember."),
-  reflection: z
-    .string()
-    .describe("A short, warm follow-up question to check understanding."),
+    .describe(
+      "Include a diagram ONLY when it genuinely aids understanding. Otherwise return null.",
+    ),
+  keyTakeaways: z.array(z.string()).describe("Bullet-point takeaways the student should remember."),
+  reflection: z.string().describe("A short, warm follow-up question to check understanding."),
   relatedResources: z
     .array(
       z.object({
@@ -108,7 +112,9 @@ Structure rules (strict):
         if (fallback) return normalizeAnswer(fallback);
         return {
           summary: "Here's what I could put together for your question.",
-          explanation: error.text?.trim() || "I couldn't generate a structured answer this time. Please try rephrasing your question.",
+          explanation:
+            error.text?.trim() ||
+            "I couldn't generate a structured answer this time. Please try rephrasing your question.",
           diagram: null,
           keyTakeaways: ["Try rephrasing the question for a clearer answer."],
           reflection: "Would you like to ask this in a different way?",
@@ -118,7 +124,6 @@ Structure rules (strict):
       throw error;
     }
   });
-
 
 const DeepenInput = z.object({
   question: z.string().min(1).max(4000),

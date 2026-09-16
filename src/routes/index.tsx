@@ -198,16 +198,15 @@ function Home() {
   }, [answer]);
 
   const submit = (q: string) => {
-    const trimmed = q.trim() || (imageDataUrl ? "Please read and solve the problem in the attached image." : "");
+    const trimmed =
+      q.trim() || (imageDataUrl ? "Please read and solve the problem in the attached image." : "");
     if (!trimmed || mutation.isPending) return;
     setAnswer(null);
     setAskedQuestion(trimmed);
     setQuestion(trimmed);
     // Fold any un-committed draft into the saved tags.
     const draftTag = tagDraft.trim().toLowerCase();
-    const finalTags = Array.from(
-      new Set([...tags, ...(draftTag ? [draftTag] : [])]),
-    ).slice(0, 10);
+    const finalTags = Array.from(new Set([...tags, ...(draftTag ? [draftTag] : [])])).slice(0, 10);
     setTags(finalTags);
     setTagDraft("");
     mutation.mutate({ question: trimmed, imageDataUrl, tags: finalTags });
@@ -276,32 +275,55 @@ function Home() {
             Pratikriya
           </span>
         </div>
-        <nav aria-label="Primary" className="hidden min-w-0 items-center justify-center gap-5 text-sm text-muted-foreground md:flex lg:gap-7">
-          <a href="#problem" className="transition-colors hover:text-foreground">The problem</a>
-          <a href="#how" className="transition-colors hover:text-foreground">How it works</a>
-          <a href="#ask" className="transition-colors hover:text-foreground">Try it</a>
+        <nav
+          aria-label="Primary"
+          className="hidden min-w-0 items-center justify-center gap-5 text-sm text-muted-foreground md:flex lg:gap-7"
+        >
+          <a href="#problem" className="transition-colors hover:text-foreground">
+            The problem
+          </a>
+          <a href="#how" className="transition-colors hover:text-foreground">
+            How it works
+          </a>
+          <a href="#ask" className="transition-colors hover:text-foreground">
+            Try it
+          </a>
           {isAuthenticated && (
-            <a href="#history" className="transition-colors hover:text-foreground">History</a>
+            <a href="#history" className="transition-colors hover:text-foreground">
+              History
+            </a>
           )}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm" className="h-8 gap-1 px-2 font-normal text-muted-foreground hover:text-foreground">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-8 gap-1 px-2 font-normal text-muted-foreground hover:text-foreground"
+              >
                 Learning tools
                 <ChevronDown className="h-3.5 w-3.5" aria-hidden="true" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="center" className="w-52">
               <DropdownMenuItem asChild>
-                <Link to="/exam"><GraduationCap className="h-4 w-4" aria-hidden="true" /> Exam mode</Link>
+                <Link to="/exam">
+                  <GraduationCap className="h-4 w-4" aria-hidden="true" /> Exam mode
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link to="/notes"><BookOpen className="h-4 w-4" aria-hidden="true" /> Notes AI</Link>
+                <Link to="/notes">
+                  <BookOpen className="h-4 w-4" aria-hidden="true" /> Notes AI
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link to="/teach"><Users className="h-4 w-4" aria-hidden="true" /> Reverse Teacher</Link>
+                <Link to="/teach">
+                  <Users className="h-4 w-4" aria-hidden="true" /> Reverse Teacher
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link to="/detective"><Fingerprint className="h-4 w-4" aria-hidden="true" /> AI Detective</Link>
+                <Link to="/detective">
+                  <Fingerprint className="h-4 w-4" aria-hidden="true" /> AI Detective
+                </Link>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -348,336 +370,355 @@ function Home() {
       </header>
 
       <main>
-      {/* Hero */}
-      <section
-        className="relative overflow-hidden"
-        style={{ backgroundImage: "var(--gradient-hero)" }}
-      >
-        <div className="mx-auto grid max-w-6xl grid-cols-1 items-start gap-12 px-6 pt-16 pb-8 sm:pt-20 sm:pb-12 lg:grid-cols-[minmax(0,1fr)_auto]">
-          <div className="min-w-0">
-            <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1 text-xs font-medium text-muted-foreground backdrop-blur">
-              <span className="h-1.5 w-1.5 rounded-full bg-primary" aria-hidden="true" />
-              Instant academic feedback, calmly delivered
-            </span>
-            <h1 className="mt-5 font-display text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
-              Stuck on a question? <br />
-              <span className="italic text-primary">Get clarity in seconds.</span>
-            </h1>
-            <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-              Pratikriya is a gentle AI tutor that answers your doubts the moment
-              they appear — with explanations tailored to how you learn, not
-              days later when the moment has passed.
-            </p>
-            <div className="mt-8 flex flex-wrap items-center gap-3">
-              <Button asChild size="lg" className="rounded-full shadow-[var(--shadow-glow)]">
-                <a href="#ask">
-                  Ask your first question
-                  <ArrowRight className="ml-1 h-4 w-4" aria-hidden="true" />
-                </a>
-              </Button>
-              <Button asChild size="lg" variant="ghost" className="rounded-full">
-                <a href="#how">See how it works</a>
-              </Button>
-            </div>
-          </div>
-          <div className="relative mx-auto w-full max-w-[280px] sm:max-w-xs lg:max-w-[340px]">
-            <div className="absolute -inset-6 rounded-[2rem] bg-[image:var(--gradient-primary)] opacity-20 blur-3xl" aria-hidden="true" />
-            <img
-              src={heroImg}
-              alt="Illustration of a calm student thinking with ideas and formulas floating above an open book"
-              width={340}
-              height={340}
-              className="relative rounded-[2rem] shadow-[var(--shadow-soft)]"
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Scroll-driven intro between hero and problem */}
-      <HeroScrollAnimation />
-
-      {/* Problem */}
-      <section id="problem" className="mx-auto max-w-6xl px-6 py-20">
-        <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
-          <div>
-            <p className="text-sm font-medium uppercase tracking-widest text-primary">The problem</p>
-            <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight sm:text-4xl">
-              Learning stalls when feedback is late.
-            </h2>
-          </div>
-          <div className="space-y-6 text-muted-foreground">
-            <p className="text-lg leading-relaxed">
-              You hit a wall on Tuesday night. Your teacher replies Friday. By
-              then the momentum is gone, the confusion has hardened, and the
-              next chapter has moved on without you.
-            </p>
-            <div className="grid gap-4 sm:grid-cols-2">
-              <ProblemStat icon={<Clock className="h-5 w-5" />} value="48 hrs" label="average wait for feedback on a doubt" />
-              <ProblemStat icon={<Heart className="h-5 w-5" />} value="1 in 3" label="students give up before asking again" />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* How it works */}
-      <section id="how" className="border-y border-border bg-secondary/40">
-        <div className="mx-auto max-w-6xl px-6 py-20">
-          <div className="max-w-2xl">
-            <p className="text-sm font-medium uppercase tracking-widest text-primary">How Pratikriya helps</p>
-            <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight sm:text-4xl">
-              A patient tutor, always one tab away.
-            </h2>
-          </div>
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            <Feature
-              icon={<Zap className="h-5 w-5" />}
-              title="Instant, not eventual"
-              body="Type your question. Get a thoughtful explanation in seconds — no queues, no scheduling."
-            />
-            <Feature
-              icon={<Brain className="h-5 w-5" />}
-              title="Personalized to you"
-              body="Pratikriya meets you where you are, adjusting depth and examples until the idea clicks."
-            />
-            <Feature
-              icon={<Heart className="h-5 w-5" />}
-              title="Kind by default"
-              body="No judgment for asking 'basic' things. Every answer ends with a gentle nudge forward."
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Ask */}
-      <section id="ask" className="mx-auto max-w-3xl scroll-mt-16 px-6 py-20">
-        <div className="text-center">
-          <p className="text-sm font-medium uppercase tracking-widest text-primary">Try it now</p>
-          <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight sm:text-4xl">
-            What's on your mind?
-          </h2>
-          <p className="mt-3 text-muted-foreground">
-            Any subject, any level. Ask in your own words.
-          </p>
-        </div>
-
-        <form
-          className="mt-8 rounded-3xl border border-border bg-card p-3 shadow-[var(--shadow-soft)] transition-shadow focus-within:shadow-[var(--shadow-glow)]"
-          onSubmit={(e) => {
-            e.preventDefault();
-            submit(question);
-          }}
+        {/* Hero */}
+        <section
+          className="relative overflow-hidden"
+          style={{ backgroundImage: "var(--gradient-hero)" }}
         >
-          <label htmlFor="question" className="sr-only">
-            Your question
-          </label>
-          <textarea
-            id="question"
-            ref={textareaRef}
-            value={question}
-            onChange={(e) => setQuestion(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
-                e.preventDefault();
-                submit(question);
-              }
-            }}
-            placeholder="e.g. Why is the sky blue? Or paste a homework problem…"
-            rows={4}
-            className="w-full resize-none rounded-2xl bg-transparent px-4 py-3 text-base leading-relaxed text-foreground placeholder:text-muted-foreground focus:outline-none"
-          />
-          {imageDataUrl && (
-            <div className="mx-2 mb-2 flex items-start gap-3 rounded-2xl border border-border bg-secondary/40 p-2">
-              <img
-                src={imageDataUrl}
-                alt={imageName ?? "Attached problem"}
-                className="h-20 w-20 rounded-xl object-cover"
-              />
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium text-foreground">
-                  {imageName ?? "Attached image"}
-                </p>
-                <p className="text-xs text-muted-foreground">
-                  Pratikriya will read the text, equations, or diagram in this image.
-                </p>
-              </div>
-              <button
-                type="button"
-                onClick={() => {
-                  setImageDataUrl(null);
-                  setImageName(null);
-                }}
-                className="rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-background hover:text-foreground"
-                aria-label="Remove image"
-              >
-                <X className="h-4 w-4" aria-hidden="true" />
-              </button>
-            </div>
-          )}
-          <div className="mx-2 mb-2 rounded-2xl border border-dashed border-border/70 bg-secondary/30 p-3">
-            <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-muted-foreground">
-              <Tag className="h-3.5 w-3.5" aria-hidden="true" />
-              Tag this question
-            </div>
-            <div className="mt-2 flex flex-wrap items-center gap-2">
-              {tags.map((t) => (
-                <span
-                  key={t}
-                  className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary"
-                >
-                  #{t}
-                  <button
-                    type="button"
-                    onClick={() => removeTag(t)}
-                    className="rounded-full p-0.5 hover:bg-primary/20"
-                    aria-label={`Remove tag ${t}`}
-                  >
-                    <X className="h-3 w-3" aria-hidden="true" />
-                  </button>
-                </span>
-              ))}
-              <input
-                type="text"
-                value={tagDraft}
-                onChange={(e) => setTagDraft(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === ",") {
-                    e.preventDefault();
-                    addTag(tagDraft);
-                  } else if (e.key === "Backspace" && !tagDraft && tags.length) {
-                    removeTag(tags[tags.length - 1]);
-                  }
-                }}
-                placeholder={tags.length >= 10 ? "Tag limit reached" : "Add a tag…"}
-                disabled={tags.length >= 10}
-                className="min-w-[8ch] flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none"
-                aria-label="Add tag"
-              />
-            </div>
-            <div className="mt-2 flex flex-wrap gap-1.5">
-              {SUGGESTED_TAGS.filter((t) => !tags.includes(t)).map((t) => (
-                <button
-                  key={t}
-                  type="button"
-                  onClick={() => addTag(t)}
-                  className="rounded-full border border-border bg-card px-2 py-0.5 text-[11px] text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
-                >
-                  + {t}
-                </button>
-              ))}
-            </div>
-          </div>
-          <div className="flex items-center justify-between gap-3 border-t border-border/60 px-2 pt-3">
-            <div className="flex items-center gap-2">
-              <label
-                htmlFor="image-upload"
-                className="inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
-              >
-                <ImagePlus className="h-3.5 w-3.5" aria-hidden="true" />
-                {imageDataUrl ? "Change image" : "Attach image"}
-              </label>
-              <input
-                id="image-upload"
-                type="file"
-                accept="image/*"
-                className="sr-only"
-                onChange={(e) => {
-                  handleImageFile(e.target.files?.[0]);
-                  e.currentTarget.value = "";
-                }}
-              />
-              <span className="hidden text-xs text-muted-foreground sm:inline">
-                <kbd className="rounded border border-border bg-muted px-1.5 py-0.5 font-sans text-[10px]">⌘</kbd>
-                <span className="mx-1">+</span>
-                <kbd className="rounded border border-border bg-muted px-1.5 py-0.5 font-sans text-[10px]">Enter</kbd> to send
+          <div className="mx-auto grid max-w-6xl grid-cols-1 items-start gap-12 px-6 pt-16 pb-8 sm:pt-20 sm:pb-12 lg:grid-cols-[minmax(0,1fr)_auto]">
+            <div className="min-w-0">
+              <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1 text-xs font-medium text-muted-foreground backdrop-blur">
+                <span className="h-1.5 w-1.5 rounded-full bg-primary" aria-hidden="true" />
+                Instant academic feedback, calmly delivered
               </span>
+              <h1 className="mt-5 font-display text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
+                Stuck on a question? <br />
+                <span className="italic text-primary">Get clarity in seconds.</span>
+              </h1>
+              <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+                Pratikriya is a gentle AI tutor that answers your doubts the moment they appear —
+                with explanations tailored to how you learn, not days later when the moment has
+                passed.
+              </p>
+              <div className="mt-8 flex flex-wrap items-center gap-3">
+                <Button asChild size="lg" className="rounded-full shadow-[var(--shadow-glow)]">
+                  <a href="#ask">
+                    Ask your first question
+                    <ArrowRight className="ml-1 h-4 w-4" aria-hidden="true" />
+                  </a>
+                </Button>
+                <Button asChild size="lg" variant="ghost" className="rounded-full">
+                  <a href="#how">See how it works</a>
+                </Button>
+              </div>
             </div>
-            <Button
-              type="submit"
-              disabled={(!question.trim() && !imageDataUrl) || mutation.isPending}
-              className="rounded-full"
-            >
-              {mutation.isPending ? (
-                <>
-                  <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
-                  Thinking…
-                </>
-              ) : (
-                <>
-                  <Send className="h-4 w-4" aria-hidden="true" />
-                  Get feedback
-                </>
-              )}
-            </Button>
-          </div>
-        </form>
-
-        <div className="mt-5 flex flex-wrap justify-center gap-2">
-          {EXAMPLES.map((ex) => (
-            <button
-              key={ex}
-              type="button"
-              onClick={() => submit(ex)}
-              disabled={mutation.isPending}
-              className="rounded-full border border-border bg-card px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground disabled:opacity-50"
-            >
-              {ex}
-            </button>
-          ))}
-        </div>
-
-        <div ref={answerRef} aria-live="polite" className="mt-10 scroll-mt-24">
-          {mutation.isError && (
-            <div className="rounded-2xl border border-destructive/30 bg-destructive/5 p-5 text-sm text-destructive">
-              Something went wrong reaching Pratikriya. Please try again in a moment.
-            </div>
-          )}
-          {mutation.isPending && (
-            <div className="flex items-center gap-3 rounded-3xl border border-border bg-card p-6 text-muted-foreground">
-              <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
-              <span className="animate-pulse">Pratikriya is thinking through your question…</span>
-            </div>
-          )}
-          {answer && !mutation.isPending && (
-            <>
-              <AnswerCard
-                answer={answer}
-                question={askedQuestion ?? ""}
-                onAskNew={startNewQuestion}
+            <div className="relative mx-auto w-full max-w-[280px] sm:max-w-xs lg:max-w-[340px]">
+              <div
+                className="absolute -inset-6 rounded-[2rem] bg-[image:var(--gradient-primary)] opacity-20 blur-3xl"
+                aria-hidden="true"
               />
-              {!isAuthenticated && !authLoading && (
-                <div className="mt-6 flex flex-col items-center gap-3 rounded-3xl border border-dashed border-primary/30 bg-secondary/40 p-6 text-center sm:flex-row sm:justify-between sm:text-left">
-                  <div>
-                    <p className="font-display text-base font-semibold text-foreground">
-                      Save this to your personal space
-                    </p>
-                    <p className="text-sm text-muted-foreground">
-                      Sign in to keep every doubt and answer in your own history.
-                    </p>
-                  </div>
-                  <Button asChild className="rounded-full">
-                    <Link to="/auth">
-                      <LogIn className="h-4 w-4" aria-hidden="true" />
-                      Sign in to save
-                    </Link>
-                  </Button>
-                </div>
-              )}
-            </>
-          )}
-        </div>
+              <img
+                src={heroImg}
+                alt="Illustration of a calm student thinking with ideas and formulas floating above an open book"
+                width={340}
+                height={340}
+                className="relative rounded-[2rem] shadow-[var(--shadow-soft)]"
+              />
+            </div>
+          </div>
+        </section>
 
-        {isAuthenticated && (
-          <HistorySection
-            items={history.data ?? []}
-            loading={history.isLoading}
-            onOpen={openHistoryItem}
-            onDelete={(id: string) => removeMutation.mutate(id)}
-            deletingId={removeMutation.isPending ? (removeMutation.variables ?? null) : null}
-            activeTag={historyFilter}
-            onFilterChange={setHistoryFilter}
-          />
-        )}
-      </section>
+        {/* Scroll-driven intro between hero and problem */}
+        <HeroScrollAnimation />
+
+        {/* Problem */}
+        <section id="problem" className="mx-auto max-w-6xl px-6 py-20">
+          <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
+            <div>
+              <p className="text-sm font-medium uppercase tracking-widest text-primary">
+                The problem
+              </p>
+              <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight sm:text-4xl">
+                Learning stalls when feedback is late.
+              </h2>
+            </div>
+            <div className="space-y-6 text-muted-foreground">
+              <p className="text-lg leading-relaxed">
+                You hit a wall on Tuesday night. Your teacher replies Friday. By then the momentum
+                is gone, the confusion has hardened, and the next chapter has moved on without you.
+              </p>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <ProblemStat
+                  icon={<Clock className="h-5 w-5" />}
+                  value="48 hrs"
+                  label="average wait for feedback on a doubt"
+                />
+                <ProblemStat
+                  icon={<Heart className="h-5 w-5" />}
+                  value="1 in 3"
+                  label="students give up before asking again"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* How it works */}
+        <section id="how" className="border-y border-border bg-secondary/40">
+          <div className="mx-auto max-w-6xl px-6 py-20">
+            <div className="max-w-2xl">
+              <p className="text-sm font-medium uppercase tracking-widest text-primary">
+                How Pratikriya helps
+              </p>
+              <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight sm:text-4xl">
+                A patient tutor, always one tab away.
+              </h2>
+            </div>
+            <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              <Feature
+                icon={<Zap className="h-5 w-5" />}
+                title="Instant, not eventual"
+                body="Type your question. Get a thoughtful explanation in seconds — no queues, no scheduling."
+              />
+              <Feature
+                icon={<Brain className="h-5 w-5" />}
+                title="Personalized to you"
+                body="Pratikriya meets you where you are, adjusting depth and examples until the idea clicks."
+              />
+              <Feature
+                icon={<Heart className="h-5 w-5" />}
+                title="Kind by default"
+                body="No judgment for asking 'basic' things. Every answer ends with a gentle nudge forward."
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* Ask */}
+        <section id="ask" className="mx-auto max-w-3xl scroll-mt-16 px-6 py-20">
+          <div className="text-center">
+            <p className="text-sm font-medium uppercase tracking-widest text-primary">Try it now</p>
+            <h2 className="mt-3 font-display text-3xl font-semibold tracking-tight sm:text-4xl">
+              What's on your mind?
+            </h2>
+            <p className="mt-3 text-muted-foreground">
+              Any subject, any level. Ask in your own words.
+            </p>
+          </div>
+
+          <form
+            className="mt-8 rounded-3xl border border-border bg-card p-3 shadow-[var(--shadow-soft)] transition-shadow focus-within:shadow-[var(--shadow-glow)]"
+            onSubmit={(e) => {
+              e.preventDefault();
+              submit(question);
+            }}
+          >
+            <label htmlFor="question" className="sr-only">
+              Your question
+            </label>
+            <textarea
+              id="question"
+              ref={textareaRef}
+              value={question}
+              onChange={(e) => setQuestion(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
+                  e.preventDefault();
+                  submit(question);
+                }
+              }}
+              placeholder="e.g. Why is the sky blue? Or paste a homework problem…"
+              rows={4}
+              className="w-full resize-none rounded-2xl bg-transparent px-4 py-3 text-base leading-relaxed text-foreground placeholder:text-muted-foreground focus:outline-none"
+            />
+            {imageDataUrl && (
+              <div className="mx-2 mb-2 flex items-start gap-3 rounded-2xl border border-border bg-secondary/40 p-2">
+                <img
+                  src={imageDataUrl}
+                  alt={imageName ?? "Attached problem"}
+                  className="h-20 w-20 rounded-xl object-cover"
+                />
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-medium text-foreground">
+                    {imageName ?? "Attached image"}
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    Pratikriya will read the text, equations, or diagram in this image.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setImageDataUrl(null);
+                    setImageName(null);
+                  }}
+                  className="rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-background hover:text-foreground"
+                  aria-label="Remove image"
+                >
+                  <X className="h-4 w-4" aria-hidden="true" />
+                </button>
+              </div>
+            )}
+            <div className="mx-2 mb-2 rounded-2xl border border-dashed border-border/70 bg-secondary/30 p-3">
+              <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-widest text-muted-foreground">
+                <Tag className="h-3.5 w-3.5" aria-hidden="true" />
+                Tag this question
+              </div>
+              <div className="mt-2 flex flex-wrap items-center gap-2">
+                {tags.map((t) => (
+                  <span
+                    key={t}
+                    className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary"
+                  >
+                    #{t}
+                    <button
+                      type="button"
+                      onClick={() => removeTag(t)}
+                      className="rounded-full p-0.5 hover:bg-primary/20"
+                      aria-label={`Remove tag ${t}`}
+                    >
+                      <X className="h-3 w-3" aria-hidden="true" />
+                    </button>
+                  </span>
+                ))}
+                <input
+                  type="text"
+                  value={tagDraft}
+                  onChange={(e) => setTagDraft(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === ",") {
+                      e.preventDefault();
+                      addTag(tagDraft);
+                    } else if (e.key === "Backspace" && !tagDraft && tags.length) {
+                      removeTag(tags[tags.length - 1]);
+                    }
+                  }}
+                  placeholder={tags.length >= 10 ? "Tag limit reached" : "Add a tag…"}
+                  disabled={tags.length >= 10}
+                  className="min-w-[8ch] flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none"
+                  aria-label="Add tag"
+                />
+              </div>
+              <div className="mt-2 flex flex-wrap gap-1.5">
+                {SUGGESTED_TAGS.filter((t) => !tags.includes(t)).map((t) => (
+                  <button
+                    key={t}
+                    type="button"
+                    onClick={() => addTag(t)}
+                    className="rounded-full border border-border bg-card px-2 py-0.5 text-[11px] text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
+                  >
+                    + {t}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="flex items-center justify-between gap-3 border-t border-border/60 px-2 pt-3">
+              <div className="flex items-center gap-2">
+                <label
+                  htmlFor="image-upload"
+                  className="inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
+                >
+                  <ImagePlus className="h-3.5 w-3.5" aria-hidden="true" />
+                  {imageDataUrl ? "Change image" : "Attach image"}
+                </label>
+                <input
+                  id="image-upload"
+                  type="file"
+                  accept="image/*"
+                  className="sr-only"
+                  onChange={(e) => {
+                    handleImageFile(e.target.files?.[0]);
+                    e.currentTarget.value = "";
+                  }}
+                />
+                <span className="hidden text-xs text-muted-foreground sm:inline">
+                  <kbd className="rounded border border-border bg-muted px-1.5 py-0.5 font-sans text-[10px]">
+                    ⌘
+                  </kbd>
+                  <span className="mx-1">+</span>
+                  <kbd className="rounded border border-border bg-muted px-1.5 py-0.5 font-sans text-[10px]">
+                    Enter
+                  </kbd>{" "}
+                  to send
+                </span>
+              </div>
+              <Button
+                type="submit"
+                disabled={(!question.trim() && !imageDataUrl) || mutation.isPending}
+                className="rounded-full"
+              >
+                {mutation.isPending ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+                    Thinking…
+                  </>
+                ) : (
+                  <>
+                    <Send className="h-4 w-4" aria-hidden="true" />
+                    Get feedback
+                  </>
+                )}
+              </Button>
+            </div>
+          </form>
+
+          <div className="mt-5 flex flex-wrap justify-center gap-2">
+            {EXAMPLES.map((ex) => (
+              <button
+                key={ex}
+                type="button"
+                onClick={() => submit(ex)}
+                disabled={mutation.isPending}
+                className="rounded-full border border-border bg-card px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground disabled:opacity-50"
+              >
+                {ex}
+              </button>
+            ))}
+          </div>
+
+          <div ref={answerRef} aria-live="polite" className="mt-10 scroll-mt-24">
+            {mutation.isError && (
+              <div className="rounded-2xl border border-destructive/30 bg-destructive/5 p-5 text-sm text-destructive">
+                Something went wrong reaching Pratikriya. Please try again in a moment.
+              </div>
+            )}
+            {mutation.isPending && (
+              <div className="flex items-center gap-3 rounded-3xl border border-border bg-card p-6 text-muted-foreground">
+                <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+                <span className="animate-pulse">Pratikriya is thinking through your question…</span>
+              </div>
+            )}
+            {answer && !mutation.isPending && (
+              <>
+                <AnswerCard
+                  answer={answer}
+                  question={askedQuestion ?? ""}
+                  onAskNew={startNewQuestion}
+                />
+                {!isAuthenticated && !authLoading && (
+                  <div className="mt-6 flex flex-col items-center gap-3 rounded-3xl border border-dashed border-primary/30 bg-secondary/40 p-6 text-center sm:flex-row sm:justify-between sm:text-left">
+                    <div>
+                      <p className="font-display text-base font-semibold text-foreground">
+                        Save this to your personal space
+                      </p>
+                      <p className="text-sm text-muted-foreground">
+                        Sign in to keep every doubt and answer in your own history.
+                      </p>
+                    </div>
+                    <Button asChild className="rounded-full">
+                      <Link to="/auth">
+                        <LogIn className="h-4 w-4" aria-hidden="true" />
+                        Sign in to save
+                      </Link>
+                    </Button>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+
+          {isAuthenticated && (
+            <HistorySection
+              items={history.data ?? []}
+              loading={history.isLoading}
+              onOpen={openHistoryItem}
+              onDelete={(id: string) => removeMutation.mutate(id)}
+              deletingId={removeMutation.isPending ? (removeMutation.variables ?? null) : null}
+              activeTag={historyFilter}
+              onFilterChange={setHistoryFilter}
+            />
+          )}
+        </section>
       </main>
 
       <footer className="border-t border-border">
@@ -693,15 +734,7 @@ function Home() {
   );
 }
 
-function Feature({
-  icon,
-  title,
-  body,
-}: {
-  icon: React.ReactNode;
-  title: string;
-  body: string;
-}) {
+function Feature({ icon, title, body }: { icon: React.ReactNode; title: string; body: string }) {
   return (
     <div className="group rounded-2xl border border-border bg-card p-6 transition-all hover:-translate-y-0.5 hover:shadow-[var(--shadow-soft)]">
       <div className="grid h-10 w-10 place-items-center rounded-xl bg-accent text-accent-foreground">
@@ -936,7 +969,10 @@ function AnswerCard({
         </div>
         <ul className="space-y-3">
           {answer.keyTakeaways.map((t, i) => (
-            <li key={i} className="flex items-start gap-3 text-sm leading-relaxed text-foreground sm:text-base">
+            <li
+              key={i}
+              className="flex items-start gap-3 text-sm leading-relaxed text-foreground sm:text-base"
+            >
               <span
                 aria-hidden="true"
                 className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary"
@@ -950,7 +986,10 @@ function AnswerCard({
       {/* Reflection */}
       <div className="rounded-3xl border border-accent/60 bg-accent/40 p-6">
         <div className="flex items-start gap-3">
-          <MessageCircleQuestion className="mt-0.5 h-5 w-5 shrink-0 text-accent-foreground" aria-hidden="true" />
+          <MessageCircleQuestion
+            className="mt-0.5 h-5 w-5 shrink-0 text-accent-foreground"
+            aria-hidden="true"
+          />
           <p className="text-sm leading-relaxed text-accent-foreground sm:text-base">
             <span className="font-semibold">Check yourself: </span>
             {answer.reflection}
@@ -995,7 +1034,10 @@ function AnswerCard({
                       </span>
                     )}
                   </span>
-                  <Link2 className="mt-1 h-4 w-4 shrink-0 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" aria-hidden="true" />
+                  <Link2
+                    className="mt-1 h-4 w-4 shrink-0 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100"
+                    aria-hidden="true"
+                  />
                 </a>
               </li>
             ))}
@@ -1139,12 +1181,8 @@ function HistorySection({
   activeTag: string | null;
   onFilterChange: (tag: string | null) => void;
 }) {
-  const allTags = Array.from(
-    new Set(items.flatMap((i) => i.tags ?? [])),
-  ).sort();
-  const visible = activeTag
-    ? items.filter((i) => (i.tags ?? []).includes(activeTag))
-    : items;
+  const allTags = Array.from(new Set(items.flatMap((i) => i.tags ?? []))).sort();
+  const visible = activeTag ? items.filter((i) => (i.tags ?? []).includes(activeTag)) : items;
   return (
     <section id="history" className="mt-20 scroll-mt-16 border-t border-border pt-12">
       <div className="mb-6 flex items-center justify-between gap-4">

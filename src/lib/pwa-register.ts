@@ -22,18 +22,13 @@ export async function registerPWA(): Promise<void> {
   const inIframe = window.self !== window.top;
   const swOff = new URL(window.location.href).searchParams.get("sw") === "off";
   const refuse =
-    !import.meta.env.PROD ||
-    inIframe ||
-    isPreviewHost(window.location.hostname) ||
-    swOff;
+    !import.meta.env.PROD || inIframe || isPreviewHost(window.location.hostname) || swOff;
 
   if (refuse) {
     try {
       const regs = await navigator.serviceWorker.getRegistrations();
       await Promise.allSettled(
-        regs
-          .filter((r) => r.active?.scriptURL?.endsWith("/sw.js"))
-          .map((r) => r.unregister()),
+        regs.filter((r) => r.active?.scriptURL?.endsWith("/sw.js")).map((r) => r.unregister()),
       );
     } catch {
       /* noop */

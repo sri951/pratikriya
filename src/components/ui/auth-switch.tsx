@@ -18,7 +18,7 @@ export function AuthSwitch({ mode, onChange, className }: AuthSwitchProps) {
       aria-label="Authentication mode"
       className={cn(
         "relative flex w-full rounded-full border border-border bg-muted/60 p-1",
-        className
+        className,
       )}
     >
       <div
@@ -39,7 +39,7 @@ export function AuthSwitch({ mode, onChange, className }: AuthSwitchProps) {
           "relative z-10 flex-1 rounded-full py-2 text-sm font-medium transition-colors duration-300",
           mode === "signin"
             ? "text-primary-foreground"
-            : "text-muted-foreground hover:text-foreground"
+            : "text-muted-foreground hover:text-foreground",
         )}
       >
         Sign in
@@ -55,7 +55,7 @@ export function AuthSwitch({ mode, onChange, className }: AuthSwitchProps) {
           "relative z-10 flex-1 rounded-full py-2 text-sm font-medium transition-colors duration-300",
           mode === "signup"
             ? "text-primary-foreground"
-            : "text-muted-foreground hover:text-foreground"
+            : "text-muted-foreground hover:text-foreground",
         )}
       >
         Sign up

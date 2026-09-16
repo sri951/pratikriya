@@ -26,7 +26,7 @@ npm run build   # production build must pass
 ```
 
 - Keep PRs focused: one feature or fix per PR.
-- Describe *what* changed and *why*, with screenshots for UI changes.
+- Describe _what_ changed and _why_, with screenshots for UI changes.
 - Add or update tests for logic changes (see `src/lib/__tests__/`).
 
 ## Reporting Issues

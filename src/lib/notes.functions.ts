@@ -126,7 +126,10 @@ const AnalyzeInput = z.object({
     .array(
       z.object({
         name: z.string().max(200),
-        dataUrl: z.string().max(70_000_000).regex(/^data:[^;]+;base64,/),
+        dataUrl: z
+          .string()
+          .max(70_000_000)
+          .regex(/^data:[^;]+;base64,/),
       }),
     )
     .max(5)
@@ -234,7 +237,11 @@ Rules:
         title: (pack.title || "Untitled notes").slice(0, 200),
         subject: (pack.subject || data.subjectHint || "General").slice(0, 80),
         chapter: (pack.chapter || "").slice(0, 120),
-        source_name: data.files.map((f) => f.name).join(", ").slice(0, 300) || null,
+        source_name:
+          data.files
+            .map((f) => f.name)
+            .join(", ")
+            .slice(0, 300) || null,
         source_type: sourceType,
         extracted_text: (data.pastedText ?? "").slice(0, 100_000),
         pack,
@@ -264,8 +271,7 @@ Rules:
 
 /* ---------------- library ---------------- */
 
-const NOTE_COLS =
-  "id, title, subject, chapter, source_name, source_type, topics, pack, created_at";
+const NOTE_COLS = "id, title, subject, chapter, source_name, source_type, topics, pack, created_at";
 
 export const listNotes = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
@@ -290,9 +296,7 @@ export const deleteNote = createServerFn({ method: "POST" })
 
 export const listCards = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((d: unknown) =>
-    z.object({ noteId: z.string().uuid().optional() }).parse(d),
-  )
+  .inputValidator((d: unknown) => z.object({ noteId: z.string().uuid().optional() }).parse(d))
   .handler(async ({ data, context }): Promise<NoteCard[]> => {
     let q = context.supabase
       .from("note_cards")
@@ -308,9 +312,7 @@ export const listCards = createServerFn({ method: "POST" })
 export const reviewCard = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((d: unknown) =>
-    z
-      .object({ id: z.string().uuid(), quality: z.enum(["again", "good", "easy"]) })
-      .parse(d),
+    z.object({ id: z.string().uuid(), quality: z.enum(["again", "good", "easy"]) }).parse(d),
   )
   .handler(async ({ data, context }): Promise<NoteCard> => {
     const { data: card, error: readErr } = await context.supabase

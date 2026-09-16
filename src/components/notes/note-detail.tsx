@@ -36,8 +36,7 @@ import {
   type SavedNote,
 } from "@/lib/notes.functions";
 
-const glass =
-  "rounded-2xl border border-border/60 bg-card/70 backdrop-blur-xl shadow-sm";
+const glass = "rounded-2xl border border-border/60 bg-card/70 backdrop-blur-xl shadow-sm";
 
 function Md({ children }: { children: string }) {
   return (
@@ -52,15 +51,42 @@ export function NoteDetail({ note }: { note: SavedNote }) {
   return (
     <Tabs defaultValue="notes" className="w-full">
       <TabsList className="flex h-auto w-full flex-wrap justify-start gap-1 bg-muted/50 p-1">
-        <TabsTrigger value="notes" className="gap-1.5"><BookOpen className="h-4 w-4" />Smart notes</TabsTrigger>
-        <TabsTrigger value="summary" className="gap-1.5"><Brain className="h-4 w-4" />Summaries</TabsTrigger>
-        <TabsTrigger value="cards" className="gap-1.5"><Layers className="h-4 w-4" />Flashcards</TabsTrigger>
-        <TabsTrigger value="mcq" className="gap-1.5"><ListChecks className="h-4 w-4" />MCQs</TabsTrigger>
-        <TabsTrigger value="map" className="gap-1.5"><Network className="h-4 w-4" />Mind map</TabsTrigger>
-        <TabsTrigger value="formulas" className="gap-1.5"><Sigma className="h-4 w-4" />Formulas</TabsTrigger>
-        <TabsTrigger value="topics" className="gap-1.5"><Star className="h-4 w-4" />Key topics</TabsTrigger>
-        <TabsTrigger value="plan" className="gap-1.5"><CalendarDays className="h-4 w-4" />Revision plan</TabsTrigger>
-        <TabsTrigger value="ask" className="gap-1.5"><MessageCircleQuestion className="h-4 w-4" />Ask my notes</TabsTrigger>
+        <TabsTrigger value="notes" className="gap-1.5">
+          <BookOpen className="h-4 w-4" />
+          Smart notes
+        </TabsTrigger>
+        <TabsTrigger value="summary" className="gap-1.5">
+          <Brain className="h-4 w-4" />
+          Summaries
+        </TabsTrigger>
+        <TabsTrigger value="cards" className="gap-1.5">
+          <Layers className="h-4 w-4" />
+          Flashcards
+        </TabsTrigger>
+        <TabsTrigger value="mcq" className="gap-1.5">
+          <ListChecks className="h-4 w-4" />
+          MCQs
+        </TabsTrigger>
+        <TabsTrigger value="map" className="gap-1.5">
+          <Network className="h-4 w-4" />
+          Mind map
+        </TabsTrigger>
+        <TabsTrigger value="formulas" className="gap-1.5">
+          <Sigma className="h-4 w-4" />
+          Formulas
+        </TabsTrigger>
+        <TabsTrigger value="topics" className="gap-1.5">
+          <Star className="h-4 w-4" />
+          Key topics
+        </TabsTrigger>
+        <TabsTrigger value="plan" className="gap-1.5">
+          <CalendarDays className="h-4 w-4" />
+          Revision plan
+        </TabsTrigger>
+        <TabsTrigger value="ask" className="gap-1.5">
+          <MessageCircleQuestion className="h-4 w-4" />
+          Ask my notes
+        </TabsTrigger>
       </TabsList>
 
       <TabsContent value="notes" className="mt-4 space-y-4">
@@ -76,7 +102,9 @@ export function NoteDetail({ note }: { note: SavedNote }) {
         <SummaryBlock title="Full chapter overview" body={pack.summaryDetailed} />
         {!!pack.definitions?.length && (
           <div className={`${glass} p-5`}>
-            <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">Key definitions</h3>
+            <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+              Key definitions
+            </h3>
             <dl className="grid gap-3 sm:grid-cols-2">
               {pack.definitions.map((d, i) => (
                 <div key={i} className="rounded-xl bg-muted/40 p-3">
@@ -89,9 +117,13 @@ export function NoteDetail({ note }: { note: SavedNote }) {
         )}
         {!!pack.commonMistakes?.length && (
           <div className={`${glass} p-5`}>
-            <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">Common mistakes</h3>
+            <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+              Common mistakes
+            </h3>
             <ul className="list-disc space-y-1 pl-5 text-sm">
-              {pack.commonMistakes.map((m, i) => <li key={i}>{m}</li>)}
+              {pack.commonMistakes.map((m, i) => (
+                <li key={i}>{m}</li>
+              ))}
             </ul>
           </div>
         )}
@@ -122,15 +154,23 @@ export function NoteDetail({ note }: { note: SavedNote }) {
             {f.meaning && <p className="mt-2 text-sm text-muted-foreground">{f.meaning}</p>}
             {!!f.symbols?.length && (
               <ul className="mt-3 space-y-0.5 text-sm">
-                {f.symbols.map((s, j) => <li key={j}>· {s}</li>)}
+                {f.symbols.map((s, j) => (
+                  <li key={j}>· {s}</li>
+                ))}
               </ul>
             )}
             {!!f.units?.length && (
               <p className="mt-2 text-xs text-muted-foreground">Units: {f.units.join(", ")}</p>
             )}
-            {f.conditions && <p className="mt-2 text-xs"><span className="font-medium">Valid when:</span> {f.conditions}</p>}
+            {f.conditions && (
+              <p className="mt-2 text-xs">
+                <span className="font-medium">Valid when:</span> {f.conditions}
+              </p>
+            )}
             {f.trick && <p className="mt-2 rounded-lg bg-primary/10 p-2 text-xs">💡 {f.trick}</p>}
-            {f.application && <p className="mt-2 text-xs text-muted-foreground">Used for: {f.application}</p>}
+            {f.application && (
+              <p className="mt-2 text-xs text-muted-foreground">Used for: {f.application}</p>
+            )}
           </div>
         ))}
         {!pack.formulas?.length && <Empty label="No formulas found in this material." />}
@@ -145,7 +185,10 @@ export function NoteDetail({ note }: { note: SavedNote }) {
                 <p className="font-medium">{t.name}</p>
                 {t.why && <p className="text-sm text-muted-foreground">{t.why}</p>}
               </div>
-              <div className="shrink-0 text-amber-500" aria-label={`${t.importance} out of 5 importance`}>
+              <div
+                className="shrink-0 text-amber-500"
+                aria-label={`${t.importance} out of 5 importance`}
+              >
                 {"★".repeat(t.importance)}
                 <span className="text-muted-foreground/40">{"★".repeat(5 - t.importance)}</span>
               </div>
@@ -157,10 +200,14 @@ export function NoteDetail({ note }: { note: SavedNote }) {
       <TabsContent value="plan" className="mt-4 grid gap-3 md:grid-cols-2">
         {(pack.revisionPlan ?? []).map((d, i) => (
           <div key={i} className={`${glass} p-4`}>
-            <p className="text-xs font-semibold uppercase tracking-wide text-primary">Day {d.day}</p>
+            <p className="text-xs font-semibold uppercase tracking-wide text-primary">
+              Day {d.day}
+            </p>
             <p className="mt-1 font-medium">{d.focus}</p>
             <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-muted-foreground">
-              {(d.tasks ?? []).map((t, j) => <li key={j}>{t}</li>)}
+              {(d.tasks ?? []).map((t, j) => (
+                <li key={j}>{t}</li>
+              ))}
             </ul>
           </div>
         ))}
@@ -186,7 +233,9 @@ function SummaryBlock({ title, body }: { title: string; body?: string }) {
   if (!body) return null;
   return (
     <div className={`${glass} p-5`}>
-      <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-muted-foreground">{title}</h3>
+      <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+        {title}
+      </h3>
       <Md>{body}</Md>
     </div>
   );
@@ -203,7 +252,14 @@ function SmartNoteSection({
   const [simple, setSimple] = useState<string | null>(null);
   const eli = useMutation({
     mutationFn: () =>
-      ask({ data: { noteId, question: `Explain "${section.heading}" simply.`, mode: "eli10", allowExternal: false } }),
+      ask({
+        data: {
+          noteId,
+          question: `Explain "${section.heading}" simply.`,
+          mode: "eli10",
+          allowExternal: false,
+        },
+      }),
     onSuccess: (r) => setSimple(r.answer),
     onError: (e: Error) => toast.error(e.message),
   });
@@ -218,14 +274,20 @@ function SmartNoteSection({
           )}
         </div>
         <Button size="sm" variant="outline" onClick={() => eli.mutate()} disabled={eli.isPending}>
-          {eli.isPending ? <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" /> : <Baby className="mr-1.5 h-3.5 w-3.5" />}
+          {eli.isPending ? (
+            <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" />
+          ) : (
+            <Baby className="mr-1.5 h-3.5 w-3.5" />
+          )}
           Explain like I'm 10
         </Button>
       </header>
       <Md>{section.explanation}</Md>
       {simple && (
         <div className="mt-3 rounded-xl border border-primary/30 bg-primary/5 p-4">
-          <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-primary">Simple version</p>
+          <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-primary">
+            Simple version
+          </p>
           <Md>{simple}</Md>
         </div>
       )}
@@ -244,7 +306,9 @@ function Bullets({ title, items }: { title: string; items?: string[] }) {
     <div className="mt-3">
       <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{title}</p>
       <ul className="mt-1 list-disc space-y-1 pl-5 text-sm">
-        {items.map((it, i) => <li key={i}>{it}</li>)}
+        {items.map((it, i) => (
+          <li key={i}>{it}</li>
+        ))}
       </ul>
     </div>
   );
@@ -279,13 +343,17 @@ function FlashcardDeck({ noteId }: { noteId: string }) {
 
   const learned = cards.filter((c) => c.learned).length;
   const card: NoteCard | undefined = cards[index % cards.length];
-  const dueDays = card ? Math.max(0, Math.round((new Date(card.due_at).getTime() - Date.now()) / 86400000)) : 0;
+  const dueDays = card
+    ? Math.max(0, Math.round((new Date(card.due_at).getTime() - Date.now()) / 86400000))
+    : 0;
 
   return (
     <div className="space-y-4">
       <div className={`${glass} flex flex-wrap items-center gap-4 p-4`}>
         <div className="flex-1 min-w-40">
-          <p className="text-xs text-muted-foreground">Mastered {learned} of {cards.length}</p>
+          <p className="text-xs text-muted-foreground">
+            Mastered {learned} of {cards.length}
+          </p>
           <Progress value={(learned / cards.length) * 100} className="mt-1.5 h-2" />
         </div>
         <p className="text-xs text-muted-foreground">
@@ -306,19 +374,35 @@ function FlashcardDeck({ noteId }: { noteId: string }) {
           <span className={`text-lg ${flipped ? "text-muted-foreground" : "font-semibold"}`}>
             {flipped ? card.back : card.front}
           </span>
-          <span className="text-xs text-muted-foreground">{flipped ? "Tap to see the question" : "Tap to reveal the answer"}</span>
+          <span className="text-xs text-muted-foreground">
+            {flipped ? "Tap to see the question" : "Tap to reveal the answer"}
+          </span>
         </button>
       )}
 
       <div className="flex flex-wrap gap-2">
-        <Button variant="outline" onClick={() => card && grade.mutate({ id: card.id, quality: "again" })} disabled={grade.isPending}>
-          <RotateCcw className="mr-1.5 h-4 w-4" />Again (1 day)
+        <Button
+          variant="outline"
+          onClick={() => card && grade.mutate({ id: card.id, quality: "again" })}
+          disabled={grade.isPending}
+        >
+          <RotateCcw className="mr-1.5 h-4 w-4" />
+          Again (1 day)
         </Button>
-        <Button variant="outline" onClick={() => card && grade.mutate({ id: card.id, quality: "good" })} disabled={grade.isPending}>
-          <Check className="mr-1.5 h-4 w-4" />Good
+        <Button
+          variant="outline"
+          onClick={() => card && grade.mutate({ id: card.id, quality: "good" })}
+          disabled={grade.isPending}
+        >
+          <Check className="mr-1.5 h-4 w-4" />
+          Good
         </Button>
-        <Button onClick={() => card && grade.mutate({ id: card.id, quality: "easy" })} disabled={grade.isPending}>
-          <Sparkles className="mr-1.5 h-4 w-4" />Easy
+        <Button
+          onClick={() => card && grade.mutate({ id: card.id, quality: "easy" })}
+          disabled={grade.isPending}
+        >
+          <Sparkles className="mr-1.5 h-4 w-4" />
+          Easy
         </Button>
       </div>
       <p className="text-xs text-muted-foreground">
@@ -350,29 +434,52 @@ function McqPractice({ note }: { note: SavedNote }) {
     <div className="space-y-4">
       <div className={`${glass} flex flex-wrap items-center gap-3 p-4`}>
         <div className="flex flex-wrap gap-1.5">
-          {[10, 25, 50, all.length].filter((n, i, a) => n > 0 && a.indexOf(n) === i).map((n) => (
-            <Button key={n} size="sm" variant={limit === n ? "default" : "outline"} onClick={() => { setLimit(n); setChecked(false); setAnswers({}); }}>
-              {n === all.length ? "All" : n}
-            </Button>
-          ))}
+          {[10, 25, 50, all.length]
+            .filter((n, i, a) => n > 0 && a.indexOf(n) === i)
+            .map((n) => (
+              <Button
+                key={n}
+                size="sm"
+                variant={limit === n ? "default" : "outline"}
+                onClick={() => {
+                  setLimit(n);
+                  setChecked(false);
+                  setAnswers({});
+                }}
+              >
+                {n === all.length ? "All" : n}
+              </Button>
+            ))}
         </div>
         <div className="flex flex-wrap gap-1.5">
           {["all", "easy", "medium", "hard"].map((d) => (
-            <Button key={d} size="sm" variant={difficulty === d ? "secondary" : "ghost"} onClick={() => { setDifficulty(d); setChecked(false); setAnswers({}); }}>
+            <Button
+              key={d}
+              size="sm"
+              variant={difficulty === d ? "secondary" : "ghost"}
+              onClick={() => {
+                setDifficulty(d);
+                setChecked(false);
+                setAnswers({});
+              }}
+            >
               {d}
             </Button>
           ))}
         </div>
         {checked && (
           <p className="ml-auto text-sm font-medium">
-            Score {correct}/{questions.length} · {Math.round((correct / (questions.length || 1)) * 100)}%
+            Score {correct}/{questions.length} ·{" "}
+            {Math.round((correct / (questions.length || 1)) * 100)}%
           </p>
         )}
       </div>
 
       {questions.map((q, i) => (
         <div key={i} className={`${glass} p-5`}>
-          <p className="font-medium">{i + 1}. {q.question}</p>
+          <p className="font-medium">
+            {i + 1}. {q.question}
+          </p>
           <div className="mt-3 grid gap-2">
             {q.options.map((opt, j) => {
               const picked = answers[i] === j;
@@ -406,7 +513,8 @@ function McqPractice({ note }: { note: SavedNote }) {
               <p className="font-medium">Why: </p>
               <Md>{q.explanation}</Md>
               <p className="mt-1 text-xs text-muted-foreground">
-                {q.topic} · {q.difficulty}{q.outcome ? ` · ${q.outcome}` : ""}
+                {q.topic} · {q.difficulty}
+                {q.outcome ? ` · ${q.outcome}` : ""}
               </p>
             </div>
           )}
@@ -414,8 +522,18 @@ function McqPractice({ note }: { note: SavedNote }) {
       ))}
 
       <div className="flex gap-2">
-        <Button onClick={() => setChecked(true)} disabled={checked}>Check answers</Button>
-        <Button variant="outline" onClick={() => { setChecked(false); setAnswers({}); }}>Reset</Button>
+        <Button onClick={() => setChecked(true)} disabled={checked}>
+          Check answers
+        </Button>
+        <Button
+          variant="outline"
+          onClick={() => {
+            setChecked(false);
+            setAnswers({});
+          }}
+        >
+          Reset
+        </Button>
       </div>
     </div>
   );
@@ -455,13 +573,22 @@ function AskMyNotes({ noteId }: { noteId: string }) {
           rows={3}
         />
         <div className="mt-3 flex flex-wrap items-center gap-3">
-          <Button onClick={() => question.trim() && run.mutate(question.trim())} disabled={run.isPending || !question.trim()}>
-            {run.isPending ? <Loader2 className="mr-1.5 h-4 w-4 animate-spin" /> : <MessageCircleQuestion className="mr-1.5 h-4 w-4" />}
+          <Button
+            onClick={() => question.trim() && run.mutate(question.trim())}
+            disabled={run.isPending || !question.trim()}
+          >
+            {run.isPending ? (
+              <Loader2 className="mr-1.5 h-4 w-4 animate-spin" />
+            ) : (
+              <MessageCircleQuestion className="mr-1.5 h-4 w-4" />
+            )}
             Ask my notes
           </Button>
           <div className="flex items-center gap-2">
             <Switch id="ext" checked={allowExternal} onCheckedChange={setAllowExternal} />
-            <Label htmlFor="ext" className="text-xs text-muted-foreground">Allow knowledge beyond my notes</Label>
+            <Label htmlFor="ext" className="text-xs text-muted-foreground">
+              Allow knowledge beyond my notes
+            </Label>
           </div>
         </div>
         <div className="mt-3 flex flex-wrap gap-1.5">

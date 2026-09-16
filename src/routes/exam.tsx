@@ -196,8 +196,7 @@ function ExamPage() {
                   try {
                     const ex = await generateFn({
                       data: {
-                        sourceText:
-                          `Focus a new practice quiz on these weak areas from a prior exam titled "${activeExam.title}":\n- ${weak.join("\n- ")}\n\nUse general knowledge to write clean questions on these specific topics.`,
+                        sourceText: `Focus a new practice quiz on these weak areas from a prior exam titled "${activeExam.title}":\n- ${weak.join("\n- ")}\n\nUse general knowledge to write clean questions on these specific topics.`,
                         sourceName: `Practice: ${activeExam.title}`,
                         difficulty: "medium",
                         count: Math.min(activeExam.question_count, 8),
@@ -252,10 +251,7 @@ function ExamPage() {
                       key={ex.id}
                       className="group flex items-start justify-between gap-2 rounded-xl border border-border/60 bg-background px-3 py-2 text-sm"
                     >
-                      <button
-                        className="min-w-0 flex-1 text-left"
-                        onClick={() => openExam(ex.id)}
-                      >
+                      <button className="min-w-0 flex-1 text-left" onClick={() => openExam(ex.id)}>
                         <p className="truncate font-medium">{ex.title}</p>
                         <p className="text-xs text-muted-foreground">
                           {ex.question_count} questions · {ex.difficulty}
@@ -274,7 +270,11 @@ function ExamPage() {
               )}
             </div>
 
-            <RecentAttempts attempts={attemptsQuery.data ?? []} exams={examsQuery.data ?? []} onOpen={openExam} />
+            <RecentAttempts
+              attempts={attemptsQuery.data ?? []}
+              exams={examsQuery.data ?? []}
+              onOpen={openExam}
+            />
           </aside>
         </div>
       </main>
@@ -283,9 +283,7 @@ function ExamPage() {
 }
 
 function Header() {
-  return (
-    <AppHeader current="Exam mode" />
-  );
+  return <AppHeader current="Exam mode" />;
 }
 
 function ProgressOverview({ attempts }: { attempts: SavedAttempt[] }) {
@@ -294,21 +292,37 @@ function ProgressOverview({ attempts }: { attempts: SavedAttempt[] }) {
   const avgAcc = total ? attempts.reduce((s, a) => s + Number(a.accuracy), 0) / total : 0;
   const best = total ? Math.max(...attempts.map((a) => Number(a.score))) : 0;
   const topicCounts = new Map<string, number>();
-  attempts.forEach((a) => a.revise_topics.forEach((t) => topicCounts.set(t, (topicCounts.get(t) ?? 0) + 1)));
+  attempts.forEach((a) =>
+    a.revise_topics.forEach((t) => topicCounts.set(t, (topicCounts.get(t) ?? 0) + 1)),
+  );
   const weakest = [...topicCounts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 5);
   const last7 = attempts.slice(0, 7).reverse();
 
   return (
     <section className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
       <Stat icon={<Trophy className="h-4 w-4" />} label="Exams taken" value={total.toString()} />
-      <Stat icon={<Target className="h-4 w-4" />} label="Avg score" value={`${avgScore.toFixed(1)} / 10`} />
-      <Stat icon={<CheckCircle2 className="h-4 w-4" />} label="Avg accuracy" value={`${avgAcc.toFixed(0)}%`} />
-      <Stat icon={<Sparkles className="h-4 w-4" />} label="Best score" value={`${best.toFixed(1)} / 10`} />
+      <Stat
+        icon={<Target className="h-4 w-4" />}
+        label="Avg score"
+        value={`${avgScore.toFixed(1)} / 10`}
+      />
+      <Stat
+        icon={<CheckCircle2 className="h-4 w-4" />}
+        label="Avg accuracy"
+        value={`${avgAcc.toFixed(0)}%`}
+      />
+      <Stat
+        icon={<Sparkles className="h-4 w-4" />}
+        label="Best score"
+        value={`${best.toFixed(1)} / 10`}
+      />
 
       <div className="sm:col-span-2 lg:col-span-3 rounded-2xl border border-border/60 bg-card p-5">
         <h3 className="text-sm font-semibold text-muted-foreground">Recent scores</h3>
         {last7.length === 0 ? (
-          <p className="mt-2 text-sm text-muted-foreground">Take your first exam to see your trend.</p>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Take your first exam to see your trend.
+          </p>
         ) : (
           <div className="mt-3 flex h-24 items-end gap-2">
             {last7.map((a) => {
@@ -320,7 +334,9 @@ function ProgressOverview({ attempts }: { attempts: SavedAttempt[] }) {
                     style={{ height: `${h}%` }}
                     title={`${Number(a.score).toFixed(1)}/10`}
                   />
-                  <span className="text-[10px] text-muted-foreground">{Number(a.score).toFixed(1)}</span>
+                  <span className="text-[10px] text-muted-foreground">
+                    {Number(a.score).toFixed(1)}
+                  </span>
                 </div>
               );
             })}
@@ -388,7 +404,8 @@ function RecentAttempts({
               <button className="min-w-0 flex-1 text-left" onClick={() => onOpen(a.exam_id)}>
                 <p className="truncate font-medium">{nameFor(a.exam_id)}</p>
                 <p className="text-xs text-muted-foreground">
-                  {new Date(a.created_at).toLocaleDateString()} · {Number(a.accuracy).toFixed(0)}% accuracy
+                  {new Date(a.created_at).toLocaleDateString()} · {Number(a.accuracy).toFixed(0)}%
+                  accuracy
                 </p>
               </button>
               <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-semibold text-primary">
@@ -438,7 +455,14 @@ function SetupCard({
 
   const handleFile = async (f: File | null | undefined) => {
     if (!f) return;
-    const allowed = ["application/pdf", "image/png", "image/jpeg", "image/webp", "text/plain", "text/markdown"];
+    const allowed = [
+      "application/pdf",
+      "image/png",
+      "image/jpeg",
+      "image/webp",
+      "text/plain",
+      "text/markdown",
+    ];
     if (!allowed.includes(f.type)) {
       toast.error("Use a PDF, image, or plain text file.");
       return;
@@ -490,7 +514,9 @@ function SetupCard({
               <p className="truncate font-medium">{file.name}</p>
               <p className="text-xs text-muted-foreground">{(file.size / 1024).toFixed(0)} KB</p>
             </div>
-            <Button size="sm" variant="ghost" onClick={() => setFile(null)}>Remove</Button>
+            <Button size="sm" variant="ghost" onClick={() => setFile(null)}>
+              Remove
+            </Button>
           </div>
         )}
       </div>
@@ -563,9 +589,7 @@ function SetupCard({
             </>
           )}
         </Button>
-        <p className="text-xs text-muted-foreground">
-          Answers are hidden until you submit.
-        </p>
+        <p className="text-xs text-muted-foreground">Answers are hidden until you submit.</p>
       </div>
     </div>
   );
@@ -589,7 +613,9 @@ function QuizCard({
         .map(
           (q, i) =>
             `${i + 1}. (${q.marks} marks) ${q.prompt}` +
-            (q.choices?.length ? `\n   Options: ${q.choices.map((c, j) => `${String.fromCharCode(65 + j)}) ${c}`).join("  ")}` : ""),
+            (q.choices?.length
+              ? `\n   Options: ${q.choices.map((c, j) => `${String.fromCharCode(65 + j)}) ${c}`).join("  ")}`
+              : ""),
         )
         .join("\n\n");
     const blob = new Blob([text], { type: "text/plain" });
@@ -628,7 +654,10 @@ function QuizCard({
         {exam.topics.length > 0 && (
           <ul className="mt-2 flex flex-wrap gap-1.5">
             {exam.topics.map((t) => (
-              <li key={t} className="rounded-full border border-border/60 px-2 py-0.5 text-xs text-muted-foreground">
+              <li
+                key={t}
+                className="rounded-full border border-border/60 px-2 py-0.5 text-xs text-muted-foreground"
+              >
                 {t}
               </li>
             ))}
@@ -824,7 +853,10 @@ function ResultsCard({
             <p className="text-xs uppercase tracking-wide text-muted-foreground">Accuracy</p>
             <p className="mt-1 font-display text-3xl font-semibold">{acc.toFixed(0)}%</p>
             <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-muted">
-              <div className="h-full rounded-full bg-primary" style={{ width: `${Math.min(100, acc)}%` }} />
+              <div
+                className="h-full rounded-full bg-primary"
+                style={{ width: `${Math.min(100, acc)}%` }}
+              />
             </div>
           </div>
           <div className="rounded-2xl border border-border/60 bg-background p-4">
@@ -833,7 +865,9 @@ function ResultsCard({
               {earned}
               <span className="text-base text-muted-foreground">/{totalMarks}</span>
             </p>
-            <p className="mt-2 text-xs text-muted-foreground">Across {exam.questions.length} questions</p>
+            <p className="mt-2 text-xs text-muted-foreground">
+              Across {exam.questions.length} questions
+            </p>
           </div>
         </div>
 
@@ -884,13 +918,16 @@ function ResultsCard({
                   <p className="text-sm font-medium">
                     Q{i + 1}. {q?.prompt ?? "(question)"}
                   </p>
-                  <span className={`rounded-full border px-2.5 py-0.5 text-xs font-semibold ${verdictColor}`}>
+                  <span
+                    className={`rounded-full border px-2.5 py-0.5 text-xs font-semibold ${verdictColor}`}
+                  >
                     {p.awarded}/{p.outOf} · {p.verdict}
                   </span>
                 </div>
                 {p.studentAnswer && (
                   <p className="mt-2 text-xs text-muted-foreground">
-                    <span className="font-medium text-foreground">Your answer:</span> {p.studentAnswer}
+                    <span className="font-medium text-foreground">Your answer:</span>{" "}
+                    {p.studentAnswer}
                   </p>
                 )}
                 <p className="mt-2 text-sm">{p.feedback}</p>
@@ -909,7 +946,10 @@ function ResultsCard({
         ) : (
           <ul className="mt-3 flex flex-wrap gap-1.5">
             {attempt.revise_topics.map((t) => (
-              <li key={t} className="rounded-full border border-primary/30 bg-background px-3 py-1 text-xs font-medium text-primary">
+              <li
+                key={t}
+                className="rounded-full border border-primary/30 bg-background px-3 py-1 text-xs font-medium text-primary"
+              >
                 {t}
               </li>
             ))}
@@ -992,7 +1032,10 @@ function ListCard({
         : "border-amber-200";
   return (
     <div className={`rounded-2xl border ${border} bg-card p-5 shadow-sm`}>
-      <h4 className="flex items-center gap-2 text-sm font-semibold">{icon}{title}</h4>
+      <h4 className="flex items-center gap-2 text-sm font-semibold">
+        {icon}
+        {title}
+      </h4>
       {items.length === 0 ? (
         <p className="mt-2 text-sm text-muted-foreground">—</p>
       ) : (

@@ -5,9 +5,7 @@ import { z } from "zod";
 const AnswerShape = z.object({
   summary: z.string(),
   explanation: z.string(),
-  diagram: z
-    .object({ mermaid: z.string(), caption: z.string() })
-    .nullable(),
+  diagram: z.object({ mermaid: z.string(), caption: z.string() }).nullable(),
   keyTakeaways: z.array(z.string()),
   reflection: z.string(),
   relatedResources: z
@@ -27,11 +25,7 @@ const AnswerShape = z.object({
 const SaveInput = z.object({
   question: z.string().min(1).max(4000),
   answer: AnswerShape,
-  tags: z
-    .array(z.string().trim().min(1).max(40))
-    .max(10)
-    .optional()
-    .default([]),
+  tags: z.array(z.string().trim().min(1).max(40)).max(10).optional().default([]),
 });
 
 export type SavedDoubt = {
@@ -47,11 +41,7 @@ export const saveDoubt = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) => SaveInput.parse(data))
   .handler(async ({ data, context }): Promise<SavedDoubt> => {
     const cleanTags = Array.from(
-      new Set(
-        (data.tags ?? [])
-          .map((t) => t.trim().toLowerCase())
-          .filter((t) => t.length > 0),
-      ),
+      new Set((data.tags ?? []).map((t) => t.trim().toLowerCase()).filter((t) => t.length > 0)),
     ).slice(0, 10);
     const { data: row, error } = await context.supabase
       .from("doubts")
@@ -83,10 +73,7 @@ export const deleteDoubt = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((data: unknown) => z.object({ id: z.string().uuid() }).parse(data))
   .handler(async ({ data, context }) => {
-    const { error } = await context.supabase
-      .from("doubts")
-      .delete()
-      .eq("id", data.id);
+    const { error } = await context.supabase.from("doubts").delete().eq("id", data.id);
     if (error) throw new Error(error.message);
     return { ok: true };
   });

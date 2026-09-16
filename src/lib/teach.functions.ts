@@ -170,8 +170,7 @@ export type TeachMessage = {
 
 const SESSION_COLS =
   "id, subject, chapter, personality, knowledge, emotion, notebook, topics, xp, corrections, status, report, created_at";
-const MESSAGE_COLS =
-  "id, role, content, kind, emotion, knowledge, attachment_type, created_at";
+const MESSAGE_COLS = "id, role, content, kind, emotion, knowledge, attachment_type, created_at";
 
 const EMPTY_NOTEBOOK: Notebook = {
   definitions: [],
@@ -186,9 +185,7 @@ function mergeNotebook(base: Notebook | null | undefined, add: Notebook): Notebo
   const b = { ...EMPTY_NOTEBOOK, ...(base ?? {}) } as Notebook;
   const out = {} as Notebook;
   (Object.keys(EMPTY_NOTEBOOK) as (keyof Notebook)[]).forEach((k) => {
-    const merged = [...(b[k] ?? []), ...(add[k] ?? [])]
-      .map((s) => s.trim())
-      .filter(Boolean);
+    const merged = [...(b[k] ?? []), ...(add[k] ?? [])].map((s) => s.trim()).filter(Boolean);
     out[k] = Array.from(new Set(merged)).slice(-40);
   });
   return out;
@@ -257,7 +254,10 @@ export const startTeachSession = createServerFn({ method: "POST" })
           memory
             ? `You remember a previous session with this teacher. Your old notebook: ${JSON.stringify(
                 memory.notebook,
-              ).slice(0, 1500)}. Mention one specific thing you remember and one thing you are still unsure about.`
+              ).slice(
+                0,
+                1500,
+              )}. Mention one specific thing you remember and one thing you are still unsure about.`
             : "This is your first session with this teacher.",
           "Greet them and ask your first genuine question about where to begin.",
         ].join("\n"),
@@ -353,7 +353,9 @@ export const sendTeachTurn = createServerFn({ method: "POST" })
         data.request === "explain_back"
           ? `The teacher asked you to explain the concept back to them. Set mode to "explain_back". Explain what you have learned so far in your own words, and deliberately include EXACTLY ONE small, believable conceptual mistake drawn from this misconception list: ${misconceptionsFor(
               session.subject,
-            ).join("; ")}. Put that mistake (plainly described) in hiddenMistake. Never state the mistake is intentional. End by asking the teacher whether your explanation was right.`
+            ).join(
+              "; ",
+            )}. Put that mistake (plainly described) in hiddenMistake. Never state the mistake is intentional. End by asking the teacher whether your explanation was right.`
           : data.request === "practice" || data.request === "quiz"
             ? `The teacher asked you to attempt an exam-style question on what you have been taught. Set mode to "practice". Write the question you chose and your attempt at solving it. If your knowledge is below 70, make one small realistic error and describe it in hiddenMistake; otherwise solve it correctly. Ask the teacher to check your work.`
             : `Respond to the teaching above as this student would. Set mode to "question" (or "reaction" when you are mainly reacting). React honestly and briefly, then ask ONE meaningful follow-up question that probes deeper — never a generic question. If the explanation was vague, say you are still confused and ask for a different explanation, an analogy, or a drawing. If the teacher corrected something you got wrong, thank them, name the misconception in correctedMisconception, and never repeat that mistake again.`;
@@ -453,7 +455,14 @@ Your notebook so far: ${JSON.stringify(notebook).slice(0, 4000)}`;
 
       const { data: updated, error: upErr } = await context.supabase
         .from("teach_sessions")
-        .update({ knowledge, emotion: turn.emotion, notebook: nextNotebook, topics, xp, corrections })
+        .update({
+          knowledge,
+          emotion: turn.emotion,
+          notebook: nextNotebook,
+          topics,
+          xp,
+          corrections,
+        })
         .eq("id", data.sessionId)
         .select(SESSION_COLS)
         .single();

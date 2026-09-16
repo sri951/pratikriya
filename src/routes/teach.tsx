@@ -168,7 +168,9 @@ function Welcome({ onStarted }: { onStarted: (id: string) => void }) {
 
   const startMut = useMutation({
     mutationFn: () =>
-      start({ data: { subject: subject.trim() || "General", chapter: chapter.trim(), personality } }),
+      start({
+        data: { subject: subject.trim() || "General", chapter: chapter.trim(), personality },
+      }),
     onSuccess: (res) => {
       qc.invalidateQueries({ queryKey: ["teach-sessions"] });
       onStarted(res.session.id);
@@ -297,11 +299,7 @@ function Welcome({ onStarted }: { onStarted: (id: string) => void }) {
             {sessions.data.map((s) => (
               <GlassCard key={s.id} className="p-4">
                 <div className="flex items-start justify-between gap-2">
-                  <button
-                    type="button"
-                    className="text-left"
-                    onClick={() => onStarted(s.id)}
-                  >
+                  <button type="button" className="text-left" onClick={() => onStarted(s.id)}>
                     <p className="text-sm font-semibold">{s.chapter || s.subject}</p>
                     <p className="text-xs text-muted-foreground">
                       {s.subject} · {PERSONALITIES[s.personality]?.label ?? s.personality} ·{" "}
@@ -352,6 +350,8 @@ function SessionView({ sessionId, onExit }: { sessionId: string; onExit: () => v
   const [elapsed, setElapsed] = useState(0);
   const fileRef = useRef<HTMLInputElement | null>(null);
   const scrollRef = useRef<HTMLDivElement | null>(null);
+  // Web Speech API is not in the default TS DOM lib.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const recognitionRef = useRef<any>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -400,6 +400,7 @@ function SessionView({ sessionId, onExit }: { sessionId: string; onExit: () => v
         },
       }),
     onSuccess: (res) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       qc.setQueryData(["teach-session", sessionId], (old: any) => ({
         session: res.session,
         messages: [...(old?.messages ?? []), ...(res.teacher ? [res.teacher] : []), res.student],
@@ -415,6 +416,7 @@ function SessionView({ sessionId, onExit }: { sessionId: string; onExit: () => v
   const endMut = useMutation({
     mutationFn: () => endFn({ data: { sessionId } }),
     onSuccess: (s) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       qc.setQueryData(["teach-session", sessionId], (old: any) => ({ ...old, session: s }));
       qc.invalidateQueries({ queryKey: ["teach-sessions"] });
       setTab("chat");
@@ -425,6 +427,7 @@ function SessionView({ sessionId, onExit }: { sessionId: string; onExit: () => v
   function toggleMic() {
     const SR =
       (typeof window !== "undefined" &&
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         ((window as any).SpeechRecognition || (window as any).webkitSpeechRecognition)) ||
       null;
     if (!SR) {
@@ -440,6 +443,7 @@ function SessionView({ sessionId, onExit }: { sessionId: string; onExit: () => v
     rec.continuous = true;
     rec.interimResults = false;
     rec.lang = "en-IN";
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     rec.onresult = (e: any) => {
       let chunk = "";
       for (let i = e.resultIndex; i < e.results.length; i++) chunk += e.results[i][0].transcript;
@@ -571,7 +575,11 @@ function SessionView({ sessionId, onExit }: { sessionId: string; onExit: () => v
                 className="resize-none border-border bg-card text-foreground placeholder:text-muted-foreground"
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && (e.metaKey || e.ctrlKey) && !busy) {
-                    turnMut.mutate({ text, imageDataUrl: image ?? undefined, attachmentType: image ? "photo" : undefined });
+                    turnMut.mutate({
+                      text,
+                      imageDataUrl: image ?? undefined,
+                      attachmentType: image ? "photo" : undefined,
+                    });
                   }
                 }}
               />
@@ -691,7 +699,9 @@ function SessionView({ sessionId, onExit }: { sessionId: string; onExit: () => v
                 <p className="text-sm font-semibold">
                   {PERSONALITIES[session.personality]?.label ?? "AI Student"}
                 </p>
-                <p className="text-xs capitalize text-muted-foreground">Feeling {session.emotion}</p>
+                <p className="text-xs capitalize text-muted-foreground">
+                  Feeling {session.emotion}
+                </p>
               </div>
             </div>
             <div className="mt-4">
@@ -784,7 +794,9 @@ function NotebookPanel({ session }: { session: TeachSession }) {
         automatically while you teach.
       </p>
       {empty ? (
-        <p className="text-sm text-muted-foreground">The notebook is still blank. Start teaching!</p>
+        <p className="text-sm text-muted-foreground">
+          The notebook is still blank. Start teaching!
+        </p>
       ) : (
         groups
           .filter(([, items]) => items.length > 0)

@@ -21,14 +21,14 @@ Pratikriya AI is a full-stack, offline-capable learning platform built on TanSta
 
 ## Layers
 
-| Layer | Technology | Responsibility |
-| :---- | :--------- | :------------- |
-| UI | React 19, Tailwind CSS 4, Radix/shadcn | Routes in `src/routes/`, shared `AppHeader`, design tokens |
-| Data loading | TanStack Query + Router loaders | `ensureQueryData` / `useSuspenseQuery` pattern |
-| Server logic | `createServerFn` (`src/lib/*.functions.ts`) | Typed RPC; auth via `requireSupabaseAuth` middleware |
-| AI | Lovable AI Gateway, Vercel AI SDK | Structured outputs (Zod schemas), multimodal image input, TTS |
-| Persistence | Supabase Postgres | 7 migrations; every table has RLS policies + grants |
-| Offline | vite-plugin-pwa, Workbox, IndexedDB (`idb`) | NetworkFirst page cache, CacheFirst assets, local history |
+| Layer        | Technology                                  | Responsibility                                                |
+| :----------- | :------------------------------------------ | :------------------------------------------------------------ |
+| UI           | React 19, Tailwind CSS 4, Radix/shadcn      | Routes in `src/routes/`, shared `AppHeader`, design tokens    |
+| Data loading | TanStack Query + Router loaders             | `ensureQueryData` / `useSuspenseQuery` pattern                |
+| Server logic | `createServerFn` (`src/lib/*.functions.ts`) | Typed RPC; auth via `requireSupabaseAuth` middleware          |
+| AI           | Lovable AI Gateway, Vercel AI SDK           | Structured outputs (Zod schemas), multimodal image input, TTS |
+| Persistence  | Supabase Postgres                           | 7 migrations; every table has RLS policies + grants           |
+| Offline      | vite-plugin-pwa, Workbox, IndexedDB (`idb`) | NetworkFirst page cache, CacheFirst assets, local history     |
 
 ## Security Model
 

@@ -10,4 +10,3 @@
 > the editor, so keep the branch in a working state.
 
 <!-- LOVABLE:END -->
-

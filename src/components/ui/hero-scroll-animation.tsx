@@ -49,8 +49,8 @@ export default function HeroScrollAnimation() {
             <span className="italic text-primary">the moment you wonder.</span>
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
-            One calm place to ask doubts, revise notes, rehearse exams, and teach
-            what you've learned.
+            One calm place to ask doubts, revise notes, rehearse exams, and teach what you've
+            learned.
           </p>
         </motion.div>
 
