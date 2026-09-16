@@ -11,7 +11,7 @@ Pratikriya is live at **[pratikriya.lovable.app](https://pratikriya.lovable.app)
 ### Prerequisites
 
 - Node.js 20+
-- npm or bun
+- npm (the project's canonical package manager)
 - Supabase account
 - Lovable API key
 
