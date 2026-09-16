@@ -1,0 +1,40 @@
+# Cloudflare Workers configuration for Pratikriya.
+#
+# This file is used ONLY by the Cloudflare Workers Builds Git integration.
+# The canonical production deployment remains Vercel / Lovable + hosted
+# Supabase — see docs/DEPLOYMENT.md.
+#
+# What Cloudflare's builder does:
+#   1. Reads this file at the repo root.
+#   2. Runs `[build] command` to produce the Nitro Cloudflare-module bundle
+#      under `.output/server/`.
+#   3. Deploys that bundle (`main` below).
+#
+# The generated `.output/server/wrangler.json` (written by Nitro at build
+# time) carries the runtime asset binding, module rules, and
+# `nodejs_compat` flag — this root file only tells Cloudflare *how to
+# build* and *where the built entry lives*.
+
+name = "pratikriya"
+main = ".output/server/index.mjs"
+compatibility_date = "2026-09-16"
+compatibility_flags = ["nodejs_compat"]
+
+[build]
+command = "npm install --no-audit --no-fund && npm run build"
+
+[assets]
+binding = "ASSETS"
+directory = ".output/public"
+
+# Environment variables must be added in the Cloudflare dashboard as either
+# plaintext Vars or (for anything sensitive) Secrets:
+#
+#   VITE_SUPABASE_URL             (inlined at build time by Vite)
+#   VITE_SUPABASE_ANON_KEY        (inlined at build time by Vite)
+#   VITE_SUPABASE_PROJECT_ID      (inlined at build time by Vite)
+#   LOVABLE_API_KEY               (server-only; needed at runtime)
+#   SUPABASE_URL                  (server-only)
+#   SUPABASE_PUBLISHABLE_KEY      (server-only)
+#
+# See .env.example for the full list and docs/DEPLOYMENT.md for details.
