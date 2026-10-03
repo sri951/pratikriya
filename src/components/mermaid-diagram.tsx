@@ -99,7 +99,7 @@ export function MermaidDiagram({ code }: { code: string }) {
       })
       .catch((err: unknown) => {
         if (!cancelled) {
-          setError(err instanceof Error ? err.message : String(err));
+          console.error("MERMAID", err); setError(err instanceof Error ? err.message : String(err));
         }
       });
     return () => {
