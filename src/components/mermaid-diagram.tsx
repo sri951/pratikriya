@@ -11,6 +11,7 @@ function ensureInit() {
     startOnLoad: false,
     theme: "base",
     securityLevel: "strict",
+    flowchart: { htmlLabels: false },
     fontFamily: "Inter, ui-sans-serif, system-ui, sans-serif",
     themeVariables: {
       primaryColor: "#dbeee6",
@@ -39,7 +40,7 @@ export function MermaidDiagram({ code }: { code: string }) {
     let revokeSvg: string | null = null;
     ensureInit();
     mermaid
-      .render(idRef.current, code)
+      .render(`${idRef.current}-${Date.now().toString(36)}`, code)
       .then(({ svg }) => {
         if (cancelled) return;
         // Ensure the SVG has explicit dimensions for canvas rasterization.
@@ -84,11 +85,15 @@ export function MermaidDiagram({ code }: { code: string }) {
             setDims({ w: width, h: height });
             setError(null);
           } catch (e) {
-            setError(e instanceof Error ? e.message : String(e));
+            // Canvas export blocked — still show the vector diagram.
+            setPngUrl(svgObjectUrl);
+            setDims({ w: width, h: height });
           }
         };
         img.onerror = () => {
-          if (!cancelled) setError("Could not rasterize diagram");
+          if (cancelled) return;
+          setPngUrl(svgObjectUrl);
+          setDims({ w: width, h: height });
         };
         img.src = svgObjectUrl;
       })
@@ -99,7 +104,8 @@ export function MermaidDiagram({ code }: { code: string }) {
       });
     return () => {
       cancelled = true;
-      if (revokeSvg) URL.revokeObjectURL(revokeSvg);
+      const toRevoke = revokeSvg;
+      if (toRevoke) setTimeout(() => URL.revokeObjectURL(toRevoke), 0);
     };
   }, [code]);
 
