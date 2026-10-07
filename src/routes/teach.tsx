@@ -574,15 +574,20 @@ function SessionView({ sessionId, onExit }: { sessionId: string; onExit: () => v
                 placeholder="Explain the concept to your student, in your own words…"
                 className="resize-none border-border bg-card text-foreground placeholder:text-muted-foreground"
                 onKeyDown={(e) => {
-                  if (e.key === "Enter" && (e.metaKey || e.ctrlKey) && !busy) {
-                    turnMut.mutate({
-                      text,
-                      imageDataUrl: image ?? undefined,
-                      attachmentType: image ? "photo" : undefined,
-                    });
-                  }
+                  if (e.key !== "Enter" || e.shiftKey || e.nativeEvent.isComposing) return;
+                  e.preventDefault();
+                  if (busy || (!text.trim() && !image)) return;
+                  turnMut.mutate({
+                    text,
+                    imageDataUrl: image ?? undefined,
+                    attachmentType: image ? "photo" : undefined,
+                  });
                 }}
+                aria-describedby="teach-enter-hint"
               />
+              <p id="teach-enter-hint" className="text-xs text-muted-foreground">
+                Press Enter to send · Shift + Enter for a new line
+              </p>
               <div className="flex flex-wrap items-center gap-2">
                 <Button
                   className="rounded-full"
